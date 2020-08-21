@@ -5,7 +5,7 @@
  <!-- Basic Page Needs
 ================================================== -->
  <title>
-  Findeo
+  Afriproperty Connect
  </title>
  <meta charset="utf-8"/>
  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
@@ -30,6 +30,7 @@
     </h4>
     <div class="csm-properties">
      <!-- Property -->
+     {% for item in compare %}
      <div class="listing-item compact">
       <a class="listing-img-container" href="single-property-page-2.html">
        <div class="remove-from-compare">
@@ -38,66 +39,23 @@
        </div>
        <div class="listing-badges">
         <span>
-         For Sale
+         {{item.sale_type}}
         </span>
        </div>
        <div class="listing-img-content">
         <span class="listing-compact-title">
-         Eagle Apartments
+         {{item.title}}
          <i>
-          $420,000
+          ${{item.price}}
          </i>
         </span>
        </div>
-       <img alt="" src="{% static 'images/listing-01.jpg' %}"/>
+       <img alt="" src="{{item.image_1.url}}"/>
       </a>
      </div>
+     {% endfor %}
      <!-- Property -->
-     <div class="listing-item compact">
-      <a class="listing-img-container" href="single-property-page-2.html">
-       <div class="remove-from-compare">
-        <i class="fa fa-close">
-        </i>
-       </div>
-       <div class="listing-badges">
-        <span>
-         For Sale
-        </span>
-       </div>
-       <div class="listing-img-content">
-        <span class="listing-compact-title">
-         Selway Apartments
-         <i>
-          $420,000
-         </i>
-        </span>
-       </div>
-       <img alt="" src="{% static 'images/listing-03.jpg' %}"/>
-      </a>
-     </div>
      <!-- Property -->
-     <div class="listing-item compact">
-      <a class="listing-img-container" href="single-property-page-2.html">
-       <div class="remove-from-compare">
-        <i class="fa fa-close">
-        </i>
-       </div>
-       <div class="listing-badges">
-        <span>
-         For Sale
-        </span>
-       </div>
-       <div class="listing-img-content">
-        <span class="listing-compact-title">
-         Oak Tree Villas
-         <i>
-          $535,000
-         </i>
-        </span>
-       </div>
-       <img alt="" src="{% static 'images/listing-05.jpg' %}"/>
-      </a>
-     </div>
     </div>
     <div class="csm-buttons">
      <a class="button" href="compare-properties.html">
@@ -131,34 +89,6 @@
         <a href="#">
          office@example.com
         </a>
-       </li>
-       <li>
-        <div class="top-bar-dropdown">
-         <span>
-          Dropdown Menu
-         </span>
-         <ul class="options">
-          <li>
-           <div class="arrow">
-           </div>
-          </li>
-          <li>
-           <a href="#">
-            Nice First Link
-           </a>
-          </li>
-          <li>
-           <a href="#">
-            Second Link With Long Title
-           </a>
-          </li>
-          <li>
-           <a href="#">
-            Third Link
-           </a>
-          </li>
-         </ul>
-        </div>
        </li>
       </ul>
      </div>
@@ -224,168 +154,9 @@
        <ul id="responsive">
         <li>
          <a href="#">
-          Home
-         </a>
-         <ul>
-          <li>
-           <a href="index.html">
-            Home 1
-           </a>
-          </li>
-          <li>
-           <a href="index-2.html">
-            Home 2
-           </a>
-          </li>
-          <li>
-           <a href="index-3.html">
-            Home 3
-           </a>
-          </li>
-          <li>
-           <a href="index-4.html">
-            Home 4
-           </a>
-          </li>
-         </ul>
-        </li>
-        <li>
-         <a href="#">
-          Listings
-         </a>
-         <ul>
-          <li>
-           <a href="#">
-            List Layout
-           </a>
-           <ul>
-            <li>
-             <a href="listings-list-with-sidebar.html">
-              With Sidebar
-             </a>
-            </li>
-            <li>
-             <a href="listings-list-with-map.html">
-              With Map
-             </a>
-            </li>
-            <li>
-             <a href="listings-list-full-width.html">
-              Full Width
-             </a>
-            </li>
-           </ul>
-          </li>
-          <li>
-           <a href="#">
-            Grid Layout
-           </a>
-           <ul>
-            <li>
-             <a href="listings-grid-standard-with-sidebar.html">
-              Standard With Sidebar
-             </a>
-            </li>
-            <li>
-             <a href="listings-grid-compact-with-sidebar.html">
-              Compact With Sidebar
-             </a>
-            </li>
-            <li>
-             <a href="listings-grid-with-map.html">
-              With Map
-             </a>
-            </li>
-            <li>
-             <a href="listings-grid-full-width.html">
-              Full Width
-             </a>
-            </li>
-           </ul>
-          </li>
-          <li>
-           <a href="#">
-            Half Map
-           </a>
-           <ul>
-            <li>
-             <a href="listings-half-map-list.html">
-              List Layout
-             </a>
-            </li>
-            <li>
-             <a href="listings-half-map-grid-standard.html">
-              Grid Standard Layout
-             </a>
-            </li>
-            <li>
-             <a href="listings-half-map-grid-compact.html">
-              Grid Compact Layout
-             </a>
-            </li>
-           </ul>
-          </li>
-         </ul>
-        </li>
-        <li>
-         <a href="#">
           Features
          </a>
          <ul>
-          <li>
-           <a href="#">
-            Single Properties
-           </a>
-           <ul>
-            <li>
-             <a href="single-property-page-1.html">
-              Property Style 1
-             </a>
-            </li>
-            <li>
-             <a href="single-property-page-2.html">
-              Property Style 2
-             </a>
-            </li>
-            <li>
-             <a href="single-property-page-3.html">
-              Property Style 3
-             </a>
-            </li>
-           </ul>
-          </li>
-          <li>
-           <a href="#">
-            Search Styles
-           </a>
-           <ul>
-            <li>
-             <a href="index.html">
-              Home Search 1
-             </a>
-            </li>
-            <li>
-             <a href="index-2.html">
-              Home Search 2
-             </a>
-            </li>
-            <li>
-             <a href="index-3.html">
-              Home Search 3
-             </a>
-            </li>
-            <li>
-             <a href="listings-list-full-width.html">
-              Advanced Style
-             </a>
-            </li>
-            <li>
-             <a href="listings-list-with-sidebar.html">
-              Sidebar Search
-             </a>
-            </li>
-           </ul>
-          </li>
           <li>
            <a href="#">
             My Account
@@ -453,7 +224,7 @@
          </ul>
         </li>
         <li>
-         <a class="current" href="#">
+         <a href="#">
           Pages
          </a>
          <ul>
@@ -477,26 +248,6 @@
           <li>
            <a href="contact.html">
             Contact
-           </a>
-          </li>
-          <li>
-           <a href="elements.html">
-            Elements
-           </a>
-          </li>
-          <li>
-           <a href="pricing-tables.html">
-            Pricing Tables
-           </a>
-          </li>
-          <li>
-           <a href="typography.html">
-            Typography
-           </a>
-          </li>
-          <li>
-           <a href="icons.html">
-            Icons
            </a>
           </li>
          </ul>
@@ -563,21 +314,6 @@
   <div class="container">
    <div class="row">
     <div class="col-md-4 col-md-offset-4">
-     <button class="button social-login via-twitter">
-      <i class="fa fa-twitter">
-      </i>
-      Log In With Twitter
-     </button>
-     <button class="button social-login via-gplus">
-      <i class="fa fa-google-plus">
-      </i>
-      Log In With Google Plus
-     </button>
-     <button class="button social-login via-facebook">
-      <i class="fa fa-facebook">
-      </i>
-      Log In With Facebook
-     </button>
      <!--Tab -->
      <div class="my-account style-1 margin-top-5 margin-bottom-40">
       <ul class="tabs-nav">
@@ -595,7 +331,9 @@
       <div class="tabs-container alt">
        <!-- Login -->
        <div class="tab-content" id="tab1" style="display: none;">
-        <form class="login" method="post">
+        <form class="login" method="POST">
+          {% csrf_token %}
+          <input class="mb-0 form-control" id="name" name="check" placeholder="Enter your full name" value="False" type="hidden"/>
          <p class="form-row form-row-wide">
           <label for="username">
            Username:
@@ -628,7 +366,9 @@
        </div>
        <!-- Register -->
        <div class="tab-content" id="tab2" style="display: none;">
-        <form class="register" method="post">
+        <form class="register" method="POST">
+          {% csrf_token %}
+          <input  id="name" name="check" placeholder="Enter your full name" value="True" type="hidden"/>
          <p class="form-row form-row-wide">
           <label for="username2">
            Username:

@@ -76,3 +76,41 @@ class Article(models.Model):
         return reverse("APP:details", kwargs={
             'slug': self.slug
         })
+class Comparison(models.Model):
+    title=models.TextField(blank=True, null=True)
+    answer = (
+        ('Yes', 'Yes'),
+        ('No', 'No'),
+    )
+    type= (
+        ('Public', 'Public'),
+        ('City', 'City'),
+    )
+    address=models.TextField(blank=True, null=True)
+    date=models.DateTimeField(auto_now_add=True)
+    category=models.TextField(blank=True, null=True)
+    sale_type=models.TextField(blank=True, null=True)
+    price=models.IntegerField(blank=True, null=True)
+    price_per_unit = models.TextField(blank=True, null=True)
+    image_1 = models.ImageField(blank=True, null=True)
+    area = models.TextField(blank=True, null=True)
+    rooms = models.TextField(blank=True, null=True)
+    bedrooms = models.TextField(blank=True, null=True)
+    bathrooms = models.TextField(blank=True, null=True)
+    features = models.TextField(blank=True, null=True)
+    building_age = models.TextField(blank=True, null=True)
+    parking = models.TextField(blank=True, null=True)
+    cooling = models.TextField(blank=True, null=True)
+    heating = models.TextField(blank=True, null=True)
+    sewer = models.CharField(max_length = 100, choices = type,blank=True, null=True)
+    water = models.CharField(max_length = 100, choices = type,blank=True, null=True)
+    exercise_room = models.CharField(max_length = 100, choices = answer,blank=True, null=True)
+    storage_room = models.CharField(max_length = 100, choices = answer,blank=True, null=True)
+    creator = models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
+    username=models.CharField(max_length=100, null=True,blank=True)
+    email=models.CharField(max_length=100, null=True,blank=True)
+    

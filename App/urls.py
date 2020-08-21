@@ -6,5 +6,7 @@ app_name = "APP"
 
 urlpatterns = [
     path("", views.IndexListView.as_view(), name="index"),
+    path("index.html", views.IndexListView.as_view(), name="index1"),
+    path("login-register.html", views.login_register, name="login_register"),
 
 ]

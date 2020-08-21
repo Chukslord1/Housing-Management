@@ -64,6 +64,7 @@ class IndexListView(ListView):
             water=self.request.GET.get('water')
             exercise_room=self.request.GET.get('exercise_room')
             storage_room=self.request.GET.get('storage_room')
+            request.session['compare'] = Comparison.objects.all()
             compare_check=Comparison.objects.filter(title=title,address=address,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
             area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
             water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
@@ -87,8 +88,10 @@ class IndexListView(ListView):
         context['losangeles'] = Property.objects.filter(Q(address__icontains="losangeles")).count()
         context['sanfransisco'] = Property.objects.filter(Q(address__icontains="sanfransisco")).count()
         context['miami'] = Property.objects.filter(Q(address__icontains="miami")).count()
-        context['compare'] = Comparison.objects.filter(creator=self.request.user)
-        context['user'] = self.request.user
+        if self.request.user.is_authenticated:
+            context['compare'] = Comparison.objects.filter(creator=self.request.user)
+        else:
+            pass
 
         return context
 
@@ -125,3 +128,8 @@ def login_register(request):
         else:
             return render(request,'login-register.html')
     return render(request, "login-register.html")
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect("index.html")

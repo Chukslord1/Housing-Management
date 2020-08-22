@@ -32,7 +32,7 @@
      <!-- Property -->
      {% for item in compare %}
      <div class="listing-item compact">
-      <a class="listing-img-container" href="single-property-page-2.html">
+      <a class="listing-img-container" href="{{item.get_absolute_url}}">
        <div class="remove-from-compare">
         <i class="fa fa-close">
         </i>
@@ -65,14 +65,19 @@
      <!-- Property -->
      <!-- Property -->
     </div>
+    {% if user.is_authenticated %}
     <div class="csm-buttons">
      <a class="button" href="compare-properties.html">
       Compare
      </a>
-     <a class="button reset" href="#">
+     <form method="GET">
+      <input name="clear" value="True" type="hidden">
+     <button class="button reset" type="submit">
       Reset
-     </a>
+    </button>
+   </form>
     </div>
+    {% endif %}
    </div>
   </div>
   <!-- Compare Properties Widget / End -->
@@ -312,26 +317,26 @@
         </h2>
         <!-- Main Search -->
          <!-- Type -->
-         <form method="GET">
+
          <div class="search-type">
           <label class="active">
            <input checked="checked" class="first-tab" type="radio"/>
            Any Status
           </label>
           <label>
-           <input name="sale" value="sale" type="radio"/>
+           <input id="myInput4"  name="sale" value="sale" type="radio"/>
            For Sale
           </label>
           <label>
-           <input name="rent" value="rent" type="radio"/>
+           <input id="myInput5" name="rent" value="rent" type="radio"/>
            For Rent
           </label>
           <label>
-           <input name="shortlet" value="shortlet" type="radio"/>
+           <input id="myInput6" name="shortlet" value="shortlet" type="radio"/>
            Shortlet
           </label>
           <label>
-           <input name="hotel" name="hotel" type="radio"/>
+           <input id="myInput7" name="hotel" value="hotel" type="radio"/>
            Hotels
           </label>
           <div class="search-type-arrow">
@@ -342,17 +347,18 @@
           <!-- Main Search Input -->
           <div class="main-search-input larger-input">
             <input  name="first_check" type="hidden" value="one">
-           <input class="ico-01" id="autocomplete-input" placeholder="Enter address e.g. area, city or state" name="search" type="text" value="">
-            <button class="button" type="submit">
+           <input class="ico-01" id="myInput" placeholder="Enter address e.g. area, city or state" name="search" type="text" value="">
+            <button class="button" type="submit" onclick="showOutput()">
              Search
             </button>
            </input>
           </div>
           <!-- Row -->
+
           <div class="row with-forms">
            <!-- Property Type -->
            <div class="col-md-4">
-            <select class="chosen-select-no-single" name="category">
+            <select class="chosen-select-no-single" name="category" id="myInput2">
              <option value="">
               Any Type
              </option>
@@ -385,12 +391,29 @@
            <div class="col-md-4">
             <!-- Select Input -->
             <div class="select-input">
-             <input data-unit="NGN" placeholder="Max Price" name="max_price" type="text"/>
+             <input data-unit="NGN" id="myInput3" placeholder="Max Price" name="max_price" type="text"/>
             </div>
             <!-- Select Input / End -->
            </div>
           </div>
-        </form>
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function showOutput () {
+  var value=document.getElementById("myInput").value;
+  var value_2=document.getElementById("myInput2").value;
+  var value_3=document.getElementById("myInput3").value;
+  var value_4=document.getElementById("myInput4").value;
+  var value_5=document.getElementById("myInput5").value;
+  var value_6=document.getElementById("myInput6").value;
+  var value_7=document.getElementById("myInput7").value;
+  var paid="one";
+  var queryString = "?first_check=" +paid  + "&search=" + value + "&category=" + value_2 + "&max_price=" + value_3 + "&sale=" + value_4 + "&rent=" + value_5 + "&shortlet=" + value_6 + "&hotel=" + value_7;
+  window.location.href="listings-list-full-width.html" + queryString;
+}
+
+</script>
           <!-- Row / End -->
           <!-- Browse Jobs -->
           {% for item in search %}
@@ -428,7 +451,7 @@
       {% for house in houses %}
       <div class="carousel-item">
        <div class="listing-item">
-        <a class="listing-img-container" href="single-property-page-1.html">
+        <a class="listing-img-container" href="{{house.get_absolute_url}}">
          <div class="listing-badges">
           <span class="featured">
            Featured
@@ -503,7 +526,7 @@
         <div class="listing-content">
          <div class="listing-title">
           <h4>
-           <a href="single-property-page-1.html">
+           <a href="{{house.get_absolute_url}}">
             {{house.title}}
            </a>
           </h4>

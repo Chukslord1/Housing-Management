@@ -345,38 +345,83 @@
     <div class="col-md-12">
      <!-- Slider -->
      <div class="property-slider default">
-      <a class="item mfp-gallery" data-background-image="{{object.image_1.url}}" href="images/single-property-01.jpg">
+      <a class="item mfp-gallery" data-background-image="{{object.image_1.url}}" href="{{object.image_1.url}}">
       </a>
+      {% if object.image_2 %}
+      <a class="item mfp-gallery" data-background-image="{{object.image_2.url}}" href="{{object.image_2.url}}">
+      </a>
+      {% else %}
       <a class="item mfp-gallery" data-background-image="images/single-property-02.jpg" href="images/single-property-02.jpg">
       </a>
+      {% endif %}
+      {% if object.image_3 %}
+      <a class="item mfp-gallery" data-background-image="{{object.image_3.url}}" href="{{object.image_3.url}}">
+      </a>
+      {% else %}
       <a class="item mfp-gallery" data-background-image="images/single-property-03.jpg" href="images/single-property-03.jpg">
       </a>
+      {% endif %}
+      {% if object.image_4 %}
+      <a class="item mfp-gallery" data-background-image="{{object.image_4.url}}" href="{{object.image_4.url}}">
+      </a>
+      {% else %}
       <a class="item mfp-gallery" data-background-image="images/single-property-04.jpg" href="images/single-property-04.jpg">
       </a>
+      {% endif %}
+      {% if object.image_5 %}
+      <a class="item mfp-gallery" data-background-image="{{object.image_5.url}}" href="{{object.image_5.url}}">
+      </a>
+      {% else %}
       <a class="item mfp-gallery" data-background-image="images/single-property-05.jpg" href="images/single-property-05.jpg">
       </a>
+      {% endif %}
+      {% if object.image_6 %}
+      <a class="item mfp-gallery" data-background-image="{{object.image_6.url}}" href="{{object.image_6.url}}">
+      </a>
+      {% else %}
       <a class="item mfp-gallery" data-background-image="images/single-property-06.jpg" href="images/single-property-06.jpg">
       </a>
+      {% endif %}
      </div>
      <!-- Slider Thumbs -->
      <div class="property-slider-nav">
       <div class="item">
-       <img alt="" src="{% static 'images/single-property-01.jpg' %}"/>
+       <img alt="" src="{{object.image_1.url}}"/>
       </div>
       <div class="item">
+        {% if object.image_2 %}
+       <img alt="" src="{{object.image_2.url}}"/>
+       {% else %}
        <img alt="" src="{% static 'images/single-property-02.jpg' %}"/>
+       {% endif %}
       </div>
       <div class="item">
+        {% if object.image_3 %}
+       <img alt="" src="{{object.image_3.url}}"/>
+       {% else %}
        <img alt="" src="{% static 'images/single-property-03.jpg' %}"/>
+       {% endif %}
       </div>
       <div class="item">
+        {% if object.image_4 %}
+       <img alt="" src="{{object.image_4.url}}"/>
+       {% else %}
        <img alt="" src="{% static 'images/single-property-04.jpg' %}"/>
+       {% endif %}
       </div>
       <div class="item">
+        {% if object.image_5 %}
+       <img alt="" src="{{object.image_5.url}}"/>
+       {% else %}
        <img alt="" src="{% static 'images/single-property-05.jpg' %}"/>
+       {% endif %}
       </div>
       <div class="item">
+        {% if object.image_6 %}
+       <img alt="" src="{{object.image_6.url}}"/>
+       {% else %}
        <img alt="" src="{% static 'images/single-property-06.jpg' %}"/>
+       {% endif %}
       </div>
      </div>
     </div>
@@ -392,25 +437,25 @@
        <li>
         Area
         <span>
-         1450 sq ft
+         {{object.area}} sq ft
         </span>
        </li>
        <li>
         Rooms
         <span>
-         4
+         {{object.rooms}}
         </span>
        </li>
        <li>
         Bedrooms
         <span>
-         2
+         {{object.bedrooms}}
         </span>
        </li>
        <li>
         Bathrooms
         <span>
-         1
+         {{object.bathrooms}}
         </span>
        </li>
       </ul>
@@ -436,49 +481,49 @@
        <li>
         Building Age:
         <span>
-         2 Years
+         {{object.building_age}} Years
         </span>
        </li>
        <li>
         Parking:
         <span>
-         Attached Garage
+        {{object.parking}}
         </span>
        </li>
        <li>
         Cooling:
         <span>
-         Central Cooling
+         {{object.cooling}}
         </span>
        </li>
        <li>
         Heating:
         <span>
-         Forced Air, Gas
+         F{{object.heating}}
         </span>
        </li>
        <li>
         Sewer:
         <span>
-         Public/City
+         {{object.sewer}}
         </span>
        </li>
        <li>
         Water:
         <span>
-         City
+         {{object.water}}
         </span>
        </li>
        <li>
         Exercise Room:
         <span>
-         Yes
+         {{object.exercise_room}}
         </span>
        </li>
        <li>
         Storage Room:
         <span>
-         Yes
+         {{object.storage_room}}
         </span>
        </li>
       </ul>
@@ -488,103 +533,27 @@
       </h3>
       <ul class="property-features checkboxes margin-top-0">
        <li>
-        Air Conditioning
-       </li>
-       <li>
-        Swimming Pool
-       </li>
-       <li>
-        Central Heating
-       </li>
-       <li>
-        Laundry Room
-       </li>
-       <li>
-        Gym
-       </li>
-       <li>
-        Alarm
-       </li>
-       <li>
-        Window Covering
-       </li>
-       <li>
-        Internet
+        {{object.features}}
        </li>
       </ul>
       <!-- Floorplans -->
-      <h3 class="desc-headline no-border">
-       Floorplans
-      </h3>
-      <!-- Accordion -->
-      <div class="style-1 fp-accordion">
-       <div class="accordion">
-        <h3>
-         First Floor
-         <span>
-          460 sq ft
-         </span>
-         <i class="fa fa-angle-down">
-         </i>
-        </h3>
-        <div>
-         <a class="floor-pic mfp-image" href="https://i.imgur.com/kChy7IU.jpg">
-          <img alt="" src="{% static 'https://i.imgur.com/kChy7IU.jpg' %}"/>
-         </a>
-         <p>
-          Mauris mauris ante, blandit et, ultrices a, susceros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate aliquam egestas litora torquent conubia.
-         </p>
-        </div>
-        <h3>
-         Second Floor
-         <span>
-          440 sq ft
-         </span>
-         <i class="fa fa-angle-down">
-         </i>
-        </h3>
-        <div>
-         <a class="floor-pic mfp-image" href="https://i.imgur.com/l2VNlwu.jpg">
-          <img alt="" src="{% static 'https://i.imgur.com/l2VNlwu.jpg' %}"/>
-         </a>
-         <p>
-          Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. Nullam laoreet, velit ut taciti sociosqu condimentum feugiat.
-         </p>
-        </div>
-        <h3>
-         Garage
-         <span>
-          140 sq ft
-         </span>
-         <i class="fa fa-angle-down">
-         </i>
-        </h3>
-        <div>
-         <a class="floor-pic mfp-image" href="https://i.imgur.com/0zJYERy.jpg">
-          <img alt="" src="{% static 'https://i.imgur.com/0zJYERy.jpg' %}"/>
-         </a>
-        </div>
-       </div>
-      </div>
+
       <!-- Video -->
       <h3 class="desc-headline no-border">
        Video
       </h3>
       <div class="responsive-iframe">
-       <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube-nocookie.com/embed/UPBJKppEXoQ?rel=0&amp;showinfo=0" width="560">
+        {% if object.video %}
+       <iframe allowfullscreen="" frameborder="0" height="315" src="{{object.video.url}}" width="560">
        </iframe>
+       {% else %}
+       <h5>No Video Associated<h5>
+       {% endif %}
       </div>
       <!-- Location -->
       <h3 class="desc-headline no-border" id="location">
-       Location
+       Location: {{object.address}}
       </h3>
-      <div id="propertyMap-container">
-       <div data-latitude="40.7427837" data-longitude="-73.11445617675781" id="propertyMap">
-       </div>
-       <a href="#" id="streetView">
-        Street View
-       </a>
-      </div>
       <!-- Similar Listings Container -->
       <h3 class="desc-headline no-border margin-bottom-35 margin-top-60">
        Similar Properties
@@ -662,141 +631,7 @@
         </div>
         <!-- Listing Item / End -->
        </div>
-       <!-- Listing Item / End -->
-       <!-- Listing Item -->
-       <div class="listing-item">
-        <a class="listing-img-container" href="#">
-         <div class="listing-badges">
-          <span>
-           For Sale
-          </span>
-         </div>
-         <div class="listing-img-content">
-          <span class="listing-price">
-           $420,000
-           <i>
-            $770 / sq ft
-           </i>
-          </span>
-          <span class="like-icon">
-          </span>
-         </div>
-         <div>
-          <img alt="" src="{% static 'images/listing-04.jpg' %}"/>
-         </div>
-        </a>
-        <div class="listing-content">
-         <div class="listing-title">
-          <h4>
-           <a href="#">
-            Selway Apartments
-           </a>
-          </h4>
-          <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
-           <i class="fa fa-map-marker">
-           </i>
-           33 William St. Northbrook, IL
-          </a>
-          <a class="details button border" href="#">
-           Details
-          </a>
-         </div>
-         <ul class="listing-details">
-          <li>
-           540 sq ft
-          </li>
-          <li>
-           1 Bedroom
-          </li>
-          <li>
-           3 Rooms
-          </li>
-          <li>
-           2 Bathroom
-          </li>
-         </ul>
-         <div class="listing-footer">
-          <a href="#">
-           <i class="fa fa-user">
-           </i>
-           Kristen Berry
-          </a>
-          <span>
-           <i class="fa fa-calendar-o">
-           </i>
-           3 days ago
-          </span>
-         </div>
-        </div>
-        <!-- Listing Item / End -->
-       </div>
-       <!-- Listing Item / End -->
-       <!-- Listing Item -->
-       <div class="listing-item">
-        <a class="listing-img-container" href="#">
-         <div class="listing-badges">
-          <span>
-           For Sale
-          </span>
-         </div>
-         <div class="listing-img-content">
-          <span class="listing-price">
-           $535,000
-           <i>
-            $640 / sq ft
-           </i>
-          </span>
-          <span class="like-icon">
-          </span>
-         </div>
-         <img alt="" src="{% static 'images/listing-05.jpg' %}"/>
-        </a>
-        <div class="listing-content">
-         <div class="listing-title">
-          <h4>
-           <a href="#">
-            Oak Tree Villas
-           </a>
-          </h4>
-          <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
-           <i class="fa fa-map-marker">
-           </i>
-           71 Lower River Dr. Bronx, NY
-          </a>
-          <a class="details button border" href="#">
-           Details
-          </a>
-         </div>
-         <ul class="listing-details">
-          <li>
-           350 sq ft
-          </li>
-          <li>
-           1 Bedroom
-          </li>
-          <li>
-           2 Rooms
-          </li>
-          <li>
-           1 Bathroom
-          </li>
-         </ul>
-         <div class="listing-footer">
-          <a href="#">
-           <i class="fa fa-user">
-           </i>
-           Mabel Gagnon
-          </a>
-          <span>
-           <i class="fa fa-calendar-o">
-           </i>
-           4 days ago
-          </span>
-         </div>
-        </div>
-        <!-- Listing Item / End -->
-       </div>
-       <!-- Listing Item / End -->
+   <!-- Listing Item / End -->
       </div>
       <!-- Similar Listings Container / End -->
      </div>

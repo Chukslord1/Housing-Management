@@ -149,7 +149,7 @@
      <div class="left-side">
       <!-- Logo -->
       <div id="logo">
-       <a href="index.html">
+       <a href="{% url 'APP:index' %}">
         <img alt="" src="{% static 'images/logo.png' %}"/>
        </a>
       </div>
@@ -277,7 +277,7 @@
       <!-- Header Widget -->
       <div class="header-widget">
         {% if user.is_authenticated %}
-        <a class="sign-in" onclick="window.location.href='logout.html'">
+        <a class="sign-in" onclick="window.location.href='{% url 'APP:logout' %}'">
          <i class="fa fa-user">
          </i>
          Logout
@@ -309,7 +309,7 @@
    <div class="container">
     <div class="row">
      <div class="col-md-12">
-      <a class="back-to-listings" href="listings-list-with-sidebar.html">
+      <a class="back-to-listings" href="{% url 'APP:index' %}">
       </a>
       <div class="property-title">
        <h2>
@@ -345,7 +345,7 @@
     <div class="col-md-12">
      <!-- Slider -->
      <div class="property-slider default">
-      <a class="item mfp-gallery" data-background-image="images/single-property-01.jpg" href="images/single-property-01.jpg">
+      <a class="item mfp-gallery" data-background-image="{{object.image_1.url}}" href="images/single-property-01.jpg">
       </a>
       <a class="item mfp-gallery" data-background-image="images/single-property-02.jpg" href="images/single-property-02.jpg">
       </a>
@@ -420,13 +420,7 @@
       </h3>
       <div class="show-more">
        <p>
-        Ut euismod ultricies sollicitudin. Curabitur sed dapibus nulla. Nulla eget iaculis lectus. Mauris ac maximus neque. Nam in mauris quis libero sodales eleifend. Morbi varius, nulla sit amet rutrum elementum, est elit finibus tellus, ut tristique elit risus at metus. Sed fermentum, lorem vitae efficitur imperdiet, neque velit tristique turpis, et iaculis mi tortor finibus turpis.
-       </p>
-       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla. Nulla posuere sapien vitae lectus suscipit, et pulvinar nisi tincidunt. Aliquam erat volutpat. Curabitur convallis fringilla diam sed aliquam. Sed tempor iaculis massa faucibus feugiat. In fermentum facilisis massa, a consequat purus viverra a. Aliquam pellentesque nibh et nibh feugiat gravida. Maecenas ultricies, diam vitae semper placerat, velit risus accumsan nisl, eget tempor lacus est vel nunc. Proin accumsan elit sed neque euismod fringilla. Curabitur lobortis nunc velit, et fermentum urna dapibus non. Vivamus magna lorem, elementum id gravida ac, laoreet tristique augue. Maecenas dictum lacus eu nunc porttitor, ut hendrerit arcu efficitur.
-       </p>
-       <p>
-        Nam mattis lobortis felis eu blandit. Morbi tellus ligula, interdum sit amet ipsum et, viverra hendrerit lectus. Nunc efficitur sem vel est laoreet, sed bibendum eros viverra. Vestibulum finibus, ligula sed euismod tincidunt, lacus libero lobortis ligula, sit amet molestie ipsum purus ut tortor. Nunc varius, dui et sollicitudin facilisis, erat felis imperdiet felis, et iaculis dui magna vitae diam. Donec mattis diam nisl, quis ullamcorper enim malesuada non. Curabitur lobortis eu mauris nec vestibulum. Nam efficitur, ex ac semper malesuada, nisi odio consequat dui, hendrerit vulputate odio dui vitae massa. Aliquam tortor urna, tincidunt ut euismod quis, semper vel ipsum. Ut non vestibulum mauris. Morbi euismod, felis non hendrerit viverra, nunc sapien bibendum ligula, eget vehicula nunc dolor eu ex. Quisque in semper odio. Donec auctor blandit ligula. Integer id lectus non nibh vulputate efficitur quis at arcu.
+        {{object.description}}
        </p>
        <a class="show-more-button" href="#">
         Show More

@@ -15,4 +15,6 @@ urlpatterns = [
     path("listings-list-with-sidebar.html", views.popular, name="popular"),
     path("compare-properties.html", views.compare, name="compare"),
     path("single-property-page-1.html/<slug>", views.PropertyDetailView.as_view(), name="details"),
+    path("contact.html", views.contact, name="contact"),
+    path("blog.html", views.blog, name="blog"),
 ]

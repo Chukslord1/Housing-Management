@@ -298,7 +298,50 @@ class PropertyDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PropertyDetailView, self).get_context_data(**kwargs)
 
-
+        if self.request.GET.get('second_check')=="two":
+            if self.request.user.is_authenticated:
+                title=self.request.GET.get('title')
+                address=self.request.GET.get('address')
+                date=self.request.GET.get('date')
+                category=self.request.GET.get('category')
+                sale_type=self.request.GET.get('sale_type')
+                price=self.request.GET.get('price')
+                price_per_unit=self.request.GET.get('price_per_unit')
+                image=self.request.GET.get('image')
+                print(image)
+                image_url=image.replace('/media/','')
+                area=self.request.GET.get('area')
+                rooms=self.request.GET.get('rooms')
+                bedrooms=self.request.GET.get('bedrooms')
+                bathrooms=self.request.GET.get('bathrooms')
+                features=self.request.GET.get('features')
+                building_age=self.request.GET.get('building_age')
+                parking=self.request.GET.get('parking')
+                cooling=self.request.GET.get('cooling')
+                heating=self.request.GET.get('heating')
+                sewer=self.request.GET.get('sewer')
+                water=self.request.GET.get('water')
+                exercise_room=self.request.GET.get('exercise_room')
+                storage_room=self.request.GET.get('storage_room')
+                compare_check=Comparison.objects.filter(title=title,address=address    ,category=category,sale_type=sale_type,price=price    ,price_per_unit=price_per_unit,image_1=image_url,
+                rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features    ,building_age=building_age,parking=parking,cooling=cooling    ,heating=heating,sewer=sewer,
+                water=water,exercise_room=exercise_room,storage_room=storage_room    ,creator=self.request.user)
+                if compare_check:
+                    pass
+                else:
+                    compare=Comparison.objects.create(title=title,address=address    ,date=date,category=category,sale_type=sale_type,price=price    ,price_per_unit=price_per_unit,image_1=image_url,
+                    area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms    ,features=features,building_age=building_age,parking=parking    ,cooling=cooling,heating=heating,sewer=sewer,
+                    water=water,exercise_room=exercise_room,storage_room    =storage_room,creator=self.request.user)
+                    compare.save()
+                compare_count=Comparison.objects.filter(creator=self.request.user    ).count()
+                if compare_count>3:
+                    compare_delete=Comparsion.objects.filter(creator=self.request    .user)[4:]
+                    compare_delete.delete()
+                else:
+                    pass
+        elif self.request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=self.request.user)
+            clear.delete()
         check_login=self.request.user
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)

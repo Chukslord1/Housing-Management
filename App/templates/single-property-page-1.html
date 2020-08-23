@@ -642,18 +642,38 @@
      <div class="sidebar sticky right">
       <!-- Widget -->
       <div class="widget margin-bottom-30">
-       <button class="widget-button with-tip" data-tip-content="Print">
-        <i class="sl sl-icon-printer">
-        </i>
-       </button>
        <button class="widget-button with-tip" data-tip-content="Add to Bookmarks">
         <i class="fa fa-star-o">
         </i>
        </button>
-       <button class="widget-button with-tip compare-widget-button" data-tip-content="Add to Compare">
+       <form method="GET">
+         <input name="second_check"  type="hidden" value="two" />
+         <input name="title"  type="hidden" value="{{house.title}}" />
+         <input name="address"  type="hidden" value="{{house.address}}" />
+         <input name="date"  type="hidden" value="{{house.date}}" />
+         <input name="category"  type="hidden" value="{{house.category}}" />
+         <input name="sale_type"  type="hidden" value="{{house.sale_type}}" />
+         <input name="price"  type="hidden" value="{{house.price}}" />
+         <input name="price_per_unit"  type="hidden" value="{{house.price_per_unit}}" />
+         <input name="image"  type="hidden" value="{{house.image_1.url}}" />
+         <input name="area"  type="hidden" value="{{house.area}}" />
+         <input name="rooms"  type="hidden" value="{{house.rooms}}" />
+         <input name="bedrooms"  type="hidden" value="{{house.bedrooms}}" />
+         <input name="bathrooms"  type="hidden" value="{{house.bathrooms}}" />
+         <input name="features"  type="hidden" value="{{house.features}}" />
+         <input name="building_age"  type="hidden" value="{{house.building_age}}" />
+         <input name="parking"  type="hidden" value="{{house.parking}}" />
+         <input name="cooling"  type="hidden" value="{{house.cooling}}" />
+         <input name="heating"  type="hidden" value="{{house.heating}}" />
+         <input name="sewer"  type="hidden" value="{{house.sewer}}" />
+         <input name="water"  type="hidden" value="{{house.water}}" />
+         <input name="exercise_room"  type="hidden" value="{{house.exercise_room}}" />
+         <input name="storage_room"  type="hidden" value="{{house.storage_room}}" />
+       <button class="widget-button with-tip compare-widget-button" data-tip-content="Add to Compare" type="submit">
         <i class="icon-compare">
         </i>
        </button>
+     </form>
        <div class="clearfix">
        </div>
       </div>

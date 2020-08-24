@@ -317,26 +317,26 @@
         </h2>
         <!-- Main Search -->
          <!-- Type -->
-
+         <div class="main-search-form">
          <div class="search-type">
           <label class="active">
-           <input checked="checked" class="first-tab" type="radio"/>
+           <input checked="checked" class="first-tab" name="tab" type="radio"/>
            Any Status
           </label>
           <label>
-           <input id="myInput4"  name="sale" value="sale" type="radio"/>
+           <input id="myInput4"  name="tab" value="sale" type="radio"/>
            For Sale
           </label>
           <label>
-           <input id="myInput5" name="rent" value="rent" type="radio"/>
+           <input id="myInput5" name="tab" value="rent" type="radio"/>
            For Rent
           </label>
           <label>
-           <input id="myInput6" name="shortlet" value="shortlet" type="radio"/>
+           <input id="myInput6" name="tab" value="shortlet" type="radio"/>
            Shortlet
           </label>
           <label>
-           <input id="myInput7" name="hotel" value="hotel" type="radio"/>
+           <input id="myInput7" name="tab" value="hotel" type="radio"/>
            Hotels
           </label>
           <div class="search-type-arrow">
@@ -404,12 +404,18 @@ function showOutput () {
   var value=document.getElementById("myInput").value;
   var value_2=document.getElementById("myInput2").value;
   var value_3=document.getElementById("myInput3").value;
-  var value_4=document.getElementById("myInput4").value;
-  var value_5=document.getElementById("myInput5").value;
-  var value_6=document.getElementById("myInput6").value;
-  var value_7=document.getElementById("myInput7").value;
+  if (document.getElementById("myInput4").checked == true){
+    var value_4=document.getElementById("myInput4").value;
+  } else if (document.getElementById("myInput5").checked == true){
+    var value_4=document.getElementById("myInput5").value;
+  } else if (document.getElementById("myInput6").checked == true){
+    var value_4=document.getElementById("myInput6").value;
+  } else {
+    var value_4=document.getElementById("myInput7").value;
+  }
+
   var paid="one";
-  var queryString = "?first_check=" +paid  + "&search=" + value + "&category=" + value_2 + "&max_price=" + value_3 + "&sale=" + value_4 + "&rent=" + value_5 + "&shortlet=" + value_6 + "&hotel=" + value_7;
+  var queryString = "?first_check=" +paid  + "&search=" + value + "&category=" + value_2 + "&max_price=" + value_3 + "&tab=" + value_4;
   window.location.href="listings-list-full-width.html" + queryString;
 }
 
@@ -428,6 +434,7 @@ function showOutput () {
          </div>
          <!-- Box / End -->
         <!-- Main Search -->
+      </div>
        </div>
        <!-- Main Search Container / End -->
       </div>
@@ -770,7 +777,7 @@ function showOutput () {
       <!-- Blog Post -->
       <div class="blog-post">
        <!-- Img -->
-       <a class="post-img" href="">
+       <a class="post-img" href="{{article.get_absolute_url}}">
         <img alt="" src="{{article.image.url}}"/>
        </a>
        <!-- Content -->
@@ -783,7 +790,7 @@ function showOutput () {
         <p>
         {{article.summary}}
         </p>
-        <a class="read-more" href="">
+        <a class="read-more" href="{{article.get_absolute_url}}">
          Read More
          <i class="fa fa-angle-right">
          </i>

@@ -63,14 +63,17 @@ class Article(models.Model):
     body=models.TextField(blank=True, null=True)
     author=models.TextField(blank=True, null=True)
     email = models.TextField(blank=True, null=True)
+    author_description = models.TextField(blank=True, null=True)
+    author_image =  models.ImageField(blank=True, null=True)
     slug = models.SlugField()
 
     def __str__(self):
         return self.title
     def get_absolute_url(self):
-        return reverse("APP:details", kwargs={
+        return reverse("APP:blog", kwargs={
             'slug': self.slug
         })
+
 class Comparison(models.Model):
     title=models.TextField(blank=True, null=True)
     answer = (
@@ -108,3 +111,22 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     username=models.CharField(max_length=100, null=True,blank=True)
     email=models.CharField(max_length=100, null=True,blank=True)
+
+class Tour(models.Model):
+    user= models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)
+    time =models.TextField(blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    property = models.TextField(blank=True, null=True)
+    phone =models.TextField(blank=True, null=True)
+    name =models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+class Comment(models.Model):
+    name=models.TextField(blank=True, null=True)
+    email=models.TextField(blank=True, null=True)
+    comment=models.TextField(blank=True, null=True)
+    blog = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name

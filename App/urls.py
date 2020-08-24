@@ -16,5 +16,5 @@ urlpatterns = [
     path("compare-properties.html", views.compare, name="compare"),
     path("single-property-page-1.html/<slug>", views.PropertyDetailView.as_view(), name="details"),
     path("contact.html", views.contact, name="contact"),
-    path("blog.html", views.blog, name="blog"),
+    path("blog-post.html/<slug>", views.ArticleDetailView.as_view(), name="blog"),
 ]

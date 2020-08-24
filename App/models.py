@@ -127,6 +127,7 @@ class Comment(models.Model):
     email=models.TextField(blank=True, null=True)
     comment=models.TextField(blank=True, null=True)
     blog = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

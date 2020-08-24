@@ -369,7 +369,6 @@ class ArticleDetailView(DetailView):
     def get_object(self, queryset=None):
         global obj
         obj = super(ArticleDetailView, self).get_object(queryset=queryset)
-        print(obj)
         return obj
     def get_context_data(self, **kwargs):
         context = super(ArticleDetailView, self).get_context_data(**kwargs)
@@ -377,7 +376,7 @@ class ArticleDetailView(DetailView):
             name=self.request.GET.get("name")
             email=self.request.GET.get("email")
             comment=self.request.GET.get("comment")
-            new_comment=Comment.objects.create(name=name,email=email,commment=comment,blog=obj.title)
+            new_comment=Comment.objects.create(name=name,email=email,comment=comment,blog=obj.title)
             new_comment.save()
         check_login=self.request.user
         if self.request.user.is_authenticated:
@@ -388,4 +387,18 @@ class ArticleDetailView(DetailView):
         context['related'] = Article.objects.filter(author=obj.author).exclude(title=obj.title)
         context['blogs'] = Article.objects.all()
         context['commment_no'] = Comment.objects.filter(blog=obj.title).count()
+        context['comments'] = Comment.objects.filter(blog=obj.title)
+        popular=[]
+        blog=Article.objects.all()
+        check=1
+        for i in blog:
+            if Comment.objects.filter(blog=i.title):
+                if Comment.objects.filter(blog=i.title).count() > check:
+                    check=Comment.objects.filter(blog=i.title).count()
+                    x = Article.objects.filter(title=i.title)
+                    popular.append(x)
+        context['popular'] = popular[0]
+        if len(popular)>2:
+            context['popular_2'] = popular[1]
+            context['popular_3'] = popular[2]
         return context

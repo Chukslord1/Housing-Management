@@ -5,7 +5,7 @@
  <!-- Basic Page Needs
 ================================================== -->
  <title>
-  Findeo
+  Afriproperty Connect
  </title>
  <meta charset="utf-8"/>
  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
@@ -30,83 +30,54 @@
     </h4>
     <div class="csm-properties">
      <!-- Property -->
+     {% for item in compare %}
      <div class="listing-item compact">
-      <a class="listing-img-container" href="single-property-page-2.html">
+      <a class="listing-img-container" href="{{item.get_absolute_url}}">
        <div class="remove-from-compare">
         <i class="fa fa-close">
         </i>
        </div>
        <div class="listing-badges">
         <span>
-         For Sale
+         {{item.sale_type}}
         </span>
        </div>
        <div class="listing-img-content">
         <span class="listing-compact-title">
-         Eagle Apartments
+         {{item.title}}
          <i>
-          $420,000
+          ${{item.price}}
          </i>
         </span>
        </div>
-       <img alt="" src="{% static 'images/listing-01.jpg' %}"/>
+       <img alt="" src="{{item.image_1.url}}"/>
       </a>
      </div>
+     {% endfor %}
+     {% if user.is_authenticated %}
+     {% else %}
+     <a class="sign-in" href="login-register.html">
+      <i class="fa fa-user">
+      </i>
+      Log In / Register To Compare
+     </a>
+     {% endif %}
      <!-- Property -->
-     <div class="listing-item compact">
-      <a class="listing-img-container" href="single-property-page-2.html">
-       <div class="remove-from-compare">
-        <i class="fa fa-close">
-        </i>
-       </div>
-       <div class="listing-badges">
-        <span>
-         For Sale
-        </span>
-       </div>
-       <div class="listing-img-content">
-        <span class="listing-compact-title">
-         Selway Apartments
-         <i>
-          $420,000
-         </i>
-        </span>
-       </div>
-       <img alt="" src="{% static 'images/listing-03.jpg' %}"/>
-      </a>
-     </div>
      <!-- Property -->
-     <div class="listing-item compact">
-      <a class="listing-img-container" href="single-property-page-2.html">
-       <div class="remove-from-compare">
-        <i class="fa fa-close">
-        </i>
-       </div>
-       <div class="listing-badges">
-        <span>
-         For Sale
-        </span>
-       </div>
-       <div class="listing-img-content">
-        <span class="listing-compact-title">
-         Oak Tree Villas
-         <i>
-          $535,000
-         </i>
-        </span>
-       </div>
-       <img alt="" src="{% static 'images/listing-05.jpg' %}"/>
-      </a>
-     </div>
     </div>
+    {% if user.is_authenticated %}
     <div class="csm-buttons">
      <a class="button" href="compare-properties.html">
       Compare
      </a>
-     <a class="button reset" href="#">
+     <form method="GET">
+      <input name="clear" value="True" type="hidden">
+     <button class="button reset" type="submit">
       Reset
-     </a>
+    </button>
+   </form>
     </div>
+    {% endif %}
    </div>
   </div>
   <!-- Compare Properties Widget / End -->
@@ -131,34 +102,6 @@
         <a href="#">
          office@example.com
         </a>
-       </li>
-       <li>
-        <div class="top-bar-dropdown">
-         <span>
-          Dropdown Menu
-         </span>
-         <ul class="options">
-          <li>
-           <div class="arrow">
-           </div>
-          </li>
-          <li>
-           <a href="#">
-            Nice First Link
-           </a>
-          </li>
-          <li>
-           <a href="#">
-            Second Link With Long Title
-           </a>
-          </li>
-          <li>
-           <a href="#">
-            Third Link
-           </a>
-          </li>
-         </ul>
-        </div>
        </li>
       </ul>
      </div>
@@ -206,7 +149,7 @@
      <div class="left-side">
       <!-- Logo -->
       <div id="logo">
-       <a href="index.html">
+       <a href="{% url 'APP:index' %}">
         <img alt="" src="{% static 'images/logo.png' %}"/>
        </a>
       </div>
@@ -224,168 +167,9 @@
        <ul id="responsive">
         <li>
          <a href="#">
-          Home
-         </a>
-         <ul>
-          <li>
-           <a href="index.html">
-            Home 1
-           </a>
-          </li>
-          <li>
-           <a href="index-2.html">
-            Home 2
-           </a>
-          </li>
-          <li>
-           <a href="index-3.html">
-            Home 3
-           </a>
-          </li>
-          <li>
-           <a href="index-4.html">
-            Home 4
-           </a>
-          </li>
-         </ul>
-        </li>
-        <li>
-         <a href="#">
-          Listings
-         </a>
-         <ul>
-          <li>
-           <a href="#">
-            List Layout
-           </a>
-           <ul>
-            <li>
-             <a href="listings-list-with-sidebar.html">
-              With Sidebar
-             </a>
-            </li>
-            <li>
-             <a href="listings-list-with-map.html">
-              With Map
-             </a>
-            </li>
-            <li>
-             <a href="listings-list-full-width.html">
-              Full Width
-             </a>
-            </li>
-           </ul>
-          </li>
-          <li>
-           <a href="#">
-            Grid Layout
-           </a>
-           <ul>
-            <li>
-             <a href="listings-grid-standard-with-sidebar.html">
-              Standard With Sidebar
-             </a>
-            </li>
-            <li>
-             <a href="listings-grid-compact-with-sidebar.html">
-              Compact With Sidebar
-             </a>
-            </li>
-            <li>
-             <a href="listings-grid-with-map.html">
-              With Map
-             </a>
-            </li>
-            <li>
-             <a href="listings-grid-full-width.html">
-              Full Width
-             </a>
-            </li>
-           </ul>
-          </li>
-          <li>
-           <a href="#">
-            Half Map
-           </a>
-           <ul>
-            <li>
-             <a href="listings-half-map-list.html">
-              List Layout
-             </a>
-            </li>
-            <li>
-             <a href="listings-half-map-grid-standard.html">
-              Grid Standard Layout
-             </a>
-            </li>
-            <li>
-             <a href="listings-half-map-grid-compact.html">
-              Grid Compact Layout
-             </a>
-            </li>
-           </ul>
-          </li>
-         </ul>
-        </li>
-        <li>
-         <a href="#">
           Features
          </a>
          <ul>
-          <li>
-           <a href="#">
-            Single Properties
-           </a>
-           <ul>
-            <li>
-             <a href="single-property-page-1.html">
-              Property Style 1
-             </a>
-            </li>
-            <li>
-             <a href="single-property-page-2.html">
-              Property Style 2
-             </a>
-            </li>
-            <li>
-             <a href="single-property-page-3.html">
-              Property Style 3
-             </a>
-            </li>
-           </ul>
-          </li>
-          <li>
-           <a href="#">
-            Search Styles
-           </a>
-           <ul>
-            <li>
-             <a href="index.html">
-              Home Search 1
-             </a>
-            </li>
-            <li>
-             <a href="index-2.html">
-              Home Search 2
-             </a>
-            </li>
-            <li>
-             <a href="index-3.html">
-              Home Search 3
-             </a>
-            </li>
-            <li>
-             <a href="listings-list-full-width.html">
-              Advanced Style
-             </a>
-            </li>
-            <li>
-             <a href="listings-list-with-sidebar.html">
-              Sidebar Search
-             </a>
-            </li>
-           </ul>
-          </li>
           <li>
            <a href="#">
             My Account
@@ -453,7 +237,7 @@
          </ul>
         </li>
         <li>
-         <a class="current" href="#">
+         <a href="#">
           Pages
          </a>
          <ul>
@@ -479,26 +263,6 @@
             Contact
            </a>
           </li>
-          <li>
-           <a href="elements.html">
-            Elements
-           </a>
-          </li>
-          <li>
-           <a href="pricing-tables.html">
-            Pricing Tables
-           </a>
-          </li>
-          <li>
-           <a href="typography.html">
-            Typography
-           </a>
-          </li>
-          <li>
-           <a href="icons.html">
-            Icons
-           </a>
-          </li>
          </ul>
         </li>
        </ul>
@@ -512,11 +276,19 @@
      <div class="right-side">
       <!-- Header Widget -->
       <div class="header-widget">
+        {% if user.is_authenticated %}
+        <a class="sign-in" onclick="window.location.href='{% url 'APP:logout' %}'">
+         <i class="fa fa-user">
+         </i>
+         Logout
+        </a>
+        {% else %}
        <a class="sign-in" href="login-register.html">
         <i class="fa fa-user">
         </i>
         Log In / Register
        </a>
+       {% endif %}
        <a class="button border" href="submit-property.html">
         Submit Property
        </a>
@@ -546,15 +318,22 @@
       <!-- Breadcrumbs -->
       <nav id="breadcrumbs">
        <ul>
-        <li>
-         <a href="#">
-          Home
-         </a>
-        </li>
-        <li>
-         Blog
-        </li>
        </ul>
+       <div class="dropdown">
+         <button onclick="myFunction()" class="dropbtn">Search Blog</button>
+           <input type="hidden" name="tenth_check" value="ten"/>
+         <div id="myDropdown" class="dropdown-content" size="3">
+          <div class="header-search-block">
+           <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()" name="search">
+          </div>
+
+           {% for blog in blogs %}
+           <a href="{{blog.get_absolute_url}}">{{blog.title}}</a>
+           {% endfor %}
+
+         </div>
+
+       </div>
       </nav>
      </div>
     </div>
@@ -750,19 +529,94 @@
      <div class="col-md-4">
       <div class="sidebar right">
        <!-- Widget -->
+       <style>
+.dropbtn {
+  background-color: #274abb;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #274abb;
+}
+
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+</style>
+
+
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function showOutput () {
+     var value=document.getElementById("myInput").value;
+     var paid="ten";
+     var queryString = "?tenth_check=" +paid  + "&search=" + value;
+     window.location.href="https://e.advancescholar.com/search-complete.html" + queryString;
+}
+
+
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
        <div class="widget">
-        <h3 class="margin-top-0 margin-bottom-25">
-         Search Blog
-        </h3>
-        <form method="GEt">
-        <div class="search-blog-input">
-         <div class="input">
-          <input class="search-field" placeholder="Type and hit enter" id="myInput" onkeyup="filterFunction()"name="search" type="text" value=""/>
-            {% for blog in blogs %}
-             {% endfor %}
-         </div>
-        </div>
-      </form>
         <div class="clearfix">
         </div>
        </div>

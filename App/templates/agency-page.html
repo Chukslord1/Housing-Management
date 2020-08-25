@@ -538,7 +538,7 @@
     <div class="row">
      <div class="col-md-12">
       <h2>
-       King Properties
+       {{object.title}}
       </h2>
       <!-- Breadcrumbs -->
       <nav id="breadcrumbs">
@@ -552,7 +552,7 @@
          Agencies
         </li>
         <li>
-         King Properties
+         {{object.title}}
         </li>
        </ul>
       </nav>
@@ -568,47 +568,33 @@
      <!-- Agency -->
      <div class="agent agent-page agency">
       <div class="agent-avatar">
-       <img alt="" src="{% static 'images/agency-01.jpg' %}"/>
+       <img alt="" src="{{object.image.url}}"/>
       </div>
       <div class="agent-content">
        <div class="agent-name">
         <h4>
-         King Properties
+         {{object.title}}
         </h4>
         <span>
          <i class="fa fa-map-marker">
          </i>
-         New York
+         {{object.address}}
         </span>
        </div>
        <p>
-        Maecenas quis consequat libero, a feugiat eros. Nunc ut lacinia tortor morbi ultricies laoreet ullamcorper phasellus semper.
+        {{object.description}}
        </p>
        <ul class="agent-contact-details">
         <li>
          <i class="sl sl-icon-call-in">
          </i>
-         (123) 123-456
+         {{object.phone}}
         </li>
         <li>
          <i class="fa fa-envelope-o">
          </i>
          <a href="#">
-          contact@example.com
-         </a>
-        </li>
-       </ul>
-       <ul class="social-icons">
-        <li>
-         <a class="facebook" href="#">
-          <i class="icon-facebook">
-          </i>
-         </a>
-        </li>
-        <li>
-         <a class="gplus" href="#">
-          <i class="icon-gplus">
-          </i>
+          {{object.email}}
          </a>
         </li>
        </ul>

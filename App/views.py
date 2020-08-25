@@ -10,7 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.db.models import Q
-from . models import Property,Article,Comparison,UserProfile,Tour,Comment
+from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency
 import random
 
 class IndexListView(ListView):
@@ -97,6 +97,39 @@ class IndexListView(ListView):
         else:
             pass
 
+        return context
+
+class ArticleListView(ListView):
+    model = Article
+    template_name = "blog.html"
+    def get_context_data(self, **kwargs):
+        context = super(ArticleListView, self).get_context_data(**kwargs)
+        if self.request.GET.get('comment_check')=="True":
+            name=self.request.GET.get("name")
+            email=self.request.GET.get("email")
+            comment=self.request.GET.get("comment")
+            new_comment=Comment.objects.create(name=name,email=email,comment=comment,blog=obj.title)
+            new_comment.save()
+        check_login=self.request.user
+        if self.request.user.is_authenticated:
+            context['compare'] = Comparison.objects.filter(creator=self.request.user)
+        else:
+            pass
+
+        context['blogs'] = Article.objects.all()
+        popular=[]
+        blog=Article.objects.all()
+        check=1
+        for i in blog:
+            if Comment.objects.filter(blog=i.title):
+                if Comment.objects.filter(blog=i.title).count() > check:
+                    check=Comment.objects.filter(blog=i.title).count()
+                    x = Article.objects.filter(title=i.title)
+                    popular.append(x)
+        context['popular'] = popular[0]
+        if len(popular)>2:
+            context['popular_2'] = popular[1]
+            context['popular_3'] = popular[2]
         return context
 
 def login_register(request):
@@ -568,6 +601,55 @@ class ArticleDetailView(DetailView):
             pass
 
         context['related'] = Article.objects.filter(author=obj.author).exclude(title=obj.title)
+        context['blogs'] = Article.objects.all()
+        context['commment_no'] = Comment.objects.filter(blog=obj.title).count()
+        context['comments'] = Comment.objects.filter(blog=obj.title)
+        popular=[]
+        blog=Article.objects.all()
+        check=1
+        for i in blog:
+            if Comment.objects.filter(blog=i.title):
+                if Comment.objects.filter(blog=i.title).count() > check:
+                    check=Comment.objects.filter(blog=i.title).count()
+                    x = Article.objects.filter(title=i.title)
+                    popular.append(x)
+        context['popular'] = popular[0]
+        if len(popular)>2:
+            context['popular_2'] = popular[1]
+            context['popular_3'] = popular[2]
+        return context
+
+class AgencyListView(ListView):
+    model = Agency
+    template_name = "agencies-list.html"
+    def get_context_data(self, **kwargs):
+        context = super(AgencyListView, self).get_context_data(**kwargs)
+
+
+        return context
+
+class AgencyDetailView(DetailView):
+    model = Agency
+    template_name = "agency-page.html"
+
+    def get_object(self, queryset=None):
+        global obj
+        obj = super(AgencyDetailView, self).get_object(queryset=queryset)
+        return obj
+    def get_context_data(self, **kwargs):
+        context = super(AgencyDetailView, self).get_context_data(**kwargs)
+        if self.request.GET.get('comment_check')=="True":
+            name=self.request.GET.get("name")
+            email=self.request.GET.get("email")
+            comment=self.request.GET.get("comment")
+            new_comment=Comment.objects.create(name=name,email=email,comment=comment,blog=obj.title)
+            new_comment.save()
+        check_login=self.request.user
+        if self.request.user.is_authenticated:
+            context['compare'] = Comparison.objects.filter(creator=self.request.user)
+        else:
+            pass
+
         context['blogs'] = Article.objects.all()
         context['commment_no'] = Comment.objects.filter(blog=obj.title).count()
         context['comments'] = Comment.objects.filter(blog=obj.title)

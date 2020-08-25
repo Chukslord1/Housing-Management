@@ -17,4 +17,7 @@ urlpatterns = [
     path("single-property-page-1.html/<slug>", views.PropertyDetailView.as_view(), name="details"),
     path("contact.html", views.contact, name="contact"),
     path("blog-post.html/<slug>", views.ArticleDetailView.as_view(), name="blog"),
+    path("blog.html", views.ArticleListView.as_view(), name="blog-list"),
+    path("agencies-list.html", views.AgencyListView.as_view(), name="agencies-list"),
+    path("agency-page.html/<slug>", views.AgencyDetailView.as_view(), name="agencies"),
 ]

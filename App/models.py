@@ -66,6 +66,7 @@ class Article(models.Model):
     author_description = models.TextField(blank=True, null=True)
     author_image =  models.ImageField(blank=True, null=True)
     slug = models.SlugField()
+    paginate_by = 2
 
     def __str__(self):
         return self.title
@@ -131,3 +132,20 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.name
+
+class Agency(models.Model):
+    title=models.TextField(blank=True, null=True)
+    address=models.TextField(blank=True, null=True)
+    description=models.TextField(blank=True, null=True)
+    phone=models.TextField(blank=True, null=True)
+    email=models.TextField(blank=True, null=True)
+    image=models.ImageField()
+    slug = models.SlugField()
+    paginate_by = 2
+
+    def __str__(self):
+        return self.title
+    def get_absolute_url(self):
+        return reverse("APP:agencies", kwargs={
+            'slug': self.slug
+        })

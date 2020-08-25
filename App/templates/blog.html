@@ -535,29 +535,36 @@
 ================================================== -->
   <div id="titlebar">
    <div class="container">
-    <div class="row">
-     <div class="col-md-12">
-      <h2>
-       Blog
-      </h2>
-      <span>
-       Keep up to date with the latest news
-      </span>
-      <!-- Breadcrumbs -->
-      <nav id="breadcrumbs">
-       <ul>
-        <li>
-         <a href="#">
-          Home
-         </a>
-        </li>
-        <li>
-         Blog
-        </li>
-       </ul>
-      </nav>
+     <div class="row">
+      <div class="col-md-12">
+       <h2>
+        Blog
+       </h2>
+       <span>
+        Keep up to date with the latest news
+       </span>
+       <!-- Breadcrumbs -->
+       <nav id="breadcrumbs">
+        <ul>
+        </ul>
+        <div class="dropdown">
+          <button onclick="myFunction()" class="dropbtn">Search Blog</button>
+            <input type="hidden" name="tenth_check" value="ten"/>
+          <div id="myDropdown" class="dropdown-content" size="3">
+           <div class="header-search-block">
+            <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()" name="search">
+           </div>
+
+            {% for blog in blogs %}
+            <a href="{{blog.get_absolute_url}}">{{blog.title}}</a>
+            {% endfor %}
+
+          </div>
+
+        </div>
+       </nav>
+      </div>
      </div>
-    </div>
    </div>
   </div>
   <!-- Content
@@ -568,106 +575,37 @@
     <div class="row">
      <div class="col-md-8">
       <!-- Blog Post -->
+      {% for item in object_list %}
       <div class="blog-post">
        <!-- Img -->
-       <a class="post-img" href="blog-post.html">
-        <img alt="" src="{% static 'images/blog-post-01a.jpg' %}"/>
+       <a class="post-img" href="{{item.get_absolute_url}}">
+        <img alt="" src="{{item.image.url}}"/>
        </a>
        <!-- Content -->
        <div class="post-content">
         <h3>
-         <a href="blog-post.html">
-          8 Tips to Help You Finding New Home
+         <a href="{{item.get_absolute_url}}">
+          {{item.title}}
          </a>
         </h3>
         <ul class="post-meta">
          <li>
-          Novemer 12, 2016
-         </li>
-         <li>
-          <a href="#">
-           5 Comments
-          </a>
+          {{item.date}}
          </li>
         </ul>
         <p>
-         Nam nisl lacus, dignissim ac tristique ut, scelerisque eu massa. Vestibulum ligula nunc, rutrum in malesuada vitae, tempus sed augue. Curabitur quis lectus quis augue dapibus facilisis.
+         {{item.summmary}}.
         </p>
-        <a class="read-more" href="blog-post.html">
+        <a class="read-more" href="{{item.get_absolute_url}}">
          Read More
          <i class="fa fa-angle-right">
          </i>
         </a>
        </div>
       </div>
+      {% endfor %}
       <!-- Blog Post / End -->
       <!-- Blog Post -->
-      <div class="blog-post">
-       <!-- Img -->
-       <a class="post-img" href="blog-post.html">
-        <img alt="" src="{% static 'images/blog-post-02a.jpg' %}"/>
-       </a>
-       <!-- Content -->
-       <div class="post-content">
-        <h3>
-         <a href="blog-post.html">
-          Bedroom Colors You'll Never Regret
-         </a>
-        </h3>
-        <ul class="post-meta">
-         <li>
-          November 9, 2016
-         </li>
-         <li>
-          <a href="#">
-           5 Comments
-          </a>
-         </li>
-        </ul>
-        <p>
-         Nam nisl lacus, dignissim ac tristique ut, scelerisque eu massa. Vestibulum ligula nunc, rutrum in malesuada vitae, tempus sed augue. Curabitur quis lectus quis augue dapibus facilisis.
-        </p>
-        <a class="read-more" href="blog-post.html">
-         Read More
-         <i class="fa fa-angle-right">
-         </i>
-        </a>
-       </div>
-      </div>
-      <!-- Blog Post / End -->
-      <!-- Blog Post -->
-      <div class="blog-post">
-       <!-- Img -->
-       <a class="post-img" href="blog-post.html">
-        <img alt="" src="{% static 'images/blog-post-03a.jpg' %}"/>
-       </a>
-       <!-- Content -->
-       <div class="post-content">
-        <h3>
-         <a href="blog-post.html">
-          What to Do a Year Before Buying Apartment
-         </a>
-        </h3>
-        <ul class="post-meta">
-         <li>
-          October 26, 2016
-         </li>
-         <li>
-          <a href="#">
-           3 Comments
-          </a>
-         </li>
-        </ul>
-        <p>
-         Nam nisl lacus, dignissim ac tristique ut, scelerisque eu massa. Vestibulum ligula nunc, rutrum in malesuada vitae, tempus sed augue. Curabitur quis lectus quis augue dapibus facilisis.
-        </p>
-        <a class="read-more" href="blog-post.html">
-         Read More
-         <i class="fa fa-angle-right">
-         </i>
-        </a>
-       </div>
-      </div>
       <!-- Blog Post / End -->
       <!-- Pagination -->
       <div class="clearfix">
@@ -715,20 +653,95 @@
      <div class="col-md-4">
       <div class="sidebar right">
        <!-- Widget -->
-       <div class="widget">
-        <h3 class="margin-top-0 margin-bottom-25">
-         Search Blog
-        </h3>
-        <div class="search-blog-input">
-         <div class="input">
-          <input class="search-field" placeholder="Type and hit enter" type="text" value=""/>
-         </div>
-        </div>
-        <div class="clearfix">
-        </div>
-       </div>
        <!-- Widget / End -->
        <!-- Widget -->
+       <style>
+.dropbtn {
+  background-color: #274abb;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #274abb;
+}
+
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+</style>
+
+
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function showOutput () {
+     var value=document.getElementById("myInput").value;
+     var paid="ten";
+     var queryString = "?tenth_check=" +paid  + "&search=" + value;
+     window.location.href="https://e.advancescholar.com/search-complete.html" + queryString;
+}
+
+
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
        <div class="widget">
         <h3>
          Got any questions?
@@ -752,106 +765,92 @@
         </h3>
         <ul class="widget-tabs">
          <!-- Post #1 -->
-         <li>
+           {% for item in popular %}
+           <li>
           <div class="widget-content">
            <div class="widget-thumb">
-            <a href="blog-full-width-single-post.html">
+            <a href="{{item.get_absolute_url}}">
+              {% if item.image %}
+              <img alt="" src="{{item.image.url}}"/>
+              {% else %}
              <img alt="" src="{% static 'images/blog-widget-03.jpg' %}"/>
+             {% endif %}
             </a>
            </div>
            <div class="widget-text">
             <h5>
-             <a href="blog-full-width-single-post.html">
-              What to Do a Year Before Buying Apartment
+             <a href="{{item.get_absolute_url}}">
+              {{item.title}}
              </a>
             </h5>
             <span>
-             October 26, 2016
+             {{item.date}}
             </span>
            </div>
            <div class="clearfix">
            </div>
           </div>
          </li>
+         {% endfor %}
+         {% for item in popular_2 %}
+         <li>
+        <div class="widget-content">
+         <div class="widget-thumb">
+          <a href="{{item.get_absolute_url}}">
+            {% if item.image %}
+            <img alt="" src="{{item.image.url}}"/>
+            {% else %}
+           <img alt="" src="{% static 'images/blog-widget-03.jpg' %}"/>
+           {% endif %}
+          </a>
+         </div>
+         <div class="widget-text">
+          <h5>
+           <a href="{{item.get_absolute_url}}">
+            {{item.title}}
+           </a>
+          </h5>
+          <span>
+           {{item.date}}
+          </span>
+         </div>
+         <div class="clearfix">
+         </div>
+        </div>
+       </li>
+       {% endfor %}
+       {% for item in popular_3 %}
+       <li>
+      <div class="widget-content">
+       <div class="widget-thumb">
+        <a href="{{item.get_absolute_url}}">
+          {% if item.image %}
+          <img alt="" src="{{item.image.url}}"/>
+          {% else %}
+         <img alt="" src="{% static 'images/blog-widget-03.jpg' %}"/>
+         {% endif %}
+        </a>
+       </div>
+       <div class="widget-text">
+        <h5>
+         <a href="{{item.get_absolute_url}}">
+          {{item.title}}
+         </a>
+        </h5>
+        <span>
+         {{item.date}}
+        </span>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </li>
+     {% endfor %}
          <!-- Post #2 -->
-         <li>
-          <div class="widget-content">
-           <div class="widget-thumb">
-            <a href="blog-full-width-single-post.html">
-             <img alt="" src="{% static 'images/blog-widget-02.jpg' %}"/>
-            </a>
-           </div>
-           <div class="widget-text">
-            <h5>
-             <a href="blog-full-width-single-post.html">
-              Bedroom Colors You'll Never Regret
-             </a>
-            </h5>
-            <span>
-             November 9, 2016
-            </span>
-           </div>
-           <div class="clearfix">
-           </div>
-          </div>
-         </li>
-         <!-- Post #3 -->
-         <li>
-          <div class="widget-content">
-           <div class="widget-thumb">
-            <a href="blog-full-width-single-post.html">
-             <img alt="" src="{% static 'images/blog-widget-01.jpg' %}"/>
-            </a>
-           </div>
-           <div class="widget-text">
-            <h5>
-             <a href="blog-full-width-single-post.html">
-              8 Tips to Help You Finding New Home
-             </a>
-            </h5>
-            <span>
-             November 12, 2016
-            </span>
-           </div>
-           <div class="clearfix">
-           </div>
-          </div>
-         </li>
         </ul>
        </div>
        <!-- Widget / End-->
        <!-- Widget -->
-       <div class="widget">
-        <h3 class="margin-top-0 margin-bottom-25">
-         Social
-        </h3>
-        <ul class="social-icons rounded">
-         <li>
-          <a class="facebook" href="#">
-           <i class="icon-facebook">
-           </i>
-          </a>
-         </li>
-         <li>
-          <a class="twitter" href="#">
-           <i class="icon-twitter">
-           </i>
-          </a>
-         </li>
-         <li>
-          <a class="gplus" href="#">
-           <i class="icon-gplus">
-           </i>
-          </a>
-         </li>
-         <li>
-          <a class="linkedin" href="#">
-           <i class="icon-linkedin">
-           </i>
-          </a>
-         </li>
-        </ul>
-       </div>
        <!-- Widget / End-->
        <div class="clearfix">
        </div>

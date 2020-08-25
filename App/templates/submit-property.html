@@ -340,6 +340,7 @@
       <div class="submit-section">
        <!-- Title -->
        <form method="POST" action="{% url 'APP:submit_property' %}" enctype="multipart/form-data">
+         {% csrf_token %}
        <div class="form">
         <h5>
          Property Title

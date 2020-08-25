@@ -139,7 +139,49 @@ def logout(request):
     return redirect("index.html")
 
 def submit_property(request):
-    return render(request,"submit-property.html")
+    context={}
+    if request.method=="POST":
+        title=request.POST.get("title")
+        status=request.POST.get("status")
+        category=request.POST.get("category")
+        price_new=request.POST.get("price")
+        price=int(price_new)
+        price_per_unit_new=request.POST.get("price_per_unit")
+        price_per_unit=int(price_per_unit_new)
+        agency=request.POST.get("agency")
+        area_new=request.POST.get("area")
+        area=int(area_new)
+        rooms_new=request.POST.get("rooms")
+        rooms=int(rooms_new)
+        image_1=request.FILES.get("image_1")
+        image_2=request.FILES.get("image_2")
+        image_3=request.FILES.get("image_3")
+        image_4=request.FILES.get("image_4")
+        image_5=request.FILES.get("image_5")
+        image_6=request.FILES.get("image_6")
+        image_7=request.FILES.get("image_7")
+        address=request.POST.get("address")
+        description=request.POST.get("description")
+        building_age_new=request.POST.get("building_age")
+        building_age=int(building_age_new)
+        bedrooms_new=request.POST.get("bedrooms")
+        bedrooms=int(bedrooms_new)
+        bathrooms_new=request.POST.get("bathrooms")
+        bathrooms=int(bathrooms_new)
+        features=request.POST.get("features")
+        name=request.POST.get("name")
+        email=request.POST.get("email")
+        phone=request.POST.get("phone")
+        property_check=Property.objects.filter(title=title,address=address)
+        if property_check:
+            {message:"Property Already Exists"}
+        else:
+            property=Property.objects.create(title=title,status=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
+            area=area,rooms=rooms,image_1=image_1,image_2=image_2,image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,image_7=image_7,address=address,
+            description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features)
+            property.save()
+            {message:"Successfully Added Property"}
+    return render(request,"submit-property.html",context)
 
 
 class SearchListView(ListView):
@@ -338,10 +380,7 @@ class PopularListView(ListView):
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
-        context['newyork'] = Property.objects.filter(Q(address__icontains="newYork")).count()
-        context['losangeles'] = Property.objects.filter(Q(address__icontains="losangeles")).count()
-        context['sanfransisco'] = Property.objects.filter(Q(address__icontains="sanfransisco")).count()
-        context['miami'] = Property.objects.filter(Q(address__icontains="miami")).count()
+        context['popular'] = Property.objects.filter(Q(address__icontains="Lagos"))
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:

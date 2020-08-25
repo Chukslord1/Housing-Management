@@ -339,13 +339,14 @@
       </h3>
       <div class="submit-section">
        <!-- Title -->
+       <form method="POST" action="{% url 'APP:submit_property' %}" enctype="multipart/form-data">
        <div class="form">
         <h5>
          Property Title
          <i class="tip" data-tip-content="Type title that will also contains an unique feature of your property (e.g. renovated, air contidioned)">
          </i>
         </h5>
-        <input class="search-field" type="text" value=""/>
+        <input class="search-field" name="title" type="text" value=""/>
        </div>
        <!-- Row -->
        <div class="row with-forms">
@@ -354,14 +355,20 @@
          <h5>
           Status
          </h5>
-         <select class="chosen-select-no-single">
+         <select class="chosen-select-no-single" name="status">
           <option label="blank">
           </option>
-          <option>
+          <option value="sale">
            For Sale
           </option>
-          <option>
+          <option value="rent">
            For Rent
+          </option>
+          <option value="hotel">
+           Hotel
+          </option>
+          <option value="shortlet">
+           Shortlet
           </option>
          </select>
         </div>
@@ -370,22 +377,22 @@
          <h5>
           Type
          </h5>
-         <select class="chosen-select-no-single">
+         <select class="chosen-select-no-single" name="category">
           <option label="blank">
           </option>
-          <option>
+          <option value="apartment">
            Apartment
           </option>
-          <option>
+          <option value="house">
            House
           </option>
-          <option>
+          <option value="commercial">
            Commercial
           </option>
-          <option>
+          <option value="garage">
            Garage
           </option>
-          <option>
+          <option value="lot">
            Lot
           </option>
          </select>
@@ -402,7 +409,33 @@
           </i>
          </h5>
          <div class="select-input disabled-first-option">
-          <input data-unit="USD" type="text"/>
+          <input data-unit="USD" name="price" type="text"/>
+         </div>
+        </div>
+        <div class="col-md-4">
+         <h5>
+          Price Per Unit Area
+          <i class="tip" data-tip-content="Type Price Per Unit Area">
+          </i>
+         </h5>
+         <div class="select-input disabled-first-option">
+          <input data-unit="naira per square ft" name="price_per_unit" type="text"/>
+         </div>
+        </div>
+        <div class="col-md-4">
+         <h5>
+          Agency
+         </h5>
+         <div class="select-input disabled-first-option">
+           <select class="chosen-select-no-single" name="agency">
+            <option label="blank">
+            </option>
+            {% for item in agencies %}
+            <option value="{{item.name}}">
+             {{item.name}}
+            </option>
+            {% endfor %}
+           </select>
          </div>
         </div>
         <!-- Area -->
@@ -411,7 +444,7 @@
           Area
          </h5>
          <div class="select-input disabled-first-option">
-          <input data-unit="Sq Ft" type="text"/>
+          <input data-unit="Sq Ft" name="area" type="text"/>
          </div>
         </div>
         <!-- Rooms -->
@@ -419,25 +452,25 @@
          <h5>
           Rooms
          </h5>
-         <select class="chosen-select-no-single">
+         <select class="chosen-select-no-single" name="rooms">
           <option label="blank">
           </option>
-          <option>
+          <option value="1">
            1
           </option>
-          <option>
+          <option value="2">
            2
           </option>
-          <option>
+          <option value="3">
            3
           </option>
-          <option>
+          <option value="4">
            4
           </option>
-          <option>
+          <option value="5">
            5
           </option>
-          <option>
+          <option value="6">
            More than 5
           </option>
          </select>
@@ -448,11 +481,46 @@
       <!-- Section / End -->
       <!-- Section -->
       <h3>
-       Gallery
+       Image 1
       </h3>
       <div class="submit-section">
-       <form action="/file-upload" class="dropzone">
-       </form>
+      <input type="file" name="image_1"/>
+      </div>
+      <h3>
+       Image 2
+      </h3>
+      <div class="submit-section">
+      <input type="file" name="image_1"/>
+      </div>
+      <h3>
+       Image 3
+      </h3>
+      <div class="submit-section">
+      <input type="file" name="image_1"/>
+      </div>
+      <h3>
+       Image 4
+      </h3>
+      <div class="submit-section">
+      <input type="file" name="image_1"/>
+      </div>
+      <h3>
+       Image 5
+      </h3>
+      <div class="submit-section">
+      <input type="file" name="image_1"/>
+      </div>
+      <h3>
+       Image 6
+      </h3>
+      <div class="submit-section">
+      <input type="file" name="image_1"/>
+      </div>
+      <h3>
+       Image 7
+      </h3>
+      <div class="submit-section">
+      <input type="file" name="image_1"/>
       </div>
       <!-- Section / End -->
       <!-- Section -->
@@ -467,29 +535,12 @@
          <h5>
           Address
          </h5>
-         <input type="text"/>
+         <input name="address" type="text"/>
         </div>
         <!-- City -->
-        <div class="col-md-6">
-         <h5>
-          City
-         </h5>
-         <input type="text"/>
-        </div>
-        <!-- City -->
-        <div class="col-md-6">
-         <h5>
-          State
-         </h5>
-         <input type="text"/>
-        </div>
+
         <!-- Zip-Code -->
-        <div class="col-md-6">
-         <h5>
-          Zip-Code
-         </h5>
-         <input type="text"/>
-        </div>
+
        </div>
        <!-- Row / End -->
       </div>
@@ -504,7 +555,7 @@
         <h5>
          Description
         </h5>
-        <textarea class="WYSIWYG" cols="40" id="summary" name="summary" rows="3" spellcheck="true"></textarea>
+        <textarea class="WYSIWYG" cols="40" id="summary" name="description" rows="3" spellcheck="true"></textarea>
        </div>
        <!-- Row -->
        <div class="row with-forms">
@@ -516,28 +567,7 @@
            (optional)
           </span>
          </h5>
-         <select class="chosen-select-no-single">
-          <option label="blank">
-          </option>
-          <option>
-           0 - 1 Years
-          </option>
-          <option>
-           0 - 5 Years
-          </option>
-          <option>
-           0 - 10 Years
-          </option>
-          <option>
-           0 - 20 Years
-          </option>
-          <option>
-           0 - 50 Years
-          </option>
-          <option>
-           50 + Years
-          </option>
-         </select>
+         <input data-unit="years" name="building_age" type="text"/>
         </div>
         <!-- Beds -->
         <div class="col-md-4">
@@ -547,22 +577,22 @@
            (optional)
           </span>
          </h5>
-         <select class="chosen-select-no-single">
+         <select class="chosen-select-no-single" name="bedrooms">
           <option label="blank">
           </option>
-          <option>
+          <option value="1">
            1
           </option>
-          <option>
+          <option value="2">
            2
           </option>
-          <option>
+          <option value="3">
            3
           </option>
-          <option>
+          <option value="4">
            4
           </option>
-          <option>
+          <option value="5">
            5
           </option>
          </select>
@@ -575,22 +605,22 @@
            (optional)
           </span>
          </h5>
-         <select class="chosen-select-no-single">
+         <select class="chosen-select-no-single" name="bathrooms">
           <option label="blank">
           </option>
-          <option>
+          <option value="1">
            1
           </option>
-          <option>
+          <option value="2">
            2
           </option>
-          <option>
+          <option value="3">
            3
           </option>
-          <option>
+          <option value="4">
            4
           </option>
-          <option>
+          <option value="5">
            5
           </option>
          </select>
@@ -605,34 +635,7 @@
         </span>
        </h5>
        <div class="checkboxes in-row margin-bottom-20">
-        <input id="check-2" name="check" type="checkbox"/>
-        <label for="check-2">
-         Air Conditioning
-        </label>
-        <input id="check-3" name="check" type="checkbox"/>
-        <label for="check-3">
-         Swimming Pool
-        </label>
-        <input id="check-4" name="check" type="checkbox"/>
-        <label for="check-4">
-         Central Heating
-        </label>
-        <input id="check-5" name="check" type="checkbox"/>
-        <label for="check-5">
-         Laundry Room
-        </label>
-        <input id="check-6" name="check" type="checkbox"/>
-        <label for="check-6">
-         Gym
-        </label>
-        <input id="check-7" name="check" type="checkbox"/>
-        <label for="check-7">
-         Alarm
-        </label>
-        <input id="check-8" name="check" type="checkbox"/>
-        <label for="check-8">
-         Window Covering
-        </label>
+        <input id="check-2" name="features" type="text"/>
        </div>
        <!-- Checkboxes / End -->
       </div>
@@ -649,14 +652,14 @@
          <h5>
           Name
          </h5>
-         <input type="text"/>
+         <input name="name" type="text"/>
         </div>
         <!-- Email -->
         <div class="col-md-4">
          <h5>
           E-Mail
          </h5>
-         <input type="text"/>
+         <input name="email" type="text"/>
         </div>
         <!-- Name -->
         <div class="col-md-4">
@@ -666,7 +669,7 @@
            (optional)
           </span>
          </h5>
-         <input type="text"/>
+         <input name="phone" type="text"/>
         </div>
        </div>
        <!-- Row / End -->
@@ -674,15 +677,14 @@
       <!-- Section / End -->
       <div class="divider">
       </div>
-      <a class="button preview margin-top-5" href="#">
-       Preview
-       <i class="fa fa-arrow-circle-right">
-       </i>
-      </a>
+      <button class="button preview margin-top-5" type="submit">
+       Submit
+     </button>
      </div>
     </div>
    </div>
   </div>
+</form>
   <!-- Footer
 ================================================== -->
   <div class="margin-top-55">

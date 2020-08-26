@@ -10,7 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.db.models import Q
-from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency
+from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent
 import random
 
 class IndexListView(ListView):
@@ -172,7 +172,7 @@ def logout(request):
     return redirect("index.html")
 
 def submit_property(request):
-    context={}
+    context={"agencies":Agency.objects.all()}
     if request.method=="POST":
         title=request.POST.get("title")
         status=request.POST.get("status")
@@ -211,7 +211,7 @@ def submit_property(request):
         sewer=request.POST.get("sewer")
         property_check=Property.objects.filter(title=title,address=address)
         if property_check:
-            {message:"Property Already Exists"}
+            context={'message':"Property Already Exists","agencies":Agency.objects.all()}
         else:
             property=Property.objects.create(title=title,status=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
             area=area,rooms=rooms,image_1=image_1,image_2=image_2,image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,image_7=image_7,address=address,
@@ -638,32 +638,42 @@ class AgencyDetailView(DetailView):
         return obj
     def get_context_data(self, **kwargs):
         context = super(AgencyDetailView, self).get_context_data(**kwargs)
-        if self.request.GET.get('comment_check')=="True":
-            name=self.request.GET.get("name")
-            email=self.request.GET.get("email")
-            comment=self.request.GET.get("comment")
-            new_comment=Comment.objects.create(name=name,email=email,comment=comment,blog=obj.title)
-            new_comment.save()
-        check_login=self.request.user
+        if self.request.GET.get('first_check')=="one":
+            query = self.request.GET.get('search')
+            if query:
+                search = Property.filter(Q(address__icontains=query),Q(agency=obj.title))
+                context['search'] = search
+            else:
+                search = self.model.objects.none()
+                context['search'] = search
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
             pass
+        context['search'] = Property.objects.filter(agency=obj.title)
+        context['agents'] = Agent.objects.filter(agency=obj.title)
+        return context
 
-        context['blogs'] = Article.objects.all()
-        context['commment_no'] = Comment.objects.filter(blog=obj.title).count()
-        context['comments'] = Comment.objects.filter(blog=obj.title)
-        popular=[]
-        blog=Article.objects.all()
-        check=1
-        for i in blog:
-            if Comment.objects.filter(blog=i.title):
-                if Comment.objects.filter(blog=i.title).count() > check:
-                    check=Comment.objects.filter(blog=i.title).count()
-                    x = Article.objects.filter(title=i.title)
-                    popular.append(x)
-        context['popular'] = popular[0]
-        if len(popular)>2:
-            context['popular_2'] = popular[1]
-            context['popular_3'] = popular[2]
+class AgentDetailView(DetailView):
+    model = Agent
+    template_name = "agent-page.html"
+
+    def get_object(self, queryset=None):
+        global obj
+        obj = super(AgentDetailView, self).get_object(queryset=queryset)
+        return obj
+    def get_context_data(self, **kwargs):
+        context = super(AgentDetailView, self).get_context_data(**kwargs)
+        if self.request.GET.get('first_check')=="one":
+            query = self.request.GET.get('search')
+            if query:
+                search = Property.filter(Q(address__icontains=query),Q(agency=obj.title))
+                context['search'] = search
+            else:
+                search = self.model.objects.none()
+                context['search'] = search
+        if self.request.user.is_authenticated:
+            context['compare'] = Comparison.objects.filter(creator=self.request.user)
+        else:
+            pass
         return context

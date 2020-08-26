@@ -149,3 +149,23 @@ class Agency(models.Model):
         return reverse("APP:agencies", kwargs={
             'slug': self.slug
         })
+
+class Agent(models.Model):
+    name=models.TextField(blank=True, null=True)
+    agency=models.TextField()
+    address=models.TextField(blank=True, null=True)
+    description=models.TextField(blank=True, null=True)
+    phone=models.TextField(blank=True, null=True)
+    email=models.TextField(blank=True, null=True)
+    facebook=models.TextField(blank=True, null=True)
+    twitter=models.TextField(blank=True, null=True)
+    image=models.ImageField()
+    slug = models.SlugField()
+    paginate_by = 2
+
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse("APP:agents", kwargs={
+            'slug': self.slug
+        })

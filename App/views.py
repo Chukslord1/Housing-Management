@@ -202,9 +202,6 @@ def submit_property(request):
         bathrooms_new=request.POST.get("bathrooms")
         bathrooms=int(bathrooms_new)
         features=request.POST.get("features")
-        name=request.POST.get("name")
-        email=request.POST.get("email")
-        phone=request.POST.get("phone")
         parking=request.POST.get("parking")
         cooling=request.POST.get("cooling")
         heating=request.POST.get("heating")
@@ -499,6 +496,31 @@ def compare(request):
     return render(request,"compare-properties.html",context)
 
 def contact(request):
+    if request.method=="POST":
+        name=request.POST['name']
+        email=request.POST['email']
+        message=request.POST['message']
+        fromaddr = "housing-send@advancescholar.com"
+        toaddr = "housing@advancescholar.com"
+        subject=request.POST['subject']
+        msg = MIMEMultipart()
+        msg['From'] = fromaddr
+        msg['To'] = toaddr
+        msg['Subject'] = name + "-" + subject
+
+
+        body = message +"-"+"email" + email
+        msg.attach(MIMEText(body, 'plain'))
+
+        server = smtplib.SMTP('mail.advancescholar.com',  26)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+        text = msg.as_string()
+        server.sendmail(fromaddr, toaddr, text)
+        context={'message':'Your message has been sent sucessfully'}
+        return render(request, 'contact.html',context)
     return render(request,"contact.html")
 
 def blog(request):

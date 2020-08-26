@@ -635,7 +635,8 @@
       </h4>
       <div id="contact-message">
       </div>
-      <form action="contact.php" autocomplete="on" id="contactform" method="post" name="contactform">
+      <form method="POST">
+        {% csrf_token %}
        <div class="row">
         <div class="col-md-6">
          <div>
@@ -652,10 +653,13 @@
         <input id="subject" name="subject" placeholder="Subject" required="required" type="text"/>
        </div>
        <div>
-        <textarea cols="40" id="comments" name="comments" placeholder="Message" required="required" rows="3" spellcheck="true"></textarea>
+        <textarea cols="40" id="comments" name="message" placeholder="Message" required="required" rows="3" spellcheck="true"></textarea>
        </div>
-       <input class="submit button" id="submit" type="submit" value="Submit Message"/>
+       <button class="submit button"  type="submit">Send</button>
       </form>
+      {% if message %}
+        {{message}}
+      {% endif %}
      </section>
     </div>
     <!-- Contact Form / End -->

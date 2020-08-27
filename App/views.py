@@ -647,10 +647,10 @@ class PropertyDetailView(DetailView):
             else:
                 tour=Tour.objects.create(date=date,time=time,property=obj.title,phone=phone,name=name)
                 tour.save()
-        elif request.method=="POST":
-            name=request.POST['name']
-            email=request.POST['email']
-            message=request.POST.get['message']
+        elif self.request.method=="POST":
+            name=self.request.POST['name']
+            email=self.request.POST['email']
+            message=self.request.POST.get['message']
             fromaddr = "housing-send@advancescholar.com"
             toaddr = request.Post.get('to')
             msg = MIMEMultipart()

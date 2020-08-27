@@ -351,6 +351,22 @@ function showOutput () {
   window.location.href="listings-list-full-width.html" + queryString;
 }
 
+function showcat () {
+  var value=document.getElementById("myCat").value;
+
+  var paid="True";
+  var queryString = "?check_cat=" +paid  + "&cat=" + value;
+  window.location.href="category" + queryString;
+}
+function showcat2 () {
+  var value=document.getElementById("myCat2").value;
+
+
+  var paid="True";
+  var queryString = "?check_cat=" +paid  + "&cat=" + value;
+  window.location.href="category" + queryString;
+}
+
 </script>
           <!-- Row / End -->
           <!-- Browse Jobs -->
@@ -535,12 +551,13 @@ function showOutput () {
         <i class="im im-icon-Office">
         </i>
         <div class="icon-links">
-         <a href="category">
+          <input id="myCat" name="myCat" type="hidden" value="houses" />
+         <a onClick="showcat()">
           For Sale
-         </a>
-         <a href="category">
+        </a>
+         <a onClick="showcat()">
           For Rent
-         </a>
+        </a>
         </div>
        </div>
        <h3>
@@ -558,10 +575,11 @@ function showOutput () {
         <i class="im im-icon-Home-2">
         </i>
         <div class="icon-links">
-         <a href="category">
+          <input id="myCat2" name="myCat" type="hidden" value="garages" />
+         <a onClick="showcat()">
           For Sale
          </a>
-         <a href="category">
+         <a onClick="showcat()">
           For Rent
          </a>
         </div>
@@ -581,10 +599,10 @@ function showOutput () {
         <i class="im im-icon-Car-3">
         </i>
         <div class="icon-links">
-         <a href="category">
+         <a onClick="showcat2()">
           For Sale
          </a>
-         <a href="category">
+         <a onClick="showcat2()">
           For Rent
          </a>
         </div>

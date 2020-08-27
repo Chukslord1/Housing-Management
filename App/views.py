@@ -130,6 +130,12 @@ class ArticleListView(ListView):
         if len(popular)>2:
             context['popular_2'] = popular[1]
             context['popular_3'] = popular[2]
+
+        paginator= Paginator(Article.objects.all(),10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
+
         return context
 
 def login_register(request):
@@ -277,6 +283,7 @@ class SearchListView(ListView):
     template_name = "listings-list-full-width.html"
     def get_context_data(self, **kwargs):
         context = super(SearchListView, self).get_context_data(**kwargs)
+        search=''
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
             tab= self.request.GET.get('tab')
@@ -398,7 +405,11 @@ class SearchListView(ListView):
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
             pass
-
+        if search:
+            paginator= Paginator(search,10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
         return context
 
 
@@ -406,6 +417,7 @@ class CategoryListView(ListView):
     model = Property
     template_name = "listings-grid-standard-with-sidebar.html"
     def get_context_data(self, **kwargs):
+        cat=''
         context = super(CategoryListView, self).get_context_data(**kwargs)
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
@@ -415,6 +427,14 @@ class CategoryListView(ListView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+        elif self.request.GET.get('check_cat')=="True":
+            query = self.request.GET.get('cat')
+            if query:
+                cat = self.model.objects.filter(Q(category=query))
+                context['search'] = cat
+            else:
+                cat = self.model.objects.none()
+                context['search'] = cat
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
@@ -462,12 +482,16 @@ class CategoryListView(ListView):
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
-        context['popular'] = Property.objects.filter(Q(category__icontains="house"))
+        context['popular'] = Property.objects.filter(Q(category__icontains=query))
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
             pass
-
+        if cat:
+            paginator= Paginator(cat,10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
         return context
 
 
@@ -536,7 +560,10 @@ class PopularListView(ListView):
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
             pass
-
+        paginator= Paginator(Property.objects.filter(Q(address__icontains="Lagos")),10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
         return context
 
 
@@ -728,6 +755,10 @@ class AgencyListView(ListView):
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
         context["compare"] = Comparison.objects.all()
+        paginator= Paginator(Agency.objects.all(),10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
         return context
 
 class AgencyDetailView(DetailView):
@@ -791,12 +822,40 @@ class AgencyDetailView(DetailView):
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+        elif self.request.GET.get("send")=="True":
+            email=self.request.GET.get('email')
+            message=self.request.GET.get('message')
+            fromaddr = "housing-send@advancescholar.com"
+            toaddr = self.request.GET.get('to')
+            msg = MIMEMultipart()
+            msg['From'] = fromaddr
+            msg['To'] = toaddr
+            msg['Subject'] ="Assistance For Property"
+
+
+            body = message+ "my contacts are"  + " email " + email
+            msg.attach(MIMEText(body, 'plain'))
+
+            server = smtplib.SMTP('mail.advancescholar.com',  26)
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+            text = msg.as_string()
+            server.sendmail(fromaddr, toaddr, text)
+            context['message']="Sent Enquiry Successfully"
+
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
             pass
+
         context['search'] = Property.objects.filter(agency=obj.title)
         context['agents'] = Agent.objects.filter(agency=obj.title)
+        paginator= Paginator(Agency.objects.all(),10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
         return context
 
 class AgentDetailView(DetailView):

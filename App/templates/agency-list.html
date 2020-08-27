@@ -445,40 +445,50 @@
      <div class="clearfix">
      </div>
      <!-- Pagination -->
-     <div class="pagination-container margin-top-20">
+     <div class="pagination-container">
       <nav class="pagination">
        <ul>
+         <li>
+          <a class="current-page" href=""?page=1"">
+           {{ page_obj.number }}
+          </a>
+         </li>
+         of
         <li>
-         <a class="current-page" href="#">
+         <a  href=""?page=1"">
           1
          </a>
         </li>
+        {% if page_obj.has_next %}
         <li>
-         <a href="#">
+         <a href="?page={{ page_obj.next_page_number }}">
           2
          </a>
         </li>
         <li>
-         <a href="#">
-          3
+         <a href="?page={{ page_obj.paginator.num_pages }}">
+          last
          </a>
         </li>
+        {% endif %}
        </ul>
       </nav>
+      {% if page_obj.has_next %}
       <nav class="pagination-next-prev">
        <ul>
         <li>
-         <a class="prev" href="#">
+         <a class="prev" href="?page={{ page_obj.previous_page_number }}">
           Previous
          </a>
         </li>
         <li>
-         <a class="next" href="#">
+         <a class="next" href="?page={{ page_obj.next_page_number }}">
           Next
          </a>
         </li>
        </ul>
       </nav>
+      {% endif %}
      </div>
      <!-- Pagination / End -->
     </div>

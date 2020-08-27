@@ -88,7 +88,10 @@ class IndexListView(ListView):
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
-        context['newyork'] = Property.objects.filter(Q(address__icontains="newYork")).count()
+        context['lagos'] = Property.objects.filter(Q(address__icontains="lagos")).count()
+        context['abuja'] = Property.objects.filter(Q(address__icontains="abuja")).count()
+        context['port'] = Property.objects.filter(Q(address__icontains="port")).count()
+        context['niger'] = Property.objects.filter(Q(address__icontains="niger")).count()
         context['losangeles'] = Property.objects.filter(Q(address__icontains="losangeles")).count()
         context['sanfransisco'] = Property.objects.filter(Q(address__icontains="sanfransisco")).count()
         context['miami'] = Property.objects.filter(Q(address__icontains="miami")).count()
@@ -418,6 +421,7 @@ class CategoryListView(ListView):
     template_name = "listings-grid-standard-with-sidebar.html"
     def get_context_data(self, **kwargs):
         cat=''
+        search=''
         context = super(CategoryListView, self).get_context_data(**kwargs)
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
@@ -430,7 +434,7 @@ class CategoryListView(ListView):
         elif self.request.GET.get('check_cat')=="True":
             query = self.request.GET.get('cat')
             if query:
-                cat = self.model.objects.filter(Q(category=query))
+                cat = self.model.objects.filter(Q(category__icontains=query))
                 context['search'] = cat
             else:
                 cat = self.model.objects.none()
@@ -492,6 +496,11 @@ class CategoryListView(ListView):
             page_number = self.request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             context['page_obj'] = page_obj
+        elif search:
+            paginator= Paginator(search,10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
         return context
 
 
@@ -499,6 +508,8 @@ class PopularListView(ListView):
     model = Property
     template_name = "listings-list-with-sidebar.html"
     def get_context_data(self, **kwargs):
+        pop=''
+        search=''
         context = super(PopularListView, self).get_context_data(**kwargs)
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
@@ -508,6 +519,14 @@ class PopularListView(ListView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+        elif self.request.GET.get('check_pop')=="True":
+            query = self.request.GET.get('pop')
+            if query:
+                pop = self.model.objects.filter(Q(address__icontains=query))
+                context['search'] = pop
+            else:
+                cat = self.model.objects.none()
+                context['search'] = pop
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
@@ -546,24 +565,30 @@ class PopularListView(ListView):
                     area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
                     water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
                     compare.save()
-                compare_count=Comparison.objects.filter(creator=self.request.user    ).count()
+                compare_count=Comparison.objects.filter(creator=self.request.user).count()
                 if compare_count>3:
-                    compare_delete=Comparsion.objects.filter(creator=self.request    .user)[4:]
+                    compare_delete=Comparsion.objects.filter(creator=self.request.user)[4:]
                     compare_delete.delete()
                 else:
                     pass
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
-        context['popular'] = Property.objects.filter(Q(address__icontains="Lagos"))
+        context['popular'] = Property.objects.filter(Q(address__icontains=query))
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
             pass
-        paginator= Paginator(Property.objects.filter(Q(address__icontains="Lagos")),10)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['page_obj'] = page_obj
+        if pop:
+            paginator= Paginator(Property.objects.filter(address__icontains=query),10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
+        elif search:
+            paginator= Paginator(search,10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
         return context
 
 

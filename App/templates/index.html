@@ -367,6 +367,57 @@ function showcat2 () {
   window.location.href="category" + queryString;
 }
 
+function showcat3 () {
+  var value=document.getElementById("myCat3").value;
+
+
+  var paid="True";
+  var queryString = "?check_cat=" +paid  + "&cat=" + value;
+  window.location.href="category" + queryString;
+}
+
+function showcat4 () {
+  var value=document.getElementById("myCat4").value;
+
+
+  var paid="True";
+  var queryString = "?check_cat=" +paid  + "&cat=" + value;
+  window.location.href="category" + queryString;
+}
+function showpopular () {
+  var value=document.getElementById("mypop").value;
+
+
+  var paid="True";
+  var queryString = "?check_pop=" +paid  + "&pop=" + value;
+  window.location.href="popular" + queryString;
+}
+function showpopular2 () {
+  var value=document.getElementById("mypop2").value;
+
+
+  var paid="True";
+  var queryString = "?check_pop=" +paid  + "&pop=" + value;
+  window.location.href="popular" + queryString;
+}
+function showpopular3 () {
+  var value=document.getElementById("mypop3").value;
+
+
+  var paid="True";
+  var queryString = "?check_pop=" +paid  + "&pop=" + value;
+  window.location.href="popular" + queryString;
+}
+
+function showpopular4 () {
+  var value=document.getElementById("mypop4").value;
+
+
+  var paid="True";
+  var queryString = "?check_pop=" +paid  + "&pop=" + value;
+  window.location.href="popular" + queryString;
+}
+
 </script>
           <!-- Row / End -->
           <!-- Browse Jobs -->
@@ -551,7 +602,7 @@ function showcat2 () {
         <i class="im im-icon-Office">
         </i>
         <div class="icon-links">
-          <input id="myCat" name="myCat" type="hidden" value="houses" />
+          <input id="myCat" name="myCat" type="hidden" value="lot" />
          <a onClick="showcat()">
           For Sale
         </a>
@@ -561,7 +612,7 @@ function showcat2 () {
         </div>
        </div>
        <h3>
-        Apartments
+        Lots
        </h3>
        <p>
         Aliquam dictum elit vitae mauris facilisis, at dictum urna dignissim donec vel lectus vel felis.
@@ -575,11 +626,11 @@ function showcat2 () {
         <i class="im im-icon-Home-2">
         </i>
         <div class="icon-links">
-          <input id="myCat2" name="myCat" type="hidden" value="garages" />
-         <a onClick="showcat()">
+          <input id="myCat2" name="myCat" type="hidden" value="house" />
+         <a onClick="showcat2()">
           For Sale
          </a>
-         <a onClick="showcat()">
+         <a onClick="showcat2()">
           For Rent
          </a>
         </div>
@@ -599,10 +650,11 @@ function showcat2 () {
         <i class="im im-icon-Car-3">
         </i>
         <div class="icon-links">
-         <a onClick="showcat2()">
+          <input id="myCat3" name="myCat" type="hidden" value="garage" />
+         <a onClick="showcat3()">
           For Sale
          </a>
-         <a onClick="showcat2()">
+         <a onClick="showcat3()">
           For Rent
          </a>
         </div>
@@ -622,12 +674,13 @@ function showcat2 () {
         <i class="im im-icon-Clothing-Store">
         </i>
         <div class="icon-links">
-         <a href="category">
-          For Sale
-         </a>
-         <a href="category">
-          For Rent
-         </a>
+          <input id="myCat4" name="myCat" type="hidden" value="commercial" />
+          <a onClick="showcat4()">
+           For Sale
+          </a>
+          <a onClick="showcat4()">
+           For Rent
+          </a>
         </div>
        </div>
        <h3>
@@ -655,7 +708,7 @@ function showcat2 () {
     </div>
     <div class="col-md-4">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/popular-location-01.jpg' %}" href="listings-list-with-sidebar.html">
+     <a class="img-box" data-background-image="{% static 'images/popular-location-01.jpg' %}" onclick="showpopular()">
       <!-- Badge -->
       <div class="listing-badges">
        <span class="featured">
@@ -663,50 +716,54 @@ function showcat2 () {
        </span>
       </div>
       <div class="img-box-content visible">
+        <input id="mypop" name="mypop" type="hidden" value="lagos" />
        <h4>
-        New York
+        Lagos
        </h4>
        <span>
-        {{newyork}} Properties
+        {{lagos}} Properties
        </span>
       </div>
      </a>
     </div>
     <div class="col-md-8">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/popular-location-02.jpg' %}" href="listings-list-with-sidebar.html">
+     <a class="img-box" data-background-image="{% static 'images/popular-location-02.jpg' %}" onclick="showpopular2()">
       <div class="img-box-content visible">
+        <input id="mypop2" name="mypop" type="hidden" value="abuja" />
        <h4>
-        Los Angeles
+        Abuja
        </h4>
        <span>
-        {{losangeles}} Properties
+        {{abuja}} Properties
        </span>
       </div>
      </a>
     </div>
     <div class="col-md-8">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/popular-location-03.jpg' %}" href="listings-list-with-sidebar.html">
+     <a class="img-box" data-background-image="{% static 'images/popular-location-03.jpg' %}" onclick="showpopular3()">
       <div class="img-box-content visible">
+        <input id="mypop3" name="mypop" type="hidden" value="port" />
        <h4>
-        San Francisco
+        Port Harcourt
        </h4>
        <span>
-        {{sanfransisco}} Properties
+        {{port}} Properties
        </span>
       </div>
      </a>
     </div>
     <div class="col-md-4">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/popular-location-04.jpg' %}" href="listings-list-with-sidebar.html">
+     <a class="img-box" data-background-image="{% static 'images/popular-location-04.jpg' %}" onclick="showpopular4()">
       <div class="img-box-content visible">
+        <input id="mypop4" name="mypop" type="hidden" value="niger" />
        <h4>
-        Miami
+        Niger
        </h4>
        <span>
-        {{miami}} Properties
+        {{niger}} Properties
        </span>
       </div>
      </a>

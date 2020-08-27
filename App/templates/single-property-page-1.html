@@ -651,6 +651,8 @@
       <!-- Widget -->
       <div class="widget">
        <!-- Agent Widget -->
+        <form method="POST">
+          {% csrf_token %}
        <div class="agent-widget">
         <div class="agent-title">
          <div class="agent-photo">
@@ -659,25 +661,27 @@
          <div class="agent-details">
           <h4>
            <a href="#">
-            Jennie Wilson
+            {{object.name}}
            </a>
           </h4>
           <span>
            <i class="sl sl-icon-call-in">
            </i>
-           (123) 123-456
+           {{object.email}}
+           <input name="to" value="{{object.email}}" type="hidden" />
           </span>
          </div>
          <div class="clearfix">
          </div>
         </div>
-        <input pattern="^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$" placeholder="Your Email" type="text"/>
-        <input placeholder="Your Phone" type="text"/>
-        <textarea>I'm interested in this property [ID 123456] and I'd like to know more details.</textarea>
-        <button class="button fullwidth margin-top-5">
+        <input pattern="^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$" name="email" placeholder="Your Email" type="text"/>
+        <input name="phone" placeholder="Your Phone" type="text"/>
+        <textarea name="message">I'm interested in the {{object.title}} and I'd like to know more details.</textarea>
+        <button class="button fullwidth margin-top-5" type="submit">
          Send Message
         </button>
        </div>
+     </form>
        <!-- Agent Widget / End -->
       </div>
       <!-- Widget / End -->

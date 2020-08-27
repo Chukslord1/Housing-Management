@@ -31,6 +31,7 @@ class Property(models.Model):
     bedrooms = models.IntegerField(blank=True, null=True)
     bathrooms = models.IntegerField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
+    name= models.TextField(blank=True, null=True)
     phone = models.TextField(blank=True, null=True)
     email = models.TextField(blank=True, null=True)
     features = models.TextField(blank=True, null=True)
@@ -152,7 +153,7 @@ class Agency(models.Model):
 
 class Agent(models.Model):
     name=models.TextField(blank=True, null=True)
-    agency=models.TextField()
+    agency=models.TextField(blank=True, null=True)
     address=models.TextField(blank=True, null=True)
     description=models.TextField(blank=True, null=True)
     phone=models.TextField(blank=True, null=True)

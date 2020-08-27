@@ -234,8 +234,36 @@ def submit_property(request):
         else:
             property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
             area=area,rooms=rooms,image_1=image_1,image_2=image_2,image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,image_7=image_7,address=address,
-            description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,slug=slug)
+            description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,name=name,email=email,phone=phone,slug=slug)
             property.save()
+            agent=Agent.object.create(name=name,phone=phone,email=email)
+            agent.save()
+            user_check=User.object.filter(email=email)
+            if user_check:
+                pass
+            else:
+                user=User.objects.create(username=name,password=name+"2020",email=email)
+                user.save()
+                message=request.POST['message']
+                fromaddr = "housing-send@advancescholar.com"
+                toaddr = email
+                subject="Account Creation Details"
+                msg = MIMEMultipart()
+                msg['From'] = fromaddr
+                msg['To'] = toaddr
+                msg['Subject'] = "Your account login details"
+
+
+                body = "Your account login details are:"+" username: "+name+" password "+ password
+                msg.attach(MIMEText(body, 'plain'))
+
+                server = smtplib.SMTP('mail.advancescholar.com',  26)
+                server.ehlo()
+                server.starttls()
+                server.ehlo()
+                server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+                text = msg.as_string()
+                server.sendmail(fromaddr, toaddr, text)
             context={"message":"Successfully Added Property"}
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
@@ -619,6 +647,28 @@ class PropertyDetailView(DetailView):
             else:
                 tour=Tour.objects.create(date=date,time=time,property=obj.title,phone=phone,name=name)
                 tour.save()
+        elif request.method=="POST":
+            name=request.POST['name']
+            email=request.POST['email']
+            message=request.POST.get['message']
+            fromaddr = "housing-send@advancescholar.com"
+            toaddr = request.Post.get('to')
+            msg = MIMEMultipart()
+            msg['From'] = fromaddr
+            msg['To'] = toaddr
+            msg['Subject'] ="Enquiry For Property"
+
+
+            body = message+ "my contacts are" +" phone: "+phone + " email " + email
+            msg.attach(MIMEText(body, 'plain'))
+
+            server = smtplib.SMTP('mail.advancescholar.com',  26)
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+            text = msg.as_string()
+            server.sendmail(fromaddr, toaddr, text)
         check_login=self.request.user
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)

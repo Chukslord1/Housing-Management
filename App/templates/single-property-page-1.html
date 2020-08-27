@@ -651,8 +651,7 @@
       <!-- Widget -->
       <div class="widget">
        <!-- Agent Widget -->
-        <form method="POST">
-          {% csrf_token %}
+        <form method="GET">
        <div class="agent-widget">
         <div class="agent-title">
          <div class="agent-photo">
@@ -669,6 +668,7 @@
            </i>
            {{object.phone}}
            <input name="to" value="{{object.email}}" type="hidden" />
+           <input name="send" value="True" type="hidden" />
           </span>
          </div>
          <div class="clearfix">
@@ -680,6 +680,7 @@
         <button class="button fullwidth margin-top-5" type="submit">
          Send Message
         </button>
+        {{message}}
        </div>
      </form>
        <!-- Agent Widget / End -->

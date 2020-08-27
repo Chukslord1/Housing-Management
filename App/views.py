@@ -647,19 +647,18 @@ class PropertyDetailView(DetailView):
             else:
                 tour=Tour.objects.create(date=date,time=time,property=obj.title,phone=phone,name=name)
                 tour.save()
-        elif self.request.method=="POST":
-            name=self.request.POST['name']
-            email=self.request.POST['email']
-            message=self.request.POST.get['message']
+        elif self.request.GET.get("send")=="True":
+            email=self.request.GET.get('email')
+            message=self.request.GET.get('message')
             fromaddr = "housing-send@advancescholar.com"
-            toaddr = request.Post.get('to')
+            toaddr = self.request.GET.get('to')
             msg = MIMEMultipart()
             msg['From'] = fromaddr
             msg['To'] = toaddr
             msg['Subject'] ="Enquiry For Property"
 
 
-            body = message+ "my contacts are" +" phone: "+phone + " email " + email
+            body = message+ "my contacts are"  + " email " + email
             msg.attach(MIMEText(body, 'plain'))
 
             server = smtplib.SMTP('mail.advancescholar.com',  26)
@@ -669,6 +668,7 @@ class PropertyDetailView(DetailView):
             server.login("housing-send@advancescholar.com", "housing@24hubs.com")
             text = msg.as_string()
             server.sendmail(fromaddr, toaddr, text)
+            context['message']="Sent Enquiry Successfully"
         check_login=self.request.user
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)

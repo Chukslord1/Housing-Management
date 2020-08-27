@@ -172,20 +172,29 @@ def logout(request):
     return redirect("index.html")
 
 def submit_property(request):
-    context={"agencies":Agency.objects.all()}
+    context={"agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
     if request.method=="POST":
         title=request.POST.get("title")
         status=request.POST.get("status")
         category=request.POST.get("category")
         price_new=request.POST.get("price")
-        price=int(price_new)
+        if price_new:
+            price=int(price_new)
+        else:
+            price=1000000
         price_per_unit_new=request.POST.get("price_per_unit")
         price_per_unit=int(price_per_unit_new)
         agency=request.POST.get("agency")
         area_new=request.POST.get("area")
-        area=int(area_new)
+        if area_new:
+            area=int(area_new)
+        else:
+            area=40000
         rooms_new=request.POST.get("rooms")
-        rooms=int(rooms_new)
+        if rooms_new:
+            rooms=int(rooms_new)
+        else:
+            roms=3
         image_1=request.FILES.get("image_1")
         image_2=request.FILES.get("image_2")
         image_3=request.FILES.get("image_3")
@@ -196,25 +205,42 @@ def submit_property(request):
         address=request.POST.get("address")
         description=request.POST.get("description")
         building_age_new=request.POST.get("building_age")
-        building_age=int(building_age_new)
+        if building_age_new:
+            building_age=int(building_age_new)
+        else:
+            building_age=3
         bedrooms_new=request.POST.get("bedrooms")
-        bedrooms=int(bedrooms_new)
+        if bedrooms_new:
+            bedrooms=int(bedrooms_new)
+        else:
+            bedrooms=3
         bathrooms_new=request.POST.get("bathrooms")
-        bathrooms=int(bathrooms_new)
+        if bathrooms_new:
+            bathrooms=int(bathrooms_new)
+        else:
+            bathrooms=3
         features=request.POST.get("features")
+        name=request.POST.get("name")
+        email=request.POST.get("email")
+        phone=request.POST.get("phone")
         parking=request.POST.get("parking")
         cooling=request.POST.get("cooling")
         heating=request.POST.get("heating")
         sewer=request.POST.get("sewer")
+        slug=title+status+address+price_new
         property_check=Property.objects.filter(title=title,address=address)
         if property_check:
-            context={'message':"Property Already Exists","agencies":Agency.objects.all()}
+            context={'message':"Property Already Exists","agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
         else:
-            property=Property.objects.create(title=title,status=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
+            property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
             area=area,rooms=rooms,image_1=image_1,image_2=image_2,image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,image_7=image_7,address=address,
-            description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer)
+            description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,slug=slug)
             property.save()
-            {message:"Successfully Added Property"}
+            context={"message":"Successfully Added Property"}
+    elif request.method=="GET":
+        if request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=request.user)
+            clear.delete()
     return render(request,"submit-property.html",context)
 
 
@@ -496,6 +522,7 @@ def compare(request):
     return render(request,"compare-properties.html",context)
 
 def contact(request):
+    context={"compare":Comparison.objects.all()}
     if request.method=="POST":
         name=request.POST['name']
         email=request.POST['email']
@@ -519,13 +546,13 @@ def contact(request):
         server.login("housing-send@advancescholar.com", "housing@24hubs.com")
         text = msg.as_string()
         server.sendmail(fromaddr, toaddr, text)
-        context={'message':'Your message has been sent sucessfully'}
+        context={'message':'Your message has been sent sucessfully',"compare":Comparison.objects.all()}
         return render(request, 'contact.html',context)
-    return render(request,"contact.html")
-
-def blog(request):
-    return render(request,"blog.html")
-
+    elif request.method=="GET":
+        if request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=request.user)
+            clear.delete()
+    return render(request,"contact.html",context)
 
 class PropertyDetailView(DetailView):
     model = Property
@@ -635,7 +662,8 @@ class ArticleDetailView(DetailView):
                     check=Comment.objects.filter(blog=i.title).count()
                     x = Article.objects.filter(title=i.title)
                     popular.append(x)
-        context['popular'] = popular[0]
+        if len(popular)>0:
+            context['popular'] = popular[0]
         if len(popular)>2:
             context['popular_2'] = popular[1]
             context['popular_3'] = popular[2]
@@ -646,8 +674,10 @@ class AgencyListView(ListView):
     template_name = "agencies-list.html"
     def get_context_data(self, **kwargs):
         context = super(AgencyListView, self).get_context_data(**kwargs)
-
-
+        if self.request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=self.request.user)
+            clear.delete()
+        context["compare"] = Comparison.objects.all()
         return context
 
 class AgencyDetailView(DetailView):
@@ -668,6 +698,49 @@ class AgencyDetailView(DetailView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+        if self.request.GET.get('second_check')=="two":
+            if self.request.user.is_authenticated:
+                title=self.request.GET.get('title')
+                address=self.request.GET.get('address')
+                date=self.request.GET.get('date')
+                category=self.request.GET.get('category')
+                sale_type=self.request.GET.get('sale_type')
+                price=self.request.GET.get('price')
+                price_per_unit=self.request.GET.get('price_per_unit')
+                image=self.request.GET.get('image')
+                image_url=image.replace('/media/','')
+                area=self.request.GET.get('area')
+                rooms=self.request.GET.get('rooms')
+                bedrooms=self.request.GET.get('bedrooms')
+                bathrooms=self.request.GET.get('bathrooms')
+                features=self.request.GET.get('features')
+                building_age=self.request.GET.get('building_age')
+                parking=self.request.GET.get('parking')
+                cooling=self.request.GET.get('cooling')
+                heating=self.request.GET.get('heating')
+                sewer=self.request.GET.get('sewer')
+                water=self.request.GET.get('water')
+                exercise_room=self.request.GET.get('exercise_room')
+                storage_room=self.request.GET.get('storage_room')
+                compare_check=Comparison.objects.filter(title=title,address=address,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
+                rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+                water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
+                if compare_check:
+                    pass
+                else:
+                    compare=Comparison.objects.create(title=title,address=address,date=date,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
+                    area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+                    water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
+                    compare.save()
+                compare_count=Comparison.objects.filter(creator=self.request.user).count()
+                if compare_count>3:
+                    compare_delete=Comparsion.objects.filter(creator=self.request.user)[4:]
+                    compare_delete.delete()
+                else:
+                    pass
+        elif self.request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=self.request.user)
+            clear.delete()
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
@@ -694,6 +767,9 @@ class AgentDetailView(DetailView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+        elif self.request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=self.request.user)
+            clear.delete()
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:

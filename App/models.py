@@ -113,6 +113,15 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     username=models.CharField(max_length=100, null=True,blank=True)
     email=models.CharField(max_length=100, null=True,blank=True)
+    image=  models.ImageField(blank=True, null=True)
+    name=models.CharField(max_length=100, null=True,blank=True)
+    title=models.TextField(blank=True, null=True)
+    phone=models.TextField(blank=True, null=True)
+    about=models.TextField(blank=True, null=True)
+    twitter=models.TextField(blank=True, null=True)
+    facebook=models.TextField(blank=True, null=True)
+    google=models.TextField(blank=True, null=True)
+    linkedin=models.TextField(blank=True, null=True)
 
 class Tour(models.Model):
     user= models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)
@@ -170,3 +179,35 @@ class Agent(models.Model):
         return reverse("APP:agents", kwargs={
             'slug': self.slug
         })
+
+class Bookmark(models.Model):
+    title=models.TextField(blank=True, null=True)
+    answer = (
+        ('Yes', 'Yes'),
+        ('No', 'No'),
+    )
+    type= (
+        ('Public', 'Public'),
+        ('City', 'City'),
+    )
+    address=models.TextField(blank=True, null=True)
+    date=models.DateTimeField(auto_now_add=True)
+    category=models.TextField(blank=True, null=True)
+    sale_type=models.TextField(blank=True, null=True)
+    price=models.IntegerField(blank=True, null=True)
+    price_per_unit = models.TextField(blank=True, null=True)
+    image_1 = models.ImageField(blank=True, null=True)
+    area = models.IntegerField(blank=True, null=True)
+    rooms = models.IntegerField(blank=True, null=True)
+    bedrooms = models.IntegerField(blank=True, null=True)
+    bathrooms = models.IntegerField(blank=True, null=True)
+    features = models.TextField(blank=True, null=True)
+    building_age = models.IntegerField(blank=True, null=True)
+    parking = models.TextField(blank=True, null=True)
+    cooling = models.TextField(blank=True, null=True)
+    heating = models.TextField(blank=True, null=True)
+    sewer = models.CharField(max_length = 100, choices = type,blank=True, null=True)
+    water = models.CharField(max_length = 100, choices = type,blank=True, null=True)
+    exercise_room = models.CharField(max_length = 100, choices = answer,blank=True, null=True)
+    storage_room = models.CharField(max_length = 100, choices = answer,blank=True, null=True)
+    creator = models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)

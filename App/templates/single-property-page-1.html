@@ -46,7 +46,7 @@
         <span class="listing-compact-title">
          {{item.title}}
          <i>
-          ${{item.price}}
+          ₦{{item.price}}
          </i>
         </span>
        </div>
@@ -166,35 +166,32 @@
       <nav class="style-1" id="navigation">
        <ul id="responsive">
         <li>
-         <a href="#">
-          Features
+         <a href="{% url 'APP:index' %}">
+          Home
          </a>
-         <ul>
-          <li>
-           <a href="{% url 'APP:agencies-list' %}">
-            Agencies &amp; Agents
-           </a>
-          </li>
-          <li>
-           <a href="blog.html">
-            Blogs
-           </a>
-          </li>
-          <li>
-           <a href="{% url 'APP:compare' %}">
-            Compare Properties
-           </a>
-          </li>
-          <li>
-           <a href="{% url 'APP:submit_property' %}">
-            Submit Property
-           </a>
-          </li>
-         </ul>
         </li>
         <li>
-         <a href="{% url 'APP:contact' %}">
-          Contact
+          <input type="hidden" id="sale" value="sale">
+         <a onclick="showsale()">
+          For Sale
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale2" value="rent">
+         <a onclick="showsale2()">
+          For Rent
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale3" value="shortlet">
+         <a onclick="showsale3()">
+          Shortlet
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale4" value="hotel">
+         <a onclick="showsale4()">
+          Hotels
          </a>
         </li>
        </ul>
@@ -206,25 +203,73 @@
      <!-- Left Side Content / End -->
      <!-- Right Side Content / End -->
      <div class="right-side">
-      <!-- Header Widget -->
-      <div class="header-widget">
-        {% if user.is_authenticated %}
-        <a class="sign-in" onclick="window.location.href='{% url 'APP:logout' %}'">
-         <i class="fa fa-user">
-         </i>
-         Logout
-        </a>
-        {% else %}
-       <a class="sign-in" href="{% url 'APP:login_register' %}">
+       {% if user.is_authenticated %}
+       <a class="sign-in" onclick="window.location.href='{% url 'APP:logout' %}'">
         <i class="fa fa-user">
         </i>
-        Log In / Register
+        Logout
        </a>
-       {% endif %}
+       <div class="user-menu">
+        <div class="user-name">
+         <span>
+           {% if profile.image %}
+           <img alt="" src="{{profile.image.url}}"/>
+           {% else %}
+          <img alt="" src="{% static 'images/agent-03.jpg' %}"/>
+          {% endif %}
+         </span>
+         Hi, {{user}}!
+        </div>
+        <ul>
+         <li>
+          <a href="{% url 'APP:profile' %}">
+           <i class="sl sl-icon-user">
+           </i>
+           My Profile
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:bookmarks' %}">
+           <i class="sl sl-icon-star">
+           </i>
+           Bookmarks
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:properties' %}">
+           <i class="sl sl-icon-docs">
+           </i>
+           My Properties
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:logout' %}">
+           <i class="sl sl-icon-power">
+           </i>
+           Log Out
+          </a>
+         </li>
+        </ul>
+       </div>
+       {% else %}
+      <a class="sign-in" href="{% url 'APP:login_register' %}">
+       <i class="fa fa-user">
+       </i>
+       Log In / Register
+      </a>
+      {% endif %}
+      <!-- Header Widget -->
+      <div class="header-widget">
+       <!-- User Menu -->
+
+
+
        <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
        </a>
+
       </div>
+
       <!-- Header Widget / End -->
      </div>
      <!-- Right Side Content / End -->
@@ -260,10 +305,10 @@
       </div>
       <div class="property-pricing">
        <div class="property-price">
-        ${{object.price}}
+        ₦{{object.price}}
        </div>
        <div class="sub-price">
-        ${{object.price_per_unit}} / sq ft
+        ₦{{object.price_per_unit}} / sq m
        </div>
       </div>
      </div>
@@ -369,7 +414,7 @@
        <li>
         Area
         <span>
-         {{object.area}} sq ft
+         {{object.area}} sq m
         </span>
        </li>
        <li>
@@ -509,7 +554,7 @@
          </div>
          <div class="listing-img-content">
           <span class="listing-price">
-           ${{house.price}}
+           ₦{{house.price}}
            <i>
             monthly
            </i>
@@ -537,7 +582,7 @@
          </div>
          <ul class="listing-details">
           <li>
-           {{house.area}} sq ft
+           {{house.area}} sq m
           </li>
           <li>
            {{house.bedrooms}} Bedroom
@@ -692,17 +737,17 @@
         Mortgage Calculator
        </h3>
        <!-- Mortgage Calculator -->
-       <form action="javascript:void(0);" autocomplete="off" class="mortgageCalc" data-calc-currency="USD">
+       <form action="javascript:void(0);" autocomplete="off" class="mortgageCalc" data-calc-currency="₦">
         <div class="calc-input">
          <div class="pick-price tip" data-tip-content="Set This Property Price">
          </div>
          <input id="amount" name="amount" placeholder="Sale Price" required="" type="text"/>
-         <label class="fa fa-usd" for="amount">
+         <label class="fa fa-₦" for="amount">
          </label>
         </div>
         <div class="calc-input">
          <input id="downpayment" placeholder="Down Payment" type="text"/>
-         <label class="fa fa-usd" for="downpayment">
+         <label class="fa fa-₦" for="downpayment">
          </label>
         </div>
         <div class="calc-input">

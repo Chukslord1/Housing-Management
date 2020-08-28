@@ -46,7 +46,7 @@
         <span class="listing-compact-title">
          {{item.title}}
          <i>
-          ${{item.price}}
+          ₦{{item.price}}
          </i>
         </span>
        </div>
@@ -56,7 +56,7 @@
      {% endfor %}
      {% if user.is_authenticated %}
      {% else %}
-     <a class="sign-in" href="login-register.html">
+     <a class="sign-in" href="{% url 'APP:login_register' %}">
       <i class="fa fa-user">
       </i>
       Log In / Register To Compare
@@ -67,7 +67,7 @@
     </div>
     {% if user.is_authenticated %}
     <div class="csm-buttons">
-     <a class="button" href="compare-properties.html">
+     <a class="button" href="{% url 'APP:compare' %}">
       Compare
      </a>
      <form method="GET">
@@ -149,7 +149,7 @@
      <div class="left-side">
       <!-- Logo -->
       <div id="logo">
-       <a href="index.html">
+       <a href="{% url 'APP:index' %}">
         <img alt="" src="{% static 'images/logo.png' %}"/>
        </a>
       </div>
@@ -166,35 +166,32 @@
       <nav class="style-1" id="navigation">
        <ul id="responsive">
         <li>
-         <a href="#">
-          Features
+         <a href="{% url 'APP:index' %}">
+          Home
          </a>
-         <ul>
-          <li>
-           <a href="agencies-list.html">
-            Agencies &amp; Agents
-           </a>
-          </li>
-          <li>
-           <a href="blog.html">
-            Blogs
-           </a>
-          </li>
-          <li>
-           <a href="compare-properties.html">
-            Compare Properties
-           </a>
-          </li>
-          <li>
-           <a href="submit-property.html">
-            Submit Property
-           </a>
-          </li>
-         </ul>
         </li>
         <li>
-         <a href="contact.html">
-          Contact
+          <input type="hidden" id="sale" value="sale">
+         <a onclick="showsale()">
+          For Sale
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale2" value="rent">
+         <a onclick="showsale2()">
+          For Rent
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale3" value="shortlet">
+         <a onclick="showsale3()">
+          Shortlet
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale4" value="hotel">
+         <a onclick="showsale4()">
+          Hotels
          </a>
         </li>
        </ul>
@@ -206,25 +203,73 @@
      <!-- Left Side Content / End -->
      <!-- Right Side Content / End -->
      <div class="right-side">
-      <!-- Header Widget -->
-      <div class="header-widget">
-        {% if user.is_authenticated %}
-        <a class="sign-in" onclick="window.location.href='logout.html'">
-         <i class="fa fa-user">
-         </i>
-         Logout
-        </a>
-        {% else %}
-       <a class="sign-in" href="login-register.html">
+       {% if user.is_authenticated %}
+       <a class="sign-in" onclick="window.location.href='{% url 'APP:logout' %}'">
         <i class="fa fa-user">
         </i>
-        Log In / Register
+        Logout
        </a>
-       {% endif %}
-       <a class="button border" href="submit-property.html">
+       <div class="user-menu">
+        <div class="user-name">
+         <span>
+           {% if profile.image %}
+           <img alt="" src="{{profile.image.url}}"/>
+           {% else %}
+          <img alt="" src="{% static 'images/agent-03.jpg' %}"/>
+          {% endif %}
+         </span>
+         Hi, {{user}}!
+        </div>
+        <ul>
+         <li>
+          <a href="{% url 'APP:profile' %}">
+           <i class="sl sl-icon-user">
+           </i>
+           My Profile
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:bookmarks' %}">
+           <i class="sl sl-icon-star">
+           </i>
+           Bookmarks
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:properties' %}">
+           <i class="sl sl-icon-docs">
+           </i>
+           My Properties
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:logout' %}">
+           <i class="sl sl-icon-power">
+           </i>
+           Log Out
+          </a>
+         </li>
+        </ul>
+       </div>
+       {% else %}
+      <a class="sign-in" href="{% url 'APP:login_register' %}">
+       <i class="fa fa-user">
+       </i>
+       Log In / Register
+      </a>
+      {% endif %}
+      <!-- Header Widget -->
+      <div class="header-widget">
+       <!-- User Menu -->
+
+
+
+       <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
        </a>
+
       </div>
+
       <!-- Header Widget / End -->
      </div>
      <!-- Right Side Content / End -->
@@ -496,168 +541,168 @@
   </div>
   <!-- Footer
 ================================================== -->
-  <div class="sticky-footer" id="footer">
-   <!-- Main -->
-   <div class="container">
-     <div class="row">
-      <div class="col-md-5 col-sm-6">
-       <img alt="" class="footer-logo" src="{% static 'images/logo.png' %}"/>
-       <br/>
-       <br/>
-       <p>
-        "The house you looked at today and wanted to think about until tomorrow may be the same house someone looked at yesterday and will buy today" -Koko Adasi
-       </p>
-      </div>
-      <div class="col-md-4 col-sm-6">
-       <h4>
-        Helpful Links
-       </h4>
-       <ul class="footer-links">
-        <li>
-         <a href="login-register.html">
-          Login
-         </a>
-        </li>
-        <li>
-         <a href="login-register.html">
-          Sign Up
-         </a>
-        </li>
-        <li>
-         <a href="submit-property.html">
-          Add Property
-         </a>
-        </li>
-       </ul>
-       <ul class="footer-links">
-        <li>
-         <a href="blog.html">
-          Blog
-         </a>
-        </li>
-        <li>
-         <a href="agencies-list.html">
-          Our Agencies
-         </a>
-        </li>
-        <li>
-         <a href="contect.html">
-          Contact
-         </a>
-        </li>
-       </ul>
-       <div class="clearfix">
-       </div>
-      </div>
-      <div class="col-md-3 col-sm-12">
-       <h4>
-        Contact Us
-       </h4>
-       <div class="text-widget">
-        <span>
-         Monrovia Street Wuse 2, Abuja Nigeria
-        </span>
-        <br/>
-        Phone:
-        <span>
-         +(234) 805 882 775, +(234) 905 2213 706
-        </span>
-        <br/>
-        E-Mail:
-        <span>
-         <a href="#">
-          sales@afriproperty.com.ng
-         </a>
-        </span>
-        <br/>
-       </div>
-       <ul class="social-icons margin-top-20">
-        <li>
-         <a class="facebook" href="#">
-          <i class="icon-facebook">
-          </i>
-         </a>
-        </li>
-        <li>
-         <a class="twitter" href="#">
-          <i class="icon-twitter">
-          </i>
-         </a>
-        </li>
-        <li>
-         <a class="gplus" href="#">
-          <i class="icon-gplus">
-          </i>
-         </a>
-        </li>
-        <li>
-         <a class="vimeo" href="#">
-          <i class="icon-vimeo">
-          </i>
-         </a>
-        </li>
-       </ul>
-      </div>
+<div class="sticky-footer" id="footer">
+ <!-- Main -->
+ <div class="container">
+   <div class="row">
+    <div class="col-md-5 col-sm-6">
+     <img alt="" class="footer-logo" src="{% static 'images/logo.png' %}"/>
+     <br/>
+     <br/>
+     <p>
+      "The house you looked at today and wanted to think about until tomorrow may be the same house someone looked at yesterday and will buy today" -Koko Adasi
+     </p>
+    </div>
+    <div class="col-md-4 col-sm-6">
+     <h4>
+      Helpful Links
+     </h4>
+     <ul class="footer-links">
+      <li>
+       <a href="{% url 'APP:login_register' %}">
+        Login
+       </a>
+      </li>
+      <li>
+       <a href="{% url 'APP:login_register' %}">
+        Sign Up
+       </a>
+      </li>
+      <li>
+       <a href="{% url 'APP:submit_property' %}">
+        Add Property
+       </a>
+      </li>
+     </ul>
+     <ul class="footer-links">
+      <li>
+       <a href="{% url 'APP:blog-list' %}">
+        Blog
+       </a>
+      </li>
+      <li>
+       <a href="{% url 'APP:agencies-list' %}">
+        Our Agencies
+       </a>
+      </li>
+      <li>
+       <a href="{% url 'APP:contact' %}">
+        Contact
+       </a>
+      </li>
+     </ul>
+     <div class="clearfix">
      </div>
-    <!-- Copyright -->
-    <div class="row">
-     <div class="col-md-12">
-      <div class="copyrights">
-       Â© 2020 Afriproperty. All Rights Reserved.
-      </div>
+    </div>
+    <div class="col-md-3 col-sm-12">
+     <h4>
+      Contact Us
+     </h4>
+     <div class="text-widget">
+      <span>
+       Monrovia Street Wuse 2, Abuja Nigeria
+      </span>
+      <br/>
+      Phone:
+      <span>
+       +(234) 805 882 775, +(234) 905 2213 706
+      </span>
+      <br/>
+      E-Mail:
+      <span>
+       <a href="#">
+        sales@afriproperty.com.ng
+       </a>
+      </span>
+      <br/>
      </div>
+     <ul class="social-icons margin-top-20">
+      <li>
+       <a class="facebook" href="#">
+        <i class="icon-facebook">
+        </i>
+       </a>
+      </li>
+      <li>
+       <a class="twitter" href="#">
+        <i class="icon-twitter">
+        </i>
+       </a>
+      </li>
+      <li>
+       <a class="gplus" href="#">
+        <i class="icon-gplus">
+        </i>
+       </a>
+      </li>
+      <li>
+       <a class="vimeo" href="#">
+        <i class="icon-vimeo">
+        </i>
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+  <!-- Copyright -->
+  <div class="row">
+   <div class="col-md-12">
+    <div class="copyrights">
+     Â© 2020 Afriproperty. All Rights Reserved.
     </div>
    </div>
   </div>
-  <!-- Footer / End -->
-  <!-- Back To Top Button -->
-  <div id="backtotop">
-   <a href="#">
-   </a>
-  </div>
-  <!-- Scripts
-================================================== -->
-  <script src="{% static 'scripts/jquery-3.4.1.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/jquery-migrate-3.1.0.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/chosen.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/magnific-popup.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/owl.carousel.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/rangeSlider.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/sticky-kit.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/slick.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/masonry.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/mmenu.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/tooltips.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/custom.js' %}" type="text/javascript">
-  </script>
-  <!-- Google Autocomplete -->
-  <script>
-   function initAutocomplete() {
-    var input = document.getElementById('autocomplete-input');
-    var autocomplete = new google.maps.places.Autocomplete(input);
-
-    autocomplete.addListener('place_changed', function() {
-      var place = autocomplete.getPlace();
-      if (!place.geometry) {
-        window.alert("No details available for input: '" + place.name + "'");
-        return;
-      }
-    });
-}
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;callback=initAutocomplete">
-  </script>
  </div>
- <!-- Wrapper / End -->
+</div>
+<!-- Footer / End -->
+<!-- Back To Top Button -->
+<div id="backtotop">
+ <a href="#">
+ </a>
+</div>
+<!-- Scripts
+================================================== -->
+<script src="{% static 'scripts/jquery-3.4.1.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/jquery-migrate-3.1.0.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/chosen.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/magnific-popup.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/owl.carousel.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/rangeSlider.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/sticky-kit.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/slick.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/masonry.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/mmenu.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/tooltips.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/custom.js' %}" type="text/javascript">
+</script>
+<!-- Google Autocomplete -->
+<script>
+ function initAutocomplete() {
+  var input = document.getElementById('autocomplete-input');
+  var autocomplete = new google.maps.places.Autocomplete(input);
+
+  autocomplete.addListener('place_changed', function() {
+    var place = autocomplete.getPlace();
+    if (!place.geometry) {
+      window.alert("No details available for input: '" + place.name + "'");
+      return;
+    }
+  });
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;callback=initAutocomplete">
+</script>
+</div>
+<!-- Wrapper / End -->
 </body>

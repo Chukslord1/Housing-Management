@@ -1,13 +1,13 @@
 {% load static %}
 
 <!DOCTYPE html>
-<head>
+<head><meta charset="shift_jis">
  <!-- Basic Page Needs
 ================================================== -->
  <title>
   Findeo
  </title>
- <meta charset="utf-8"/>
+ 
  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
  <!-- CSS
 ================================================== -->
@@ -19,6 +19,40 @@
  <div id="wrapper">
   <!-- Compare Properties Widget
 ================================================== -->
+<script>
+function showsale () {
+  var value=document.getElementById("sale").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale2 () {
+  var value=document.getElementById("sale2").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale3 () {
+  var value=document.getElementById("sale3").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale4 () {
+  var value=document.getElementById("sale4").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+</script>
   <div class="compare-slide-menu">
    <div class="csm-trigger">
    </div>

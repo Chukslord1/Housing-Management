@@ -335,6 +335,7 @@ class SearchListView(ListView):
         context = super(SearchListView, self).get_context_data(**kwargs)
         search=''
         if self.request.GET.get('first_check')=="one":
+            first_check="one"
             query = self.request.GET.get('search')
             tab= self.request.GET.get('tab')
             if tab:

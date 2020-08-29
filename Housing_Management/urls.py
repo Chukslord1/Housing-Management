@@ -18,10 +18,13 @@ from . import  settings
 from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.staticfiles.urls import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("App.urls")),
+    path('reset', include('django.contrib.auth.urls')),
+    
 
 ]
 urlpatterns += staticfiles_urlpatterns()

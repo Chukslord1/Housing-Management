@@ -187,7 +187,7 @@ def login_register(request):
             user = auth.authenticate(username=username, password=password)
             if user is not None:
                 auth.login(request, user)
-                return redirect("index.html")
+                return redirect("APP:index")
             else:
                 return render(request, 'login-register.html', {"message": "The user does not exist"})
         elif request.POST.get("check")=="True":

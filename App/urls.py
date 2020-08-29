@@ -2,12 +2,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from . import views
+
 app_name = "APP"
 
 urlpatterns = [
     path("", views.IndexListView.as_view(), name="index"),
     path("index.html", views.IndexListView.as_view(), name="index1"),
     path("login-register.html", views.login_register, name="login_register"),
+    path("accounts/login/", views.login_register, name="login"),
     path("logout.html", views.logout, name="logout"),
     path("submit-property.html", views.submit_property, name="submit_property"),
     path("listing.html", views.SearchListView.as_view(), name="advanced_search"),
@@ -25,4 +27,5 @@ urlpatterns = [
     path("agencies-list.html", views.AgencyListView.as_view(), name="agencies-list"),
     path("agency-page.html/<slug>", views.AgencyDetailView.as_view(), name="agencies"),
     path("agent-page.html/<slug>", views.AgentDetailView.as_view(), name="agents"),
+
 ]

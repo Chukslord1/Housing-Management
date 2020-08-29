@@ -347,7 +347,7 @@ class SearchListView(ListView):
                 new_max=int(max_price)
             else:
                 new_max=10000000000
-            if query:
+            if first_check=="one":
                 search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=tab), Q(category__icontains=category),Q(price__lte=new_max))
                 context['search'] = search
             else:

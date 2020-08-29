@@ -176,10 +176,12 @@ class ArticleListView(ListView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
+        context['profile'] = UserProfile.objects.get(user=self.request.user)
 
         return context
 
 def login_register(request):
+    context={'profile':UserProfile.objects.get(user=request.user)}
     if request.method == 'POST':
         if request.POST.get("check")=="False":
             username = request.POST['username']
@@ -189,7 +191,8 @@ def login_register(request):
                 auth.login(request, user)
                 return redirect("APP:index")
             else:
-                return render(request, 'login-register.html', {"message": "invalid login details"})
+                context={'profile':UserProfile.objects.get(user=request.user),"message": "invalid login details"}
+                return render(request, 'login-register.html')
         elif request.POST.get("check")=="True":
             username = request.POST['username']
             email = request.POST['email']
@@ -199,7 +202,7 @@ def login_register(request):
             if password1 == password2:
                 if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
 
-                    context = {"messages": "email already exists"}
+                    context = {'profile':UserProfile.objects.get(user=request.user),"messages": "email already exists"}
                 else:
                     user = User.objects.create(
                         username=username, password=password1, email=email)
@@ -207,7 +210,7 @@ def login_register(request):
                     user.save()
                     profile = UserProfile.objects.create(user=user, username=username,email=email)
                     profile.save()
-                    context = {"messages": "User Added"}
+                    context = {'profile':UserProfile.objects.get(user=request.user),"messages": "User Added"}
                     return render(request,'login-register.html',context)
         else:
             return render(request,'login-register.html')
@@ -219,7 +222,7 @@ def logout(request):
     return redirect("index.html")
 
 def submit_property(request):
-    context={"agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
+    context={'profile':UserProfile.objects.get(user=request.user),"agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
     if request.method=="POST":
         title=request.POST.get("title")
         status=request.POST.get("status")
@@ -280,7 +283,7 @@ def submit_property(request):
         slug=title+status+address+price_new
         property_check=Property.objects.filter(title=title,address=address)
         if property_check:
-            context={'message':"Property Already Exists","agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
+            context={'profile':UserProfile.objects.get(user=request.user),'message':"Property Already Exists","agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
         else:
             property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
             area=area,rooms=rooms,image_1=image_1,image_2=image_2,image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,image_7=image_7,address=address,
@@ -314,7 +317,7 @@ def submit_property(request):
                 server.login("housing-send@advancescholar.com", "housing@24hubs.com")
                 text = msg.as_string()
                 server.sendmail(fromaddr, toaddr, text)
-            context={"message":"Successfully Added Property"}
+            context={'profile':UserProfile.objects.get(user=request.user),"message":"Successfully Added Property"}
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)
@@ -331,6 +334,10 @@ class SearchListView(ListView):
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
             tab= self.request.GET.get('tab')
+            if tab:
+                tab= self.request.GET.get('tab')
+            else:
+                tab="e"
             category= self.request.GET.get('category')
             max_price=self.request.GET.get('max_price')
             if max_price:
@@ -338,7 +345,7 @@ class SearchListView(ListView):
             else:
                 new_max=10000000000
             if query:
-                search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type=tab) | Q(sale_type__icontains="e"), Q(category__icontains=category),Q(price__lte=new_max))
+                search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=tab), Q(category__icontains=category),Q(price__lte=new_max))
                 context['search'] = search
             else:
                 search = self.model.objects.none()
@@ -481,6 +488,7 @@ class SearchListView(ListView):
         context['losangeles'] = Property.objects.filter(Q(address__icontains="losangeles")).count()
         context['sanfransisco'] = Property.objects.filter(Q(address__icontains="sanfransisco")).count()
         context['miami'] = Property.objects.filter(Q(address__icontains="miami")).count()
+        context['profile']=UserProfile.objects.get(user=self.request.user)
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
@@ -570,10 +578,23 @@ class CategoryListView(ListView):
                 else:
                     pass
         elif self.request.GET.get("filter")=="True":
+            filter="True"
             query = self.request.GET.get('search')
             sale_type=self.request.GET.get('sale_type')
             category = self.request.GET.get('category')
+            if category:
+                category = self.request.GET.get('category')
+            else:
+                category="e"
             state = self.request.GET.get('state')
+            if state:
+                state = self.request.GET.get('state')
+            else:
+                state=query
+            if query:
+                query= self.request.GET.get('search')
+            else:
+                query=state
             feature=self.request.GET.get('check')
             min_area_1 = self.request.GET.get('min_area_1')
             max_area_1 = self.request.GET.get('max_area_1')
@@ -590,13 +611,15 @@ class CategoryListView(ListView):
             bedrooms_1 = self.request.GET.get('bedrooms')
             if bedrooms_1:
                 bedrooms=int(bedrooms_1)
+                bedrooms=bedrooms+1
             else:
-                bedrooms=0
+                bedrooms=6
             bathrooms_1 = self.request.GET.get('bathrooms')
             if bathrooms_1:
                 bathrooms=int(bathrooms_1)
+                bathrooms=bathrooms+1
             else:
-                bathrooms=0
+                bathrooms=6
             if max_price:
                 new_max=int(max_price)
             else:
@@ -605,9 +628,13 @@ class CategoryListView(ListView):
                 new_max_area=int(max_area)
             else:
                 new_max_area=10000000000
-            if query or state:
+            if sale_type:
+                sale_type=self.request.GET.get('sale_type')
+            else:
+                sale_type="e"
+            if filter=="True":
                 zero=0
-                search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type=sale_type) | Q(sale_type__icontains="e"), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area) | Q(area__lte=100000),Q(bedrooms=bedrooms),Q(bathrooms=bathrooms))
+                search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
                 context['search'] = search
             else:
                 search = self.model.objects.none()
@@ -651,6 +678,7 @@ class CategoryListView(ListView):
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
+        context['profile']=UserProfile.objects.get(user=self.request.user)
         if query:
             context['popular'] = Property.objects.filter(Q(category__icontains=query))
         if self.request.user.is_authenticated:
@@ -739,10 +767,23 @@ class PopularListView(ListView):
                 else:
                     pass
         elif self.request.GET.get("filter")=="True":
+            filter="True"
             query = self.request.GET.get('search')
             sale_type=self.request.GET.get('sale_type')
             category = self.request.GET.get('category')
+            if category:
+                category = self.request.GET.get('category')
+            else:
+                category="e"
             state = self.request.GET.get('state')
+            if state:
+                state = self.request.GET.get('state')
+            else:
+                state=query
+            if query:
+                query= self.request.GET.get('search')
+            else:
+                query=state
             feature=self.request.GET.get('check')
             min_area_1 = self.request.GET.get('min_area_1')
             max_area_1 = self.request.GET.get('max_area_1')
@@ -759,13 +800,15 @@ class PopularListView(ListView):
             bedrooms_1 = self.request.GET.get('bedrooms')
             if bedrooms_1:
                 bedrooms=int(bedrooms_1)
+                bedrooms=bedrooms+1
             else:
-                bedrooms=0
+                bedrooms=6
             bathrooms_1 = self.request.GET.get('bathrooms')
             if bathrooms_1:
                 bathrooms=int(bathrooms_1)
+                bathrooms=bathrooms+1
             else:
-                bathrooms=0
+                bathrooms=6
             if max_price:
                 new_max=int(max_price)
             else:
@@ -774,9 +817,13 @@ class PopularListView(ListView):
                 new_max_area=int(max_area)
             else:
                 new_max_area=10000000000
-            if query or state:
+            if sale_type:
+                sale_type=self.request.GET.get('sale_type')
+            else:
+                sale_type="e"
+            if filter=="True":
                 zero=0
-                search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type=sale_type) | Q(sale_type__icontains="e"), Q(category__icontains=category),Q(price__lte=new_max) | Q(price__lte=10000000),Q(area__lte=new_max_area) | Q(area__lte=100000),Q(bedrooms=bedrooms) | Q(bedrooms__gte=0),Q(bathrooms=bathrooms) | Q(bathrooms__gte=0))
+                search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
                 context['search'] = search
             else:
                 search = self.model.objects.none()
@@ -820,6 +867,7 @@ class PopularListView(ListView):
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
+        context['profile']=UserProfile.objects.get(user=self.request.user)
         context['popular'] = Property.objects.filter(Q(address__icontains=query))
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
@@ -840,7 +888,7 @@ class PopularListView(ListView):
 
 def compare(request):
     compare=Comparison.objects.all()
-    context={"compare":compare}
+    context={"compare":compare,'profile':UserProfile.objects.get(user=request.user)}
     if request.GET.get('clear')=="True":
         clear=Comparison.objects.filter(creator=request.user)
         clear.delete()
@@ -848,7 +896,7 @@ def compare(request):
     return render(request,"compare-properties.html",context)
 
 def contact(request):
-    context={"compare":Comparison.objects.all()}
+    context={"compare":Comparison.objects.all,'profile':UserProfile.objects.get(user=request.user)}
     if request.method=="POST":
         name=request.POST['name']
         email=request.POST['email']
@@ -872,7 +920,7 @@ def contact(request):
         server.login("housing-send@advancescholar.com", "housing@24hubs.com")
         text = msg.as_string()
         server.sendmail(fromaddr, toaddr, text)
-        context={'message':'Your message has been sent sucessfully',"compare":Comparison.objects.all()}
+        context={'profile':UserProfile.objects.get(user=request.user),'message':'Your message has been sent sucessfully',"compare":Comparison.objects.all()}
         return render(request, 'contact.html',context)
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
@@ -973,6 +1021,7 @@ class PropertyDetailView(DetailView):
         else:
             pass
         context['houses'] = Property.objects.filter(sale_type=obj.sale_type,category=obj.category).exclude(title=obj.title)
+        context['profile']=UserProfile.objects.get(user=self.request.user)
         return context
 
 class ArticleDetailView(DetailView):
@@ -1002,6 +1051,7 @@ class ArticleDetailView(DetailView):
         context['commment_no'] = Comment.objects.filter(blog=obj.title).count()
         context['comments'] = Comment.objects.filter(blog=obj.title)
         popular=[]
+        context['profile']=UserProfile.objects.get(user=self.request.user)
         blog=Article.objects.all()
         check=1
         for i in blog:
@@ -1030,6 +1080,7 @@ class AgencyListView(ListView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
+        context['profile']=UserProfile.objects.get(user=self.request.user)
         return context
 
 class AgencyDetailView(DetailView):
@@ -1162,6 +1213,7 @@ class AgencyDetailView(DetailView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
+        context['profile']=UserProfile.objects.get(user=self.request.user)
         return context
 
 class AgentDetailView(DetailView):
@@ -1189,6 +1241,7 @@ class AgentDetailView(DetailView):
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
             pass
+        context['profile']=UserProfile.objects.get(user=self.request.user)
         return context
 
 def profile(request):
@@ -1229,7 +1282,7 @@ def profile(request):
     return render(request,"my-profile.html",context)
 
 def properties(request):
-    context={"compare":Comparison.objects.all(),"properties":Property.objects.filter(creator=request.user)}
+    context={"compare":Comparison.objects.all(),"properties":Property.objects.filter(creator=request.user),"profile":UserProfile.objects.get(user=request.user)}
     if request.method=="POST":
         if request.POST.get("delete")=="True":
             title=request.POST.get("title")
@@ -1242,7 +1295,7 @@ def properties(request):
     return render(request,"my-properties.html",context)
 
 def password(request):
-    context={"compare":Comparison.objects.all()}
+    context={"compare":Comparison.objects.all(),"profile":UserProfile.objects.get(user=request.user)}
     if request.method=="POST":
         current=request.POST.get("current")
         password=request.POST.get("password")
@@ -1262,7 +1315,7 @@ def password(request):
     return render(request,"change-password.html",context)
 
 def bookmark(request):
-    context={"compare":Comparison.objects.all(),"books":Bookmark.objects.filter(creator=request.user)}
+    context={"compare":Comparison.objects.all(),"books":Bookmark.objects.filter(creator=request.user),"profile":UserProfile.objects.get(user=request.user)}
     if request.method=="POST":
         if request.POST.get("delete")=="True":
             title=request.POST.get("title")

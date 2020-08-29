@@ -34,20 +34,20 @@
       }
 
       var locations = [
-        [ locationData('single-property-page-1.html','$275,000','$520 / sq ft','images/listing-01.jpg','Eagle Apartmets',"9364 School St. Lynchburg, NY "), 40.7427837, -73.11445617675781, 1, markerIcon ],
+        [ locationData('single-property-page-1.html','$275,000','$520 / sq m','images/listing-01.jpg','Eagle Apartmets',"9364 School St. Lynchburg, NY "), 40.7427837, -73.11445617675781, 1, markerIcon ],
         [ locationData('single-property-page-1.html','$900','monthly','images/listing-02.jpg','Serene Uptown',"6 Bishop Ave. Perkasie, PA"), 40.70437865245596, -73.98674011230469, 2, markerIcon ],
-        [ locationData('single-property-page-1.html','$425,000','$770 / sq ft','images/listing-04.jpg','Selway Apartments',"33 William St. Northbrook, IL "), 40.94401669296697, -74.16938781738281, 3, markerIcon ],
-        [ locationData('single-property-page-1.html','$535,000','$640 / sq ft','images/listing-05.jpg','Oak Tree Villas',"71 Lower River Dr. Bronx, NY "), 40.77055783505125, -74.26002502441406, 4, markerIcon ],
+        [ locationData('single-property-page-1.html','$425,000','$770 / sq m','images/listing-04.jpg','Selway Apartments',"33 William St. Northbrook, IL "), 40.94401669296697, -74.16938781738281, 3, markerIcon ],
+        [ locationData('single-property-page-1.html','$535,000','$640 / sq m','images/listing-05.jpg','Oak Tree Villas',"71 Lower River Dr. Bronx, NY "), 40.77055783505125, -74.26002502441406, 4, markerIcon ],
 
         [ locationData('single-property-page-1.html','$1700','monthly','images/listing-03.jpg','Meridian Villas',"778 Country St. Panama City, FL"), 41.79424986338271, -87.7093505859375, 5, markerIcon ],
         [ locationData('single-property-page-1.html','$500','monthly','images/listing-06.jpg','Old Town Manchester',"7843 Durham Avenue, MD"), 41.76967281691741, -87.9510498046875, 6, markerIcon ],
 
-        [ locationData('single-property-page-1.html','$275,000','$520 / sq ft','images/listing-01.jpg','Eagle Apartmets',"9364 School St. Lynchburg, NY "), 36.13610021320376, -115.1312255859375, 7, markerIcon ],
+        [ locationData('single-property-page-1.html','$275,000','$520 / sq m','images/listing-01.jpg','Eagle Apartmets',"9364 School St. Lynchburg, NY "), 36.13610021320376, -115.1312255859375, 7, markerIcon ],
         [ locationData('single-property-page-1.html','$900','monthly','images/listing-02.jpg','Serene Uptown',"6 Bishop Ave. Perkasie, PA"), 36.10637081203522, -115.22872924804688, 8, markerIcon ],
 
         [ locationData('single-property-page-1.html','$1700','monthly','images/listing-03.jpg','Meridian Villas',"778 Country St. Panama City, FL"), 32.86020942314693, -97.09442138671875, 9, markerIcon ],
-        [ locationData('single-property-page-1.html','$425,000','$770 / sq ft','images/listing-04.jpg','Selway Apartments',"33 William St. Northbrook, IL "), 32.80943825730526, -96.88018798828125, 10, markerIcon ],
-        [ locationData('single-property-page-1.html','$535,000','$640 / sq ft','images/listing-05.jpg','Oak Tree Villas',"71 Lower River Dr. Bronx, NY "), 32.684695132205626, -96.89666748046875, 11, markerIcon ],
+        [ locationData('single-property-page-1.html','$425,000','$770 / sq m','images/listing-04.jpg','Selway Apartments',"33 William St. Northbrook, IL "), 32.80943825730526, -96.88018798828125, 10, markerIcon ],
+        [ locationData('single-property-page-1.html','$535,000','$640 / sq m','images/listing-05.jpg','Oak Tree Villas',"71 Lower River Dr. Bronx, NY "), 32.684695132205626, -96.89666748046875, 11, markerIcon ],
       ];
 
 

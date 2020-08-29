@@ -189,7 +189,7 @@ def login_register(request):
                 auth.login(request, user)
                 return redirect("APP:index")
             else:
-                return render(request, 'login-register.html', {"message": "The user does not exist"})
+                return render(request, 'login-register.html', {"message": "invalid login details"})
         elif request.POST.get("check")=="True":
             username = request.POST['username']
             email = request.POST['email']
@@ -230,7 +230,10 @@ def submit_property(request):
         else:
             price=1000000
         price_per_unit_new=request.POST.get("price_per_unit")
-        price_per_unit=int(price_per_unit_new)
+        if price_per_unit_new:
+            price_per_unit=int(price_per_unit_new)
+        else:
+            price_per_unit=2000
         agency=request.POST.get("agency")
         area_new=request.POST.get("area")
         if area_new:
@@ -241,7 +244,7 @@ def submit_property(request):
         if rooms_new:
             rooms=int(rooms_new)
         else:
-            roms=3
+            rooms=3
         image_1=request.FILES.get("image_1")
         image_2=request.FILES.get("image_2")
         image_3=request.FILES.get("image_3")
@@ -285,7 +288,7 @@ def submit_property(request):
             property.save()
             agent=Agent.objects.create(name=name,phone=phone,email=email)
             agent.save()
-            user_check=User.object.filter(email=email)
+            user_check=User.objects.filter(email=email)
             if user_check:
                 pass
             else:

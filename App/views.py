@@ -176,12 +176,12 @@ class ArticleListView(ListView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
-        context['profile'] = UserProfile.objects.get(user=self.request.user)
+        if self.request.user.is_authenticated:
+            context['profile'] = UserProfile.objects.get(user=self.request.user)
 
         return context
 
 def login_register(request):
-    context={'profile':UserProfile.objects.get(user=request.user)}
     if request.method == 'POST':
         if request.POST.get("check")=="False":
             username = request.POST['username']
@@ -191,7 +191,7 @@ def login_register(request):
                 auth.login(request, user)
                 return redirect("APP:index")
             else:
-                context={'profile':UserProfile.objects.get(user=request.user),"message": "invalid login details"}
+                context={"message": "invalid login details"}
                 return render(request, 'login-register.html')
         elif request.POST.get("check")=="True":
             username = request.POST['username']
@@ -202,7 +202,7 @@ def login_register(request):
             if password1 == password2:
                 if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
 
-                    context = {'profile':UserProfile.objects.get(user=request.user),"messages": "email already exists"}
+                    context = {"messages": "email already exists"}
                 else:
                     user = User.objects.create(
                         username=username, password=password1, email=email)
@@ -210,7 +210,7 @@ def login_register(request):
                     user.save()
                     profile = UserProfile.objects.create(user=user, username=username,email=email)
                     profile.save()
-                    context = {'profile':UserProfile.objects.get(user=request.user),"messages": "User Added"}
+                    context = {'profile':profile,"messages": "User Added"}
                     return render(request,'login-register.html',context)
         else:
             return render(request,'login-register.html')
@@ -222,7 +222,10 @@ def logout(request):
     return redirect("index.html")
 
 def submit_property(request):
-    context={'profile':UserProfile.objects.get(user=request.user),"agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
+    profile=''
+    if request.user.is_authenticated:
+        profile=UserProfile.objects.get(user=request.user)
+    context={'profile':profile,"agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
     if request.method=="POST":
         title=request.POST.get("title")
         status=request.POST.get("status")
@@ -283,7 +286,7 @@ def submit_property(request):
         slug=title+status+address+price_new
         property_check=Property.objects.filter(title=title,address=address)
         if property_check:
-            context={'profile':UserProfile.objects.get(user=request.user),'message':"Property Already Exists","agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
+            context={'profile':profile,'message':"Property Already Exists","agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
         else:
             property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
             area=area,rooms=rooms,image_1=image_1,image_2=image_2,image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,image_7=image_7,address=address,
@@ -317,7 +320,7 @@ def submit_property(request):
                 server.login("housing-send@advancescholar.com", "housing@24hubs.com")
                 text = msg.as_string()
                 server.sendmail(fromaddr, toaddr, text)
-            context={'profile':UserProfile.objects.get(user=request.user),"message":"Successfully Added Property"}
+            context={'profile':profile,"message":"Successfully Added Property"}
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)
@@ -488,9 +491,9 @@ class SearchListView(ListView):
         context['losangeles'] = Property.objects.filter(Q(address__icontains="losangeles")).count()
         context['sanfransisco'] = Property.objects.filter(Q(address__icontains="sanfransisco")).count()
         context['miami'] = Property.objects.filter(Q(address__icontains="miami")).count()
-        context['profile']=UserProfile.objects.get(user=self.request.user)
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
+            context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
         if search:
@@ -678,11 +681,11 @@ class CategoryListView(ListView):
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
-        context['profile']=UserProfile.objects.get(user=self.request.user)
         if query:
             context['popular'] = Property.objects.filter(Q(category__icontains=query))
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
+            context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
         if cat:
@@ -735,7 +738,6 @@ class PopularListView(ListView):
                 price=self.request.GET.get('price')
                 price_per_unit=self.request.GET.get('price_per_unit')
                 image=self.request.GET.get('image')
-                print(image)
                 image_url=image.replace('/media/','')
                 area=self.request.GET.get('area')
                 rooms=self.request.GET.get('rooms')
@@ -867,10 +869,10 @@ class PopularListView(ListView):
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
-        context['profile']=UserProfile.objects.get(user=self.request.user)
         context['popular'] = Property.objects.filter(Q(address__icontains=query))
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
+            context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
         if pop:
@@ -887,8 +889,11 @@ class PopularListView(ListView):
 
 
 def compare(request):
+    profile=''
+    if request.user.is_authenticated:
+        profile=UserProfile.objects.get(user=request.user)
     compare=Comparison.objects.all()
-    context={"compare":compare,'profile':UserProfile.objects.get(user=request.user)}
+    context={"compare":compare,'profile':profile}
     if request.GET.get('clear')=="True":
         clear=Comparison.objects.filter(creator=request.user)
         clear.delete()
@@ -896,7 +901,10 @@ def compare(request):
     return render(request,"compare-properties.html",context)
 
 def contact(request):
-    context={"compare":Comparison.objects.all,'profile':UserProfile.objects.get(user=request.user)}
+    profile=''
+    if request.user.is_authenticated:
+        profile=UserProfile.objects.get(user=request.user)
+    context={"compare":Comparison.objects.all,'profile':profile}
     if request.method=="POST":
         name=request.POST['name']
         email=request.POST['email']
@@ -920,7 +928,7 @@ def contact(request):
         server.login("housing-send@advancescholar.com", "housing@24hubs.com")
         text = msg.as_string()
         server.sendmail(fromaddr, toaddr, text)
-        context={'profile':UserProfile.objects.get(user=request.user),'message':'Your message has been sent sucessfully',"compare":Comparison.objects.all()}
+        context={'profile':profile,'message':'Your message has been sent sucessfully',"compare":Comparison.objects.all()}
         return render(request, 'contact.html',context)
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
@@ -1018,10 +1026,10 @@ class PropertyDetailView(DetailView):
         check_login=self.request.user
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
+            context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
         context['houses'] = Property.objects.filter(sale_type=obj.sale_type,category=obj.category).exclude(title=obj.title)
-        context['profile']=UserProfile.objects.get(user=self.request.user)
         return context
 
 class ArticleDetailView(DetailView):
@@ -1043,6 +1051,7 @@ class ArticleDetailView(DetailView):
         check_login=self.request.user
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
+            context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
 
@@ -1051,7 +1060,6 @@ class ArticleDetailView(DetailView):
         context['commment_no'] = Comment.objects.filter(blog=obj.title).count()
         context['comments'] = Comment.objects.filter(blog=obj.title)
         popular=[]
-        context['profile']=UserProfile.objects.get(user=self.request.user)
         blog=Article.objects.all()
         check=1
         for i in blog:
@@ -1075,12 +1083,13 @@ class AgencyListView(ListView):
         if self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
-        context["compare"] = Comparison.objects.all()
+        if self.request.user.is_authenticated:
+            context["compare"] = Comparison.objects.all()
+            context['profile']=UserProfile.objects.get(user=self.request.user)
         paginator= Paginator(Agency.objects.all(),10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
-        context['profile']=UserProfile.objects.get(user=self.request.user)
         return context
 
 class AgencyDetailView(DetailView):
@@ -1204,6 +1213,7 @@ class AgencyDetailView(DetailView):
 
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
+            context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
 
@@ -1213,7 +1223,6 @@ class AgencyDetailView(DetailView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
-        context['profile']=UserProfile.objects.get(user=self.request.user)
         return context
 
 class AgentDetailView(DetailView):
@@ -1239,13 +1248,16 @@ class AgentDetailView(DetailView):
             clear.delete()
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
+            context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
-        context['profile']=UserProfile.objects.get(user=self.request.user)
         return context
 
 def profile(request):
-    context={"profile":UserProfile.objects.get(user=request.user)}
+    profile=''
+    if request.user.is_authenticated:
+        profile=UserProfile.objects.get(user=request.user)
+    context={"profile":profile}
     if request.method=="POST":
         name=request.POST.get("name")
         title=request.POST.get("title")
@@ -1282,7 +1294,10 @@ def profile(request):
     return render(request,"my-profile.html",context)
 
 def properties(request):
-    context={"compare":Comparison.objects.all(),"properties":Property.objects.filter(creator=request.user),"profile":UserProfile.objects.get(user=request.user)}
+    profile=''
+    if request.user.is_authenticated:
+        profile=UserProfile.objects.get(user=request.user)
+    context={"compare":Comparison.objects.all(),"properties":Property.objects.filter(creator=request.user),"profile":profile}
     if request.method=="POST":
         if request.POST.get("delete")=="True":
             title=request.POST.get("title")

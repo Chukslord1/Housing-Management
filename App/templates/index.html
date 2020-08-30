@@ -301,7 +301,7 @@
          <div class="main-search-form">
          <div class="search-type">
           <label class="active">
-           <input checked="checked" class="first-tab" name="tab" type="radio"/>
+           <input id="myInput10"  name="tab" value="e" type="radio"/>
            Any Status
           </label>
           <label>
@@ -385,14 +385,17 @@ function showOutput () {
   var value=document.getElementById("myInput").value;
   var value_2=document.getElementById("myInput2").value;
   var value_3=document.getElementById("myInput3").value;
-  if (document.getElementById("myInput4").checked == true){
-    var value_4=document.getElementById("myInput4").value;
+  if (document.getElementById("myInput7").checked == true){
+    var value_4=document.getElementById("myInput7").value;
   } else if (document.getElementById("myInput5").checked == true){
     var value_4=document.getElementById("myInput5").value;
   } else if (document.getElementById("myInput6").checked == true){
     var value_4=document.getElementById("myInput6").value;
-  } else {
-    var value_4=document.getElementById("myInput7").value;
+  }else if (document.getElementById("myInput4").checked == true){
+    var value_4=document.getElementById("myInput4").value;
+  }
+   else {
+    var value_4="e";
   }
 
   var paid="one";
@@ -813,7 +816,7 @@ function showsale4 () {
     </div>
     <div class="col-md-4">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/popular-location-01.jpg' %}" onclick="showpopular()">
+     <a class="img-box" data-background-image="{% static 'images/lagos.jfif' %}" onclick="showpopular()">
       <!-- Badge -->
       <div class="listing-badges">
        <span class="featured">
@@ -833,7 +836,7 @@ function showsale4 () {
     </div>
     <div class="col-md-8">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/popular-location-02.jpg' %}" onclick="showpopular2()">
+     <a class="img-box" data-background-image="{% static 'images/abuja.jfif' %}" onclick="showpopular2()">
       <div class="img-box-content visible">
         <input id="mypop2" name="mypop" type="hidden" value="abuja" />
        <h4>
@@ -847,7 +850,7 @@ function showsale4 () {
     </div>
     <div class="col-md-8">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/popular-location-03.jpg' %}" onclick="showpopular3()">
+     <a class="img-box" data-background-image="{% static 'images/port.jfif' %}" onclick="showpopular3()">
       <div class="img-box-content visible">
         <input id="mypop3" name="mypop" type="hidden" value="port" />
        <h4>
@@ -861,7 +864,7 @@ function showsale4 () {
     </div>
     <div class="col-md-4">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/popular-location-04.jpg' %}" onclick="showpopular4()">
+     <a class="img-box" data-background-image="{% static 'images/niger.jfif' %}" onclick="showpopular4()">
       <div class="img-box-content visible">
         <input id="mypop4" name="mypop" type="hidden" value="niger" />
        <h4>
@@ -914,6 +917,52 @@ function showsale4 () {
      {% endfor %}
     </div>
    </div>
+  </section>
+  <section class="fullwidth border-top margin-top-40 margin-bottom-0 padding-top-60 padding-bottom-65" data-background-color="#ffffff">
+   <!-- Logo Carousel -->
+   <div class="container">
+    <div class="row">
+     <div class="col-md-12">
+      <h3 class="headline centered margin-bottom-40 margin-top-10">
+       Our Partners
+       <span>
+        We can assist you with your innovation or commercialisation journey!
+       </span>
+      </h3>
+     </div>
+     <!-- Carousel -->
+     <div class="col-md-12">
+      <div class="logo-carousel dot-navigation">
+       <div class="item">
+        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/24_hubs.png"/>
+       </div>
+       <div class="item">
+        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/celebworld_multiconcept_nig_ltd.png"/>
+       </div>
+       <div class="item">
+        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/artarc.png"/>
+       </div>
+       <div class="item">
+        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/concarc.png"/>
+       </div>
+       <div class="item">
+        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/citec_villas_international_ltd.png"/>
+       </div>
+       <div class="item">
+        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/nido___e.png"/>
+       </div>
+       <div class="item">
+        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/life_style_hub.png"/>
+       </div>
+       <div class="item">
+        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/errand_boss.png"/>
+       </div>
+      </div>
+     </div>
+     <!-- Carousel / End -->
+    </div>
+   </div>
+   <!-- Logo Carousel / End -->
   </section>
   <!-- Fullwidth Section / End -->
   <!-- Flip banner -->

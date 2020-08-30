@@ -343,6 +343,10 @@ class SearchListView(ListView):
             else:
                 tab="e"
             category= self.request.GET.get('category')
+            if category:
+                category= self.request.GET.get('category')
+            else:
+                category="e"
             max_price=self.request.GET.get('max_price')
             if max_price:
                 new_max=int(max_price)

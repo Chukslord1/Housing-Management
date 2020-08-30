@@ -1346,3 +1346,6 @@ def bookmark(request):
             clear=Comparison.objects.filter(creator=request.user)
             clear.delete()
     return render(request,"my-bookmarks.html",context)
+
+def agents(request):
+    return render(request,"agents-list.html")

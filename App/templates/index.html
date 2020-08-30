@@ -103,6 +103,29 @@
          sales@afriproperty.com.ng
         </a>
        </li>
+       <li>
+        <a href="#">
+         About
+        </a>
+       </li>
+       <li>
+        <a href="{% url 'APP:contact'%}">
+         Contact
+        </a>
+       </li>
+       <li>
+         <div class="top-bar-dropdown">
+           <span>Useful Links</span>
+           <ul class="options">
+             <li><div class="arrow"></div></li>
+             <li><a href="{% url 'APP:agents' %}">Agents</a></li>
+             <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
+             <li><a href="{% url 'APP:agents' %}">Developers</a></li>
+             <li><a href="{% url 'APP:agents' %}">Partners</a></li>
+             <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
+           </ul>
+         </div>
+       </li>
       </ul>
      </div>
      <!-- Left Side Content / End -->

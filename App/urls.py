@@ -22,6 +22,7 @@ urlpatterns = [
     path("my-bookmarks.html", views.bookmark, name="bookmarks"),
     path("my-properties.html", views.properties, name="properties"),
     path("change-password.html", views.password, name="password"),
+    path("agents-list", views.agents, name="agents"),
     path("blog-post.html/<slug>", views.ArticleDetailView.as_view(), name="blog"),
     path("blog.html", views.ArticleListView.as_view(), name="blog-list"),
     path("agencies-list.html", views.AgencyListView.as_view(), name="agencies-list"),

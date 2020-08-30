@@ -285,42 +285,48 @@ def submit_property(request):
         sewer=request.POST.get("sewer")
         slug=title+status+address+price_new
         property_check=Property.objects.filter(title=title,address=address)
+        trial_check=UserProfile.objects.get(user=request.user)
         if property_check:
             context={'profile':profile,'message':"Property Already Exists","agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
         else:
-            property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
-            area=area,rooms=rooms,image_1=image_1,image_2=image_2,image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,image_7=image_7,address=address,
-            description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,name=name,email=email,phone=phone,slug=slug)
-            property.save()
-            agent=Agent.objects.create(name=name,phone=phone,email=email)
-            agent.save()
-            user_check=User.objects.filter(email=email)
-            if user_check:
-                pass
+            if trial_check.trials>0 or request.user.is_superuser:
+                property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
+                area=area,rooms=rooms,image_1=image_1,image_2=image_2,image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,image_7=image_7,address=address,
+                description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,name=name,email=email,phone=phone,slug=slug)
+                property.save()
+                trial_no=trial_check.trials
+                new_trial_value=trial_no-1
+                trial_check.trials=new_trial
+                trial_check.save()
+                user_check=User.objects.filter(email=email)
+                if user_check:
+                    pass
+                else:
+                    user=User.objects.create(username=name,password=name+"2020",email=email)
+                    user.save()
+                    message=request.POST['message']
+                    fromaddr = "housing-send@advancescholar.com"
+                    toaddr = email
+                    subject="Account Creation Details"
+                    msg = MIMEMultipart()
+                    msg['From'] = fromaddr
+                    msg['To'] = toaddr
+                    msg['Subject'] = "Your account login details"
+
+
+                    body = "Your account login details are:"+" username: "+name+" password "+ password
+                    msg.attach(MIMEText(body, 'plain'))
+
+                    server = smtplib.SMTP('mail.advancescholar.com',  26)
+                    server.ehlo()
+                    server.starttls()
+                    server.ehlo()
+                    server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+                    text = msg.as_string()
+                    server.sendmail(fromaddr, toaddr, text)
+                context={'profile':profile,"message":"Successfully Added Property"}
             else:
-                user=User.objects.create(username=name,password=name+"2020",email=email)
-                user.save()
-                message=request.POST['message']
-                fromaddr = "housing-send@advancescholar.com"
-                toaddr = email
-                subject="Account Creation Details"
-                msg = MIMEMultipart()
-                msg['From'] = fromaddr
-                msg['To'] = toaddr
-                msg['Subject'] = "Your account login details"
-
-
-                body = "Your account login details are:"+" username: "+name+" password "+ password
-                msg.attach(MIMEText(body, 'plain'))
-
-                server = smtplib.SMTP('mail.advancescholar.com',  26)
-                server.ehlo()
-                server.starttls()
-                server.ehlo()
-                server.login("housing-send@advancescholar.com", "housing@24hubs.com")
-                text = msg.as_string()
-                server.sendmail(fromaddr, toaddr, text)
-            context={'profile':profile,"message":"Successfully Added Property"}
+                context={'profile':profile,"message":"You have exceeded Your Trial of 3 properties submission, please subscribe for a package to continue submitting properties"}
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)
@@ -518,10 +524,12 @@ class CategoryListView(ListView):
         query=''
         context = super(CategoryListView, self).get_context_data(**kwargs)
         if self.request.GET.get('first_check')=="one":
+            context['value'] = "Search"
             query = self.request.GET.get('search')
             if query:
                 search = self.model.objects.filter(Q(address__icontains=query))
                 context['search'] = search
+
             else:
                 search = self.model.objects.none()
                 context['search'] = search
@@ -530,6 +538,7 @@ class CategoryListView(ListView):
             if query:
                 cat = self.model.objects.filter(Q(category__icontains=query))
                 context['search'] = cat
+                context["cat"]=query
             else:
                 cat = self.model.objects.none()
                 context['search'] = cat
@@ -538,6 +547,7 @@ class CategoryListView(ListView):
             if query:
                 cat = self.model.objects.filter(Q(sale_type__icontains=query))
                 context['search'] = cat
+                context['sale'] = query
             else:
                 cat = self.model.objects.none()
                 context['search'] = cat
@@ -644,6 +654,7 @@ class CategoryListView(ListView):
                 zero=0
                 search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
                 context['search'] = search
+                context['filter'] = "Filter"
             else:
                 search = self.model.objects.none()
                 context['search'] = search
@@ -715,6 +726,7 @@ class PopularListView(ListView):
         query=''
         context = super(PopularListView, self).get_context_data(**kwargs)
         if self.request.GET.get('first_check')=="one":
+            context['value'] = "Search"
             query = self.request.GET.get('search')
             if query:
                 search = self.model.objects.filter(Q(address__icontains=query))
@@ -723,6 +735,7 @@ class PopularListView(ListView):
                 search = self.model.objects.none()
                 context['search'] = search
         elif self.request.GET.get('check_pop')=="True":
+            context['pop']="Popular"
             query = self.request.GET.get('pop')
             if query:
                 pop = self.model.objects.filter(Q(address__icontains=query))
@@ -774,6 +787,7 @@ class PopularListView(ListView):
                 else:
                     pass
         elif self.request.GET.get("filter")=="True":
+            context['filter']="Filter"
             filter="True"
             query = self.request.GET.get('search')
             sale_type=self.request.GET.get('sale_type')

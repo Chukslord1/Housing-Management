@@ -122,6 +122,7 @@ class UserProfile(models.Model):
     facebook=models.TextField(blank=True, null=True)
     google=models.TextField(blank=True, null=True)
     linkedin=models.TextField(blank=True, null=True)
+    trials=models.IntegerField()
 
 class Tour(models.Model):
     user= models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)

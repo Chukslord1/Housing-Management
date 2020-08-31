@@ -1,3 +1,4 @@
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -19,40 +20,6 @@
  <div id="wrapper">
   <!-- Compare Properties Widget
 ================================================== -->
-<script>
-function showsale () {
-  var value=document.getElementById("sale").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="{% url 'APP:category' %}" + queryString;
-}
-function showsale2 () {
-  var value=document.getElementById("sale2").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="{% url 'APP:category' %}" + queryString;
-}
-function showsale3 () {
-  var value=document.getElementById("sale3").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="{% url 'APP:category' %}" + queryString;
-}
-function showsale4 () {
-  var value=document.getElementById("sale4").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="{% url 'APP:category' %}" + queryString;
-}
-</script>
   <div class="compare-slide-menu">
    <div class="csm-trigger">
    </div>
@@ -136,6 +103,29 @@ function showsale4 () {
         <a href="#">
          sales@afriproperty.com.ng
         </a>
+       </li>
+       <li>
+        <a href="#">
+         About
+        </a>
+       </li>
+       <li>
+        <a href="{% url 'APP:contact'%}">
+         Contact
+        </a>
+       </li>
+       <li>
+         <div class="top-bar-dropdown">
+           <span>Useful Links</span>
+           <ul class="options">
+             <li><div class="arrow"></div></li>
+             <li><a href="{% url 'APP:agents' %}">Agents</a></li>
+             <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
+             <li><a href="{% url 'APP:agents' %}">Developers</a></li>
+             <li><a href="{% url 'APP:agents' %}">Partners</a></li>
+             <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
+           </ul>
+         </div>
        </li>
       </ul>
      </div>
@@ -228,6 +218,26 @@ function showsale4 () {
               <input type="hidden" id="sale4" value="hotel">
              <a onclick="showsale4()">
               Hotels
+             </a>
+            </li>
+            <li>
+             <a href="">
+              Products and Services
+             </a>
+            </li>
+            <li>
+             <a href="">
+              Property Videos
+             </a>
+            </li>
+            <li>
+             <a href="">
+            Multilevel Component
+             </a>
+            </li>
+            <li>
+             <a href="">
+              Property Valuation
              </a>
             </li>
           </ul>
@@ -360,84 +370,18 @@ function showsale4 () {
     <div class="col-md-12">
      <!-- Slider -->
      <div class="property-slider default">
-      <a class="item mfp-gallery" data-background-image="{{object.image_1.url}}" href="{{object.image_1.url}}">
+       {% for item in object.image_1.all %}
+      <a class="item mfp-gallery" data-background-image="{% get_media_prefix %}{{item.image}}" href="{% get_media_prefix %}{{item.image}}">
       </a>
-      {% if object.image_2 %}
-      <a class="item mfp-gallery" data-background-image="{{object.image_2.url}}" href="{{object.image_2.url}}">
-      </a>
-      {% else %}
-      <a class="item mfp-gallery" data-background-image="images/single-property-02.jpg" href="images/single-property-02.jpg">
-      </a>
-      {% endif %}
-      {% if object.image_3 %}
-      <a class="item mfp-gallery" data-background-image="{{object.image_3.url}}" href="{{object.image_3.url}}">
-      </a>
-      {% else %}
-      <a class="item mfp-gallery" data-background-image="images/single-property-03.jpg" href="images/single-property-03.jpg">
-      </a>
-      {% endif %}
-      {% if object.image_4 %}
-      <a class="item mfp-gallery" data-background-image="{{object.image_4.url}}" href="{{object.image_4.url}}">
-      </a>
-      {% else %}
-      <a class="item mfp-gallery" data-background-image="images/single-property-04.jpg" href="images/single-property-04.jpg">
-      </a>
-      {% endif %}
-      {% if object.image_5 %}
-      <a class="item mfp-gallery" data-background-image="{{object.image_5.url}}" href="{{object.image_5.url}}">
-      </a>
-      {% else %}
-      <a class="item mfp-gallery" data-background-image="images/single-property-05.jpg" href="images/single-property-05.jpg">
-      </a>
-      {% endif %}
-      {% if object.image_6 %}
-      <a class="item mfp-gallery" data-background-image="{{object.image_6.url}}" href="{{object.image_6.url}}">
-      </a>
-      {% else %}
-      <a class="item mfp-gallery" data-background-image="images/single-property-06.jpg" href="images/single-property-06.jpg">
-      </a>
-      {% endif %}
+      {% endfor %}
      </div>
      <!-- Slider Thumbs -->
      <div class="property-slider-nav">
+       {% for item in object.image_1.all %}
       <div class="item">
-       <img alt="" src="{{object.image_1.url}}"/>
+       <img alt="" src="{% get_media_prefix %}{{item.image}}"/>
       </div>
-      <div class="item">
-        {% if object.image_2 %}
-       <img alt="" src="{{object.image_2.url}}"/>
-       {% else %}
-       <img alt="" src="{% static 'images/single-property-02.jpg' %}"/>
-       {% endif %}
-      </div>
-      <div class="item">
-        {% if object.image_3 %}
-       <img alt="" src="{{object.image_3.url}}"/>
-       {% else %}
-       <img alt="" src="{% static 'images/single-property-03.jpg' %}"/>
-       {% endif %}
-      </div>
-      <div class="item">
-        {% if object.image_4 %}
-       <img alt="" src="{{object.image_4.url}}"/>
-       {% else %}
-       <img alt="" src="{% static 'images/single-property-04.jpg' %}"/>
-       {% endif %}
-      </div>
-      <div class="item">
-        {% if object.image_5 %}
-       <img alt="" src="{{object.image_5.url}}"/>
-       {% else %}
-       <img alt="" src="{% static 'images/single-property-05.jpg' %}"/>
-       {% endif %}
-      </div>
-      <div class="item">
-        {% if object.image_6 %}
-       <img alt="" src="{{object.image_6.url}}"/>
-       {% else %}
-       <img alt="" src="{% static 'images/single-property-06.jpg' %}"/>
-       {% endif %}
-      </div>
+      {% endfor %}
      </div>
     </div>
    </div>

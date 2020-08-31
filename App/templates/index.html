@@ -220,7 +220,7 @@
              </a>
             </li>
             <li>
-             <a href="">
+             <a href="{% url 'APP:pricing' %}">
               Products and Services
              </a>
             </li>
@@ -612,7 +612,11 @@ function showsale4 () {
             <input name="sale_type"  type="hidden" value="{{house.sale_type}}" />
             <input name="price"  type="hidden" value="{{house.price}}" />
             <input name="price_per_unit"  type="hidden" value="{{house.price_per_unit}}" />
-            <input name="image"  type="hidden" value="{{house.image_1.url}}" />
+            {% for item in house.image_1.all %}
+            {% if forloop.first %}
+            <input name="image"  type="hidden" value="{% get_media_prefix %}{{item.image}}" />
+            {% endif %}
+            {% endfor %}
             <input name="area"  type="hidden" value="{{house.area}}" />
             <input name="rooms"  type="hidden" value="{{house.rooms}}" />
             <input name="bedrooms"  type="hidden" value="{{house.bedrooms}}" />
@@ -638,7 +642,11 @@ function showsale4 () {
             <input name="sale_type"  type="hidden" value="{{house.sale_type}}" />
             <input name="price"  type="hidden" value="{{house.price}}" />
             <input name="price_per_unit"  type="hidden" value="{{house.price_per_unit}}" />
-            <input name="image"  type="hidden" value="{{house.image_1.url}}" />
+            {% for item in house.image_1.all %}
+            {% if forloop.first %}
+            <input name="image"  type="hidden" value="{% get_media_prefix %}{{item.image}}" />
+            {% endif %}
+            {% endfor %}
             <input name="area"  type="hidden" value="{{house.area}}" />
             <input name="rooms"  type="hidden" value="{{house.rooms}}" />
             <input name="bedrooms"  type="hidden" value="{{house.bedrooms}}" />
@@ -657,27 +665,11 @@ function showsale4 () {
         </form>
          </div>
          <div class="listing-carousel">
+           {% for item in house.image_1.all %}
           <div>
-            {% if house.image_1 %}
-           <img alt="" src="{{house.image_1.url}}"/>
-           {% else %}
-           <img alt="" src="{% static 'images/listing-01c.jpg' %}"/>
-           {% endif %}
+           <img alt="" src="{% get_media_prefix %}{{item.image}}"/>
           </div>
-          <div>
-            {% if house.image_2 %}
-           <img alt="" src="{{house.image_2.url}}"/>
-           {% else %}
-           <img alt="" src="{% static 'images/listing-01c.jpg' %}"/>
-           {% endif %}
-          </div>
-          <div>
-            {% if house.image_2 %}
-           <img alt="" src="{{house.image_2.url}}"/>
-           {% else %}
-           <img alt="" src="{% static 'images/listing-01c.jpg' %}"/>
-           {% endif %}
-          </div>
+          {% endfor %}
          </div>
         </a>
         <div class="listing-content">

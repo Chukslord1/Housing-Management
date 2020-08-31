@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 # Create your models here.
+
+
+class Images(models.Model):
+    title =models.TextField()
+    image = models.ImageField()
+    
 class Property(models.Model):
     title=models.TextField(blank=True, null=True)
     answer = (
@@ -19,7 +25,7 @@ class Property(models.Model):
     price=models.IntegerField(blank=True, null=True)
     price_per_unit = models.TextField(blank=True, null=True)
     agency = models.TextField(blank=True, null=True)
-    image_1 = models.ImageField(blank=True, null=True)
+    image_1 = models.ManyToManyField(Images)
     image_2 = models.ImageField(blank=True, null=True)
     image_3 = models.ImageField(blank=True, null=True)
     image_4 = models.ImageField(blank=True, null=True)
@@ -54,6 +60,7 @@ class Property(models.Model):
         return reverse("APP:details", kwargs={
             'slug': self.slug
         })
+
 
 
 class Article(models.Model):
@@ -123,6 +130,8 @@ class UserProfile(models.Model):
     google=models.TextField(blank=True, null=True)
     linkedin=models.TextField(blank=True, null=True)
     trials=models.IntegerField()
+
+
 
 class Tour(models.Model):
     user= models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)

@@ -10,7 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.db.models import Q
-from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark
+from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images
 import random
 
 class IndexListView(ListView):
@@ -79,9 +79,9 @@ class IndexListView(ListView):
                     area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
                     water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
                     compare.save()
-                compare_count=Comparison.objects.filter(creator=self.request.user    ).count()
-                if compare_count>3:
-                    compare_delete=Comparsion.objects.filter(creator=self.request    .user)[4:]
+                compare_count=Comparison.objects.filter(creator=self.request.user).count()
+                if compare_count>4:
+                    compare_delete=Comparison.objects.filter(creator=self.request.user).latest('date')
                     compare_delete.delete()
                 else:
                     pass
@@ -251,13 +251,7 @@ def submit_property(request):
             rooms=int(rooms_new)
         else:
             rooms=3
-        image_1=request.FILES.get("image_1")
-        image_2=request.FILES.get("image_2")
-        image_3=request.FILES.get("image_3")
-        image_4=request.FILES.get("image_4")
-        image_5=request.FILES.get("image_5")
-        image_6=request.FILES.get("image_6")
-        image_7=request.FILES.get("image_7")
+        image_1=request.FILES.getlist("image_1")
         address=request.POST.get("address")
         description=request.POST.get("description")
         building_age_new=request.POST.get("building_age")
@@ -291,12 +285,16 @@ def submit_property(request):
         else:
             if trial_check.trials>0 or request.user.is_superuser:
                 property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
-                area=area,rooms=rooms,image_1=image_1,image_2=image_2,image_3=image_3,image_4=image_4,image_5=image_5,image_6=image_6,image_7=image_7,address=address,
+                area=area,rooms=rooms,address=address,
                 description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,name=name,email=email,phone=phone,slug=slug)
                 property.save()
+                for x in image_1:
+                    new_image=Images.objects.create(title=title,image=x)
+                    new_image.save()
+                    property.image_1.add(new_image)
                 trial_no=trial_check.trials
                 new_trial_value=trial_no-1
-                trial_check.trials=new_trial
+                trial_check.trials=new_trial_value
                 trial_check.save()
                 user_check=User.objects.filter(email=email)
                 if user_check:
@@ -327,6 +325,7 @@ def submit_property(request):
                 context={'profile':profile,"message":"Successfully Added Property"}
             else:
                 context={'profile':profile,"message":"You have exceeded Your Trial of 3 properties submission, please subscribe for a package to continue submitting properties"}
+                return redirect("pricing-tables.html")
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)
@@ -1363,3 +1362,6 @@ def bookmark(request):
 
 def agents(request):
     return render(request,"agents-list.html")
+
+def pricing(request):
+    return render(request,"pricing-tables.html")

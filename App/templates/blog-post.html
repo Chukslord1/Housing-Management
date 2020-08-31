@@ -120,8 +120,8 @@
              <li><div class="arrow"></div></li>
              <li><a href="{% url 'APP:agents' %}">Agents</a></li>
              <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
-             <li><a href="{% url 'APP:agents' %}">Developers</a></li>
-             <li><a href="{% url 'APP:agents' %}">Partners</a></li>
+             <li><a href="">Developers</a></li>
+             <li><a href="">Partners</a></li>
              <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
            </ul>
          </div>
@@ -220,7 +220,7 @@
              </a>
             </li>
             <li>
-             <a href="">
+             <a href="{% url 'APP:pricing' %}">
               Products and Services
              </a>
             </li>
@@ -877,7 +877,7 @@ function filterFunction() {
     <div class="row">
      <div class="col-md-12">
       <div class="copyrights">
-       Â© 2020 Afriproperty. All Rights Reserved.
+       <a href=" https://24hubs.com">powered by 24 Hubs©</a> 2020 Afriproperty. All Rights Reserved.
       </div>
      </div>
     </div>
@@ -890,7 +890,7 @@ function filterFunction() {
    </a>
   </div>
   <!-- Scripts
-  ================================================== -->
+================================================== -->
   <script src="{% static 'scripts/jquery-3.4.1.min.js' %}" type="text/javascript">
   </script>
   <script src="{% static 'scripts/jquery-migrate-3.1.0.min.js' %}" type="text/javascript">
@@ -928,10 +928,10 @@ function filterFunction() {
         return;
       }
     });
-  }
+}
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;callback=initAutocomplete">
   </script>
-  </div>
-  <!-- Wrapper / End -->
-  </body>
+ </div>
+ <!-- Wrapper / End -->
+</body>

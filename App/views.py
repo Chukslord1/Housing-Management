@@ -1328,7 +1328,7 @@ def properties(request):
     return render(request,"my-properties.html",context)
 
 def password(request):
-    context={"compare":Comparison.objects.all(),"profile":UserProfile.objects.get(user=request.user)}
+    context={"compare":Comparison.objects.filter(creator=request.user),"profile":UserProfile.objects.get(user=request.user)}
     if request.method=="POST":
         current=request.POST.get("current")
         password=request.POST.get("password")
@@ -1348,7 +1348,7 @@ def password(request):
     return render(request,"change-password.html",context)
 
 def bookmark(request):
-    context={"compare":Comparison.objects.all(),"books":Bookmark.objects.filter(creator=request.user),"profile":UserProfile.objects.get(user=request.user)}
+    context={"compare":Comparison.objects.filter(creator=request.user),"books":Bookmark.objects.filter(creator=request.user),"profile":UserProfile.objects.get(user=request.user)}
     if request.method=="POST":
         if request.POST.get("delete")=="True":
             title=request.POST.get("title")
@@ -1361,7 +1361,27 @@ def bookmark(request):
     return render(request,"my-bookmarks.html",context)
 
 def agents(request):
-    return render(request,"agents-list.html")
+    profile=''
+    paginator= Paginator(Agent.objects.all(),10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context={"compare":Comparison.objects.filter(creator=request.user),"profile":profile,"agents":Agent.objects.all(),"page_obj":page_obj}
+    if request.method=="GET":
+        if request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=request.user)
+            clear.delete()
+        elif request.GET.get("check")=="True":
+            query = request.GET.get('search')
+            if query:
+                search = Agent.objects.filter(Q(address__icontains=query) | Q(name__icontains=query))
+                context['search'] = search
+
+            else:
+                search = Agent.objects.none()
+                context['search'] = search
+
+    return render(request,"agents-list.html",context)
 
 def pricing(request):
+
     return render(request,"pricing-tables.html")

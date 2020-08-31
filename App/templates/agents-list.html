@@ -19,40 +19,6 @@
  <div id="wrapper">
   <!-- Compare Properties Widget
 ================================================== -->
-<script>
-function showsale () {
-  var value=document.getElementById("sale").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-function showsale2 () {
-  var value=document.getElementById("sale2").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-function showsale3 () {
-  var value=document.getElementById("sale3").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-function showsale4 () {
-  var value=document.getElementById("sale4").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-</script>
   <div class="compare-slide-menu">
    <div class="csm-trigger">
    </div>
@@ -90,7 +56,7 @@ function showsale4 () {
      {% endfor %}
      {% if user.is_authenticated %}
      {% else %}
-     <a class="sign-in" href="login-register.html">
+     <a class="sign-in" href="{% url 'APP:login_register' %}">
       <i class="fa fa-user">
       </i>
       Log In / Register To Compare
@@ -101,7 +67,7 @@ function showsale4 () {
     </div>
     {% if user.is_authenticated %}
     <div class="csm-buttons">
-     <a class="button" href="compare-properties.html">
+     <a class="button" href="{% url 'APP:compare' %}">
       Compare
      </a>
      <form method="GET">
@@ -136,6 +102,29 @@ function showsale4 () {
         <a href="#">
          sales@afriproperty.com.ng
         </a>
+       </li>
+       <li>
+        <a href="#">
+         About
+        </a>
+       </li>
+       <li>
+        <a href="{% url 'APP:contact'%}">
+         Contact
+        </a>
+       </li>
+       <li>
+         <div class="top-bar-dropdown">
+           <span>Useful Links</span>
+           <ul class="options">
+             <li><div class="arrow"></div></li>
+             <li><a href="{% url 'APP:agents' %}">Agents</a></li>
+             <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
+             <li><a href="">Developers</a></li>
+             <li><a href="">Partners</a></li>
+             <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
+           </ul>
+         </div>
        </li>
       </ul>
      </div>
@@ -230,6 +219,26 @@ function showsale4 () {
               Hotels
              </a>
             </li>
+            <li>
+             <a href="{% url 'APP:pricing' %}">
+              Products and Services
+             </a>
+            </li>
+            <li>
+             <a href="">
+              Property Videos
+             </a>
+            </li>
+            <li>
+             <a href="">
+            Multilevel Component
+             </a>
+            </li>
+            <li>
+             <a href="">
+              Property Valuation
+             </a>
+            </li>
           </ul>
         </li>
        </ul>
@@ -241,25 +250,73 @@ function showsale4 () {
      <!-- Left Side Content / End -->
      <!-- Right Side Content / End -->
      <div class="right-side">
-      <!-- Header Widget -->
-      <div class="header-widget">
-        {% if user.is_authenticated %}
-        <a class="sign-in" onclick="window.location.href='logout.html'">
-         <i class="fa fa-user">
-         </i>
-         Logout
-        </a>
-        {% else %}
-       <a class="sign-in" href="login-register.html">
+       {% if user.is_authenticated %}
+       <a class="sign-in" onclick="window.location.href='{% url 'APP:logout' %}'">
         <i class="fa fa-user">
         </i>
-        Log In / Register
+        Logout
        </a>
-       {% endif %}
-       <a class="button border" href="submit-property.html">
+       <div class="user-menu">
+        <div class="user-name">
+         <span>
+           {% if profile.image %}
+           <img alt="" src="{{profile.image.url}}"/>
+           {% else %}
+          <img alt="" src="{% static 'images/agent-03.jpg' %}"/>
+          {% endif %}
+         </span>
+         Hi, {{user}}!
+        </div>
+        <ul>
+         <li>
+          <a href="{% url 'APP:profile' %}">
+           <i class="sl sl-icon-user">
+           </i>
+           My Profile
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:bookmarks' %}">
+           <i class="sl sl-icon-star">
+           </i>
+           Bookmarks
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:properties' %}">
+           <i class="sl sl-icon-docs">
+           </i>
+           My Properties
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:logout' %}">
+           <i class="sl sl-icon-power">
+           </i>
+           Log Out
+          </a>
+         </li>
+        </ul>
+       </div>
+       {% else %}
+      <a class="sign-in" href="{% url 'APP:login_register' %}">
+       <i class="fa fa-user">
+       </i>
+       Log In / Register
+      </a>
+      {% endif %}
+      <!-- Header Widget -->
+      <div class="header-widget">
+       <!-- User Menu -->
+
+
+
+       <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
        </a>
+
       </div>
+
       <!-- Header Widget / End -->
      </div>
      <!-- Right Side Content / End -->
@@ -291,7 +348,7 @@ function showsale4 () {
          </a>
         </li>
         <li>
-         Listings
+         Agent Listings
         </li>
        </ul>
       </nav>
@@ -305,23 +362,28 @@ function showsale4 () {
    <div class="row">
     <div class="col-md-12">
      <!-- Main Search Input -->
+     <form method="GET">
      <div class="main-search-input margin-bottom-40">
-      <input class="ico-01" placeholder="Type an agent name or location" type="text" value=""/>
+       <input type="hidden" name="check" value="True" />
+      <input class="ico-01" name="search" placeholder="Type an agent name or location" type="text" value=""/>
       <button class="button">
        Search
       </button>
      </div>
+   </form>
     </div>
     <div class="col-md-12">
      <div class="row">
       <!-- Agents Container -->
+      {% if search %}
+      {% for item in search %}
       <div class="agents-grid-container">
        <!-- Agent -->
        <div class="grid-item col-lg-3 col-md-4 col-sm-6 col-xs-12">
         <div class="agent">
          <div class="agent-avatar">
           <a href="agent-page.html">
-           <img alt="" src="{% static 'images/agent-01.jpg' %}"/>
+           <img alt="" src="{{item.image.url}}"/>
            <span class="view-profile-btn">
             View Profile
            </span>
@@ -330,253 +392,43 @@ function showsale4 () {
          <div class="agent-content">
           <div class="agent-name">
            <h4>
-            <a href="agent-page.html">
-             Tom Wilson
+            <a href="{{item.get_absolute_url}}">
+             {{item.name}}
             </a>
            </h4>
            <span>
-            Agent In New York
+            {{item.title}}
            </span>
           </div>
           <ul class="agent-contact-details">
            <li>
             <i class="sl sl-icon-call-in">
             </i>
-            (123) 123-456
+            {{item.phone}}
            </li>
            <li>
             <i class="fa fa-envelope-o">
             </i>
             <a href="#">
-             tom@example.com
+            {{item.email}}
             </a>
            </li>
           </ul>
           <ul class="social-icons">
            <li>
-            <a class="facebook" href="#">
+            <a class="facebook" href="{{item.facebook}}">
              <i class="icon-facebook">
              </i>
             </a>
            </li>
            <li>
-            <a class="twitter" href="#">
+            <a class="twitter" href="{{item.twitter}}">
              <i class="icon-twitter">
              </i>
             </a>
            </li>
            <li>
-            <a class="gplus" href="#">
-             <i class="icon-gplus">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="linkedin" href="#">
-             <i class="icon-linkedin">
-             </i>
-            </a>
-           </li>
-          </ul>
-          <div class="clearfix">
-          </div>
-         </div>
-        </div>
-       </div>
-       <!-- Agent / End -->
-       <!-- Agent -->
-       <div class="grid-item col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <div class="agent">
-         <div class="agent-avatar">
-          <a href="agent-page.html">
-           <img alt="" src="{% static 'images/agent-02.jpg' %}"/>
-           <span class="view-profile-btn">
-            View Profile
-           </span>
-          </a>
-         </div>
-         <div class="agent-content">
-          <div class="agent-name">
-           <h4>
-            <a href="agent-page.html">
-             Jennie Wilson
-            </a>
-           </h4>
-           <span>
-            Agent In New York
-           </span>
-          </div>
-          <ul class="agent-contact-details">
-           <li>
-            <i class="sl sl-icon-call-in">
-            </i>
-            (123) 123-456
-           </li>
-           <li>
-            <i class="fa fa-envelope-o">
-            </i>
-            <a href="#">
-             jennie@example.com
-            </a>
-           </li>
-          </ul>
-          <ul class="social-icons">
-           <li>
-            <a class="facebook" href="#">
-             <i class="icon-facebook">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="twitter" href="#">
-             <i class="icon-twitter">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="gplus" href="#">
-             <i class="icon-gplus">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="linkedin" href="#">
-             <i class="icon-linkedin">
-             </i>
-            </a>
-           </li>
-          </ul>
-          <div class="clearfix">
-          </div>
-         </div>
-        </div>
-       </div>
-       <!-- Agent / End -->
-       <!-- Agent -->
-       <div class="grid-item col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <div class="agent">
-         <div class="agent-avatar">
-          <a href="agent-page.html">
-           <img alt="" src="{% static 'images/agent-03.jpg' %}"/>
-           <span class="view-profile-btn">
-            View Profile
-           </span>
-          </a>
-         </div>
-         <div class="agent-content">
-          <div class="agent-name">
-           <h4>
-            <a href="agent-page.html">
-             David Strozier
-            </a>
-           </h4>
-           <span>
-            Agent In Chicago
-           </span>
-          </div>
-          <ul class="agent-contact-details">
-           <li>
-            <i class="sl sl-icon-call-in">
-            </i>
-            (123) 123-456
-           </li>
-           <li>
-            <i class="fa fa-envelope-o">
-            </i>
-            <a href="#">
-             david@example.com
-            </a>
-           </li>
-          </ul>
-          <ul class="social-icons">
-           <li>
-            <a class="facebook" href="#">
-             <i class="icon-facebook">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="twitter" href="#">
-             <i class="icon-twitter">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="gplus" href="#">
-             <i class="icon-gplus">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="linkedin" href="#">
-             <i class="icon-linkedin">
-             </i>
-            </a>
-           </li>
-          </ul>
-          <div class="clearfix">
-          </div>
-         </div>
-        </div>
-       </div>
-       <!-- Agent / End -->
-       <!-- Agent -->
-       <div class="grid-item col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <div class="agent">
-         <div class="agent-avatar">
-          <a href="agent-page.html">
-           <img alt="" src="{% static 'images/agent-04.jpg' %}"/>
-           <span class="view-profile-btn">
-            View Profile
-           </span>
-          </a>
-         </div>
-         <div class="agent-content">
-          <div class="agent-name">
-           <h4>
-            <a href="agent-page.html">
-             Charles Watson
-            </a>
-           </h4>
-           <span>
-            Agent In Dallas
-           </span>
-          </div>
-          <ul class="agent-contact-details">
-           <li>
-            <i class="sl sl-icon-call-in">
-            </i>
-            (123) 123-456
-           </li>
-           <li>
-            <i class="fa fa-envelope-o">
-            </i>
-            <a href="#">
-             charles@example.com
-            </a>
-           </li>
-          </ul>
-          <ul class="social-icons">
-           <li>
-            <a class="facebook" href="#">
-             <i class="icon-facebook">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="twitter" href="#">
-             <i class="icon-twitter">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="gplus" href="#">
-             <i class="icon-gplus">
-             </i>
-            </a>
-           </li>
-           <li>
-            <a class="linkedin" href="#">
+            <a class="linkedin" href="{{item.linkedin}}">
              <i class="icon-linkedin">
              </i>
             </a>
@@ -589,6 +441,75 @@ function showsale4 () {
        </div>
        <!-- Agent / End -->
       </div>
+      {% endfor %}
+      {% else %}
+      {% for item in agents %}
+      <div class="agents-grid-container">
+       <!-- Agent -->
+       <div class="grid-item col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <div class="agent">
+         <div class="agent-avatar">
+          <a href="agent-page.html">
+           <img alt="" src="{{item.image.url}}"/>
+           <span class="view-profile-btn">
+            View Profile
+           </span>
+          </a>
+         </div>
+         <div class="agent-content">
+          <div class="agent-name">
+           <h4>
+            <a href="{{item.get_absolute_url}}">
+             {{item.name}}
+            </a>
+           </h4>
+           <span>
+            {{item.title}}
+           </span>
+          </div>
+          <ul class="agent-contact-details">
+           <li>
+            <i class="sl sl-icon-call-in">
+            </i>
+            {{item.phone}}
+           </li>
+           <li>
+            <i class="fa fa-envelope-o">
+            </i>
+            <a href="#">
+            {{item.email}}
+            </a>
+           </li>
+          </ul>
+          <ul class="social-icons">
+           <li>
+            <a class="facebook" href="{{item.facebook}}">
+             <i class="icon-facebook">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a class="twitter" href="{{item.twitter}}">
+             <i class="icon-twitter">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a class="linkedin" href="{{item.linkedin}}">
+             <i class="icon-linkedin">
+             </i>
+            </a>
+           </li>
+          </ul>
+          <div class="clearfix">
+          </div>
+         </div>
+        </div>
+       </div>
+       <!-- Agent / End -->
+      </div>
+      {% endfor %}
+      {% endif %}
       <!-- Agents Container / End -->
      </div>
     </div>
@@ -596,40 +517,53 @@ function showsale4 () {
      <div class="clearfix">
      </div>
      <!-- Pagination -->
-     <div class="pagination-container margin-top-20">
+     {% if search %}
+     {% else %}
+     <div class="pagination-container">
       <nav class="pagination">
        <ul>
+         <li>
+          <a class="current-page" href=""?page=1"">
+           {{ page_obj.number }}
+          </a>
+         </li>
+         of
         <li>
-         <a class="current-page" href="#">
+         <a  href=""?page=1"">
           1
          </a>
         </li>
+        {% if page_obj.has_next %}
         <li>
-         <a href="#">
+         <a href="?page={{ page_obj.next_page_number }}">
           2
          </a>
         </li>
         <li>
-         <a href="#">
-          3
+         <a href="?page={{ page_obj.paginator.num_pages }}">
+          last
          </a>
         </li>
+        {% endif %}
        </ul>
       </nav>
+      {% if page_obj.has_next %}
       <nav class="pagination-next-prev">
        <ul>
         <li>
-         <a class="prev" href="#">
+         <a class="prev" href="?page={{ page_obj.previous_page_number }}">
           Previous
          </a>
         </li>
         <li>
-         <a class="next" href="#">
+         <a class="next" href="?page={{ page_obj.next_page_number }}">
           Next
          </a>
         </li>
        </ul>
       </nav>
+      {% endif %}
+    {% endif %}
      </div>
      <!-- Pagination / End -->
     </div>
@@ -637,168 +571,168 @@ function showsale4 () {
   </div>
   <!-- Footer
 ================================================== -->
-  <div class="sticky-footer" id="footer">
-   <!-- Main -->
-   <div class="container">
-     <div class="row">
-      <div class="col-md-5 col-sm-6">
-       <img alt="" class="footer-logo" src="{% static 'images/logo.png' %}"/>
-       <br/>
-       <br/>
-       <p>
-        "The house you looked at today and wanted to think about until tomorrow may be the same house someone looked at yesterday and will buy today" -Koko Adasi
-       </p>
-      </div>
-      <div class="col-md-4 col-sm-6">
-       <h4>
-        Helpful Links
-       </h4>
-       <ul class="footer-links">
-        <li>
-         <a href="login-register.html">
-          Login
-         </a>
-        </li>
-        <li>
-         <a href="login-register.html">
-          Sign Up
-         </a>
-        </li>
-        <li>
-         <a href="submit-property.html">
-          Add Property
-         </a>
-        </li>
-       </ul>
-       <ul class="footer-links">
-        <li>
-         <a href="blog.html">
-          Blog
-         </a>
-        </li>
-        <li>
-         <a href="agencies-list.html">
-          Our Agencies
-         </a>
-        </li>
-        <li>
-         <a href="contect.html">
-          Contact
-         </a>
-        </li>
-       </ul>
-       <div class="clearfix">
-       </div>
-      </div>
-      <div class="col-md-3 col-sm-12">
-       <h4>
-        Contact Us
-       </h4>
-       <div class="text-widget">
-        <span>
-         Monrovia Street Wuse 2, Abuja Nigeria
-        </span>
-        <br/>
-        Phone:
-        <span>
-         +(234) 805 882 775, +(234) 905 2213 706
-        </span>
-        <br/>
-        E-Mail:
-        <span>
-         <a href="#">
-          sales@afriproperty.com.ng
-         </a>
-        </span>
-        <br/>
-       </div>
-       <ul class="social-icons margin-top-20">
-        <li>
-         <a class="facebook" href="#">
-          <i class="icon-facebook">
-          </i>
-         </a>
-        </li>
-        <li>
-         <a class="twitter" href="#">
-          <i class="icon-twitter">
-          </i>
-         </a>
-        </li>
-        <li>
-         <a class="gplus" href="#">
-          <i class="icon-gplus">
-          </i>
-         </a>
-        </li>
-        <li>
-         <a class="vimeo" href="#">
-          <i class="icon-vimeo">
-          </i>
-         </a>
-        </li>
-       </ul>
-      </div>
+<div class="sticky-footer" id="footer">
+ <!-- Main -->
+ <div class="container">
+   <div class="row">
+    <div class="col-md-5 col-sm-6">
+     <img alt="" class="footer-logo" src="{% static 'images/logo.png' %}"/>
+     <br/>
+     <br/>
+     <p>
+      "The house you looked at today and wanted to think about until tomorrow may be the same house someone looked at yesterday and will buy today" -Koko Adasi
+     </p>
+    </div>
+    <div class="col-md-4 col-sm-6">
+     <h4>
+      Helpful Links
+     </h4>
+     <ul class="footer-links">
+      <li>
+       <a href="{% url 'APP:login_register' %}">
+        Login
+       </a>
+      </li>
+      <li>
+       <a href="{% url 'APP:login_register' %}">
+        Sign Up
+       </a>
+      </li>
+      <li>
+       <a href="{% url 'APP:submit_property' %}">
+        Add Property
+       </a>
+      </li>
+     </ul>
+     <ul class="footer-links">
+      <li>
+       <a href="{% url 'APP:blog-list' %}">
+        Blog
+       </a>
+      </li>
+      <li>
+       <a href="{% url 'APP:agencies-list' %}">
+        Our Agencies
+       </a>
+      </li>
+      <li>
+       <a href="{% url 'APP:contact' %}">
+        Contact
+       </a>
+      </li>
+     </ul>
+     <div class="clearfix">
      </div>
-    <!-- Copyright -->
-    <div class="row">
-     <div class="col-md-12">
-      <div class="copyrights">
-       Â© 2020 Afriproperty. All Rights Reserved.
-      </div>
+    </div>
+    <div class="col-md-3 col-sm-12">
+     <h4>
+      Contact Us
+     </h4>
+     <div class="text-widget">
+      <span>
+       Monrovia Street Wuse 2, Abuja Nigeria
+      </span>
+      <br/>
+      Phone:
+      <span>
+       +(234) 805 882 775, +(234) 905 2213 706
+      </span>
+      <br/>
+      E-Mail:
+      <span>
+       <a href="#">
+        sales@afriproperty.com.ng
+       </a>
+      </span>
+      <br/>
      </div>
+     <ul class="social-icons margin-top-20">
+      <li>
+       <a class="facebook" href="#">
+        <i class="icon-facebook">
+        </i>
+       </a>
+      </li>
+      <li>
+       <a class="twitter" href="#">
+        <i class="icon-twitter">
+        </i>
+       </a>
+      </li>
+      <li>
+       <a class="gplus" href="#">
+        <i class="icon-gplus">
+        </i>
+       </a>
+      </li>
+      <li>
+       <a class="vimeo" href="#">
+        <i class="icon-vimeo">
+        </i>
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+  <!-- Copyright -->
+  <div class="row">
+   <div class="col-md-12">
+    <div class="copyrights">
+     <a href=" https://24hubs.com">powered by 24 Hubs©</a> 2020 Afriproperty. All Rights Reserved.
     </div>
    </div>
   </div>
-  <!-- Footer / End -->
-  <!-- Back To Top Button -->
-  <div id="backtotop">
-   <a href="#">
-   </a>
-  </div>
-  <!-- Scripts
-================================================== -->
-  <script src="{% static 'scripts/jquery-3.4.1.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/jquery-migrate-3.1.0.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/chosen.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/magnific-popup.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/owl.carousel.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/rangeSlider.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/sticky-kit.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/slick.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/masonry.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/mmenu.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/tooltips.min.js' %}" type="text/javascript">
-  </script>
-  <script src="{% static 'scripts/custom.js' %}" type="text/javascript">
-  </script>
-  <!-- Google Autocomplete -->
-  <script>
-   function initAutocomplete() {
-    var input = document.getElementById('autocomplete-input');
-    var autocomplete = new google.maps.places.Autocomplete(input);
-
-    autocomplete.addListener('place_changed', function() {
-      var place = autocomplete.getPlace();
-      if (!place.geometry) {
-        window.alert("No details available for input: '" + place.name + "'");
-        return;
-      }
-    });
-}
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;callback=initAutocomplete">
-  </script>
  </div>
- <!-- Wrapper / End -->
+</div>
+<!-- Footer / End -->
+<!-- Back To Top Button -->
+<div id="backtotop">
+ <a href="#">
+ </a>
+</div>
+<!-- Scripts
+================================================== -->
+<script src="{% static 'scripts/jquery-3.4.1.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/jquery-migrate-3.1.0.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/chosen.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/magnific-popup.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/owl.carousel.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/rangeSlider.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/sticky-kit.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/slick.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/masonry.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/mmenu.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/tooltips.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'scripts/custom.js' %}" type="text/javascript">
+</script>
+<!-- Google Autocomplete -->
+<script>
+ function initAutocomplete() {
+  var input = document.getElementById('autocomplete-input');
+  var autocomplete = new google.maps.places.Autocomplete(input);
+
+  autocomplete.addListener('place_changed', function() {
+    var place = autocomplete.getPlace();
+    if (!place.geometry) {
+      window.alert("No details available for input: '" + place.name + "'");
+      return;
+    }
+  });
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;callback=initAutocomplete">
+</script>
+</div>
+<!-- Wrapper / End -->
 </body>

@@ -277,7 +277,7 @@ def submit_property(request):
         cooling=request.POST.get("cooling")
         heating=request.POST.get("heating")
         sewer=request.POST.get("sewer")
-        title_new=title.replace("","-")
+        title_new=title.replace(" ","-")
         title_final=title_new.replace(":","-")
         slug=title_final+status+address+price_new
         property_check=Property.objects.filter(title=title,address=address)
@@ -1367,7 +1367,8 @@ def agents(request):
     paginator= Paginator(Agent.objects.all(),10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context={"compare":Comparison.objects.filter(creator=request.user),"profile":profile,"agents":Agent.objects.all(),"page_obj":page_obj}
+    if request.user.is_authenticated:
+        context={"compare":Comparison.objects.filter(creator=request.user),"profile":profile,"agents":Agent.objects.all(),"page_obj":page_obj}
     if request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)

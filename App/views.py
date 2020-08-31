@@ -277,7 +277,9 @@ def submit_property(request):
         cooling=request.POST.get("cooling")
         heating=request.POST.get("heating")
         sewer=request.POST.get("sewer")
-        slug=title+status+address+price_new
+        title_new=title.replace("","-")
+        title_final=title_new.replace(":","-")
+        slug=title_final+status+address+price_new
         property_check=Property.objects.filter(title=title,address=address)
         trial_check=UserProfile.objects.get(user=request.user)
         if property_check:

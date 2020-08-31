@@ -1363,6 +1363,7 @@ def bookmark(request):
     return render(request,"my-bookmarks.html",context)
 
 def agents(request):
+    context=""
     profile=''
     paginator= Paginator(Agent.objects.all(),10)
     page_number = request.GET.get('page')

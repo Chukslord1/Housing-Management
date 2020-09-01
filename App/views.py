@@ -1621,7 +1621,21 @@ def agents(request):
     return render(request,"agents-list.html",context)
 
 def pricing(request):
-
+    if request.method=="POST":
+        if request.POST.get("paid")=="True" and request.POST.get("amount")=="3000":
+            trial_check=UserProfile.objects.get(user=request.user)
+            trial_no=trial_check.trials
+            new_trial_value=trial_no+20
+            trial_check.trials=new_trial_value
+            trial_check.save()
+        elif request.POST.get("paid")=="True" and request.POST.get("amount")=="10000":
+            trial_check=UserProfile.objects.get(user=request.user)
+            trial_no=trial_check.trials
+            new_trial_value=trial_no+100
+            trial_check.trials=new_trial_value
+            trial_check.save()
+        else:
+            pass
     return render(request,"pricing-tables.html")
 
 

@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'App',
+    'rest_framework',
+    'paystack',
 ]
 
 EMAIL_HOST = 'mail.advancescholar.com'

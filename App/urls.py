@@ -31,5 +31,8 @@ urlpatterns = [
     path("agencies-list.html", views.AgencyListView.as_view(), name="agencies-list"),
     path("agency-page.html/<slug>", views.AgencyDetailView.as_view(), name="agencies"),
     path("agent-page.html/<slug>", views.AgentDetailView.as_view(), name="agents"),
+    path("developer-list.html", views.DeveloperListView.as_view(), name="developer-list"),
+    path("partners.html", views.PartnerListView.as_view(), name="partner-list"),
+    path("developer-page.html/<slug>", views.DeveloperDetailView.as_view(), name="developers"),
 
 ]

@@ -25,6 +25,7 @@ class Property(models.Model):
     price=models.IntegerField(blank=True, null=True)
     price_per_unit = models.TextField(blank=True, null=True)
     agency = models.TextField(blank=True, null=True)
+    developer = models.TextField(blank=True, null=True)
     image_1 = models.ManyToManyField(Images)
     image_2 = models.ImageField(blank=True, null=True)
     image_3 = models.ImageField(blank=True, null=True)
@@ -169,6 +170,32 @@ class Agency(models.Model):
         return reverse("APP:agencies", kwargs={
             'slug': self.slug
         })
+class Developer(models.Model):
+    title=models.TextField(blank=True, null=True)
+    address=models.TextField(blank=True, null=True)
+    description=models.TextField(blank=True, null=True)
+    phone=models.TextField(blank=True, null=True)
+    email=models.TextField(blank=True, null=True)
+    image=models.ImageField()
+    slug = models.SlugField()
+    paginate_by = 2
+
+    def __str__(self):
+        return self.title
+    def get_absolute_url(self):
+        return reverse("APP:developers", kwargs={
+            'slug': self.slug
+        })
+
+class Partner(models.Model):
+    title=models.TextField(blank=True, null=True)
+    image=models.ImageField()
+    url = models.CharField(max_length = 200)
+    paginate_by = 2
+
+    def __str__(self):
+        return self.title
+
 
 class Agent(models.Model):
     name=models.TextField(blank=True, null=True)

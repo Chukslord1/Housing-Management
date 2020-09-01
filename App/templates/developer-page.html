@@ -472,11 +472,8 @@ window.location.href="category" + queryString;
     <div class="row">
      <div class="col-md-12">
       <h2>
-       Partners
+       {{object.title}}
       </h2>
-      <span>
-       Our Partners
-      </span>
       <!-- Breadcrumbs -->
       <nav id="breadcrumbs">
        <ul>
@@ -486,7 +483,10 @@ window.location.href="category" + queryString;
          </a>
         </li>
         <li>
-        Partners
+        Devloper
+        </li>
+        <li>
+         {{object.title}}
         </li>
        </ul>
       </nav>
@@ -500,85 +500,426 @@ window.location.href="category" + queryString;
    <div class="row">
     <div class="col-md-12">
      <!-- Agency -->
-     {% for item in object_list %}
      <div class="agent agent-page agency">
-      <a class="agent-avatar" href="{{item.url}}">
-       <img alt="" src="{{item.image.url}}"/>
-      </a>
+      <div class="agent-avatar">
+       <img alt="" src="{{object.image.url}}"/>
+      </div>
       <div class="agent-content">
        <div class="agent-name">
         <h4>
-         <a href="{{item.get_absolute_url}}">
-          {{item.title}}
-         </a>
+         {{object.title}}
         </h4>
         <span>
          <i class="fa fa-map-marker">
          </i>
+         {{object.address}}
         </span>
        </div>
+       <p>
+        {{object.description}}
+       </p>
        <ul class="agent-contact-details">
+        <li>
+         <i class="sl sl-icon-call-in">
+         </i>
+         {{object.phone}}
+        </li>
+        <li>
+         <i class="fa fa-envelope-o">
+         </i>
+         <a href="#">
+          {{object.email}}
+         </a>
+        </li>
        </ul>
        <div class="clearfix">
        </div>
       </div>
      </div>
-     {% endfor %}
-     <!-- Agency -->
-    </div>
-    <div class="col-md-12">
-     <div class="clearfix">
-     </div>
-     <!-- Pagination -->
-     <div class="pagination-container">
-      <nav class="pagination">
-       <ul>
-         <li>
-          <a class="current-page" href=""?page=1"">
-           {{ page_obj.number }}
-          </a>
-         </li>
-         of
-        <li>
-         <a  href=""?page=1"">
-          1
-         </a>
-        </li>
-        {% if page_obj.has_next %}
-        <li>
-         <a href="?page={{ page_obj.next_page_number }}">
-          2
-         </a>
-        </li>
-        <li>
-         <a href="?page={{ page_obj.paginator.num_pages }}">
-          last
-         </a>
-        </li>
-        {% endif %}
-       </ul>
-      </nav>
-      {% if page_obj.has_next %}
-      <nav class="pagination-next-prev">
-       <ul>
-        <li>
-         <a class="prev" href="?page={{ page_obj.previous_page_number }}">
-          Previous
-         </a>
-        </li>
-        <li>
-         <a class="next" href="?page={{ page_obj.next_page_number }}">
-          Next
-         </a>
-        </li>
-       </ul>
-      </nav>
-      {% endif %}
-     </div>
-     <!-- Pagination / End -->
     </div>
    </div>
   </div>
+  <!-- Content
+================================================== -->
+  <div class="container">
+   <div class="row sticky-wrapper">
+    <div class="col-lg-8 col-md-8">
+     <div class="style-1 agency-tabs">
+      <!-- Tabs Navigation -->
+      <ul class="tabs-nav">
+       <li class="active">
+        <a href="#tab1">
+         Our Properties
+        </a>
+       </li>
+      </ul>
+      <!-- Tabs Content -->
+      <div class="tabs-container">
+
+       <div class="tab-content" id="tab1">
+         <div class="card">
+     <div class="notification notice large margin-bottom-55">
+       The Information displayed about this property comprises of property advertisement. Nigeria Property Centre makes no waranty as to the accuracy or completeness of the advertisement
+       or any linked or associated information, and Nigeria Property Center has no control over the content. This property listing does not constitute property particulars. The Information
+        is provided and maintained by <b>Hausworks Limited</b>.Nigeria Property Centre shall not in any way be held liable for the actions of any agent and/or property owner/landlord on or off this website.
+     </div>
+   </div>
+   <div class="main-search-input margin-bottom-35">
+   </div>
+        <!-- Main Search Input -->
+        <form method="GET">
+        <div class="main-search-input margin-bottom-35">
+         <input class="ico-01" placeholder="Enter address e.g. street, city and state or zip" name="search" type="text" value=""/>
+         <button class="button" type="submit">
+          Search
+         </button>
+        </div>
+      </form>
+        <!-- Sorting / Layout Switcher -->
+        <div class="row margin-bottom-15">
+         <div class="col-md-6">
+          <!-- Sort by -->
+          <div class="sort-by">
+           <label>
+            Sort by:
+           </label>
+           <div class="sort-by-select">
+            <select class="chosen-select-no-single" data-placeholder="Default order">
+             <option>
+              Default Order
+             </option>
+             <option>
+              Price Low to High
+             </option>
+             <option>
+              Price High to Low
+             </option>
+             <option>
+              Newest Properties
+             </option>
+             <option>
+              Oldest Properties
+             </option>
+            </select>
+           </div>
+          </div>
+         </div>
+         <div class="col-md-6">
+          <!-- Layout Switcher -->
+          <div class="layout-switcher">
+           <a class="list" href="#">
+            <i class="fa fa-th-list">
+            </i>
+           </a>
+           <a class="grid" href="#">
+            <i class="fa fa-th-large">
+            </i>
+           </a>
+          </div>
+         </div>
+        </div>
+        <!-- Listings -->
+        <div class="listings-container list-layout">
+         <!-- Listing Item -->
+         {% if search %}
+         {% for item in search %}
+         <div class="listing-item">
+          <a class="listing-img-container" href="{{item.get_absolute_url}}">
+           <div class="listing-badges">
+            <span class="featured">
+             Featured
+            </span>
+            <span>
+             for {{item.sale_type}}
+            </span>
+           </div>
+           <div class="listing-img-content">
+            <span class="listing-price">
+             ₦{{item.price}}
+             <i>
+              ₦{{item.price_per_unit}}/sq m
+             </i>
+            </span>
+            <form method="GET">
+              <input name="third_check"  type="hidden" value="three" />
+              <input name="title"  type="hidden" value="{{item.title}}" />
+              <input name="address"  type="hidden" value="{{item.address}}" />
+              <input name="date"  type="hidden" value="{{item.date}}" />
+              <input name="category"  type="hidden" value="{{item.category}}" />
+              <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
+              <input name="price"  type="hidden" value="{{item.price}}" />
+              <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
+              {% for i in item.image_1.all %}
+              {% if forloop.first %}
+              <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
+              {% endif %}
+              {% endfor %}
+              <input name="area"  type="hidden" value="{{item.area}}" />
+              <input name="rooms"  type="hidden" value="{{item.rooms}}" />
+              <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
+              <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
+              <input name="features"  type="hidden" value="{{item.features}}" />
+              <input name="building_age"  type="hidden" value="{{item.building_age}}" />
+              <input name="parking"  type="hidden" value="{{item.parking}}" />
+              <input name="cooling"  type="hidden" value="{{item.cooling}}" />
+              <input name="heating"  type="hidden" value="{{item.heating}}" />
+              <input name="sewer"  type="hidden" value="{{item.sewer}}" />
+              <input name="water"  type="hidden" value="{{item.water}}" />
+              <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
+              <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
+              <button class="fa fa-star ml-auto"  type="submit">
+              </button>
+          </form>
+            <form method="GET">
+              <input name="second_check"  type="hidden" value="two" />
+              <input name="title"  type="hidden" value="{{item.title}}" />
+              <input name="address"  type="hidden" value="{{item.address}}" />
+              <input name="date"  type="hidden" value="{{item.date}}" />
+              <input name="category"  type="hidden" value="{{item.category}}" />
+              <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
+              <input name="price"  type="hidden" value="{{item.price}}" />
+              <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
+              {% for i in item.image_1.all %}
+              {% if forloop.first %}
+              <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
+              {% endif %}
+              {% endfor %}
+              <input name="area"  type="hidden" value="{{item.area}}" />
+              <input name="rooms"  type="hidden" value="{{item.rooms}}" />
+              <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
+              <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
+              <input name="features"  type="hidden" value="{{item.features}}" />
+              <input name="building_age"  type="hidden" value="{{item.building_age}}" />
+              <input name="parking"  type="hidden" value="{{item.parking}}" />
+              <input name="cooling"  type="hidden" value="{{item.cooling}}" />
+              <input name="heating"  type="hidden" value="{{item.heating}}" />
+              <input name="sewer"  type="hidden" value="{{item.sewer}}" />
+              <input name="water"  type="hidden" value="{{item.water}}" />
+              <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
+              <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
+            <button class="compare-button" type="submit">
+            </button>
+          </form>
+           </div>
+           <div class="listing-carousel">
+             {% for i in item.image_1.all %}
+            <div>
+             <img alt="" src="{% get_media_prefix %}{{i.image}}"/>
+            </div>
+            {% endfor %}
+           </div>
+          </a>
+          <div class="listing-content">
+           <div class="listing-title">
+            <h4>
+             <a href="{{item.get_absolute_url}}">
+             {{item.title}}
+             </a>
+            </h4>
+            <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
+             <i class="fa fa-map-marker">
+             </i>
+             {{item.address}}
+            </a>
+            <a class="details button border" href="{{item.get_absolute_url}}">
+             Details
+            </a>
+           </div>
+           <ul class="listing-details">
+            <li>
+             {{item.area}}/sq m
+            </li>
+            <li>
+             {{item.bedrooms}} Bedroom
+            </li>
+            <li>
+             {{item.rooms}} Rooms
+            </li>
+            <li>
+             {{item.bathrooms}} Bathroom
+            </li>
+           </ul>
+           <div class="listing-footer">
+            <a href="#">
+             <i class="fa fa-user">
+             </i>
+             {{item.creator}}
+            </a>
+            <span>
+             <i class="fa fa-calendar-o">
+             </i>
+             {{item.date}}
+            </span>
+           </div>
+          </div>
+         </div>
+         {% endfor %}
+         {% else %}
+         <center><h4>No Properties Available</h4></center>
+         {% endif %}
+         <!-- Listing Item / End -->
+         <!-- Listing Item -->
+         <!-- Listing Item / End -->
+        </div>
+        <!-- Listings Container / End -->
+        <!-- Pagination -->
+        <div class="pagination-container">
+         <nav class="pagination">
+          <ul>
+            <li>
+             <a class="current-page" href=""?page=1"">
+              {{ page_obj.number }}
+             </a>
+            </li>
+            of
+           <li>
+            <a  href=""?page=1"">
+             1
+            </a>
+           </li>
+           {% if page_obj.has_next %}
+           <li>
+            <a href="?page={{ page_obj.next_page_number }}">
+             2
+            </a>
+           </li>
+           <li>
+            <a href="?page={{ page_obj.paginator.num_pages }}">
+             last
+            </a>
+           </li>
+           {% endif %}
+          </ul>
+         </nav>
+         {% if page_obj.has_next %}
+         <nav class="pagination-next-prev">
+          <ul>
+           <li>
+            <a class="prev" href="?page={{ page_obj.previous_page_number }}">
+             Previous
+            </a>
+           </li>
+           <li>
+            <a class="next" href="?page={{ page_obj.next_page_number }}">
+             Next
+            </a>
+           </li>
+          </ul>
+         </nav>
+         {% endif %}
+        </div>
+        <!-- Pagination / End -->
+       </div>
+       <div class="tab-content" id="tab2">
+        <!-- Agents Container -->
+        <div class="row">
+         <!-- Agent -->
+         {% for item in agents %}
+         <div class="col-lg-6 col-md-6 col-xs-12">
+          <div class="agent">
+           <div class="agent-avatar">
+            <a href="{{item.get_absolute_url}}">
+             <img alt="" src="{{item.image.url}}"/>
+             <span class="view-profile-btn">
+              View Profile
+             </span>
+            </a>
+           </div>
+           <div class="agent-content">
+            <div class="agent-name">
+             <h4>
+              <a href="{{item.get_absolute_url}}">
+               {{item.name}}
+              </a>
+             </h4>
+             <span>
+              Agent In {{item.address}}
+             </span>
+            </div>
+            <ul class="agent-contact-details">
+             <li>
+              <i class="sl sl-icon-call-in">
+              </i>
+              {{item.phone}}
+             </li>
+             <li>
+              <i class="fa fa-envelope-o">
+              </i>
+              <a href="#">
+               {{item.email}}
+              </a>
+             </li>
+            </ul>
+            <ul class="social-icons">
+             <li>
+              <a class="facebook" href="{{item.facebook}}">
+               <i class="icon-facebook">
+               </i>
+              </a>
+             </li>
+             <li>
+              <a class="twitter" href="{{item.twitter}}">
+               <i class="icon-twitter">
+               </i>
+              </a>
+             </li>
+            </ul>
+            <div class="clearfix">
+            </div>
+           </div>
+          </div>
+         </div>
+         {% endfor %}
+         <!-- Agent / End -->
+         <!-- Agent -->
+         <!-- Agent / End -->
+        </div>
+        <!-- Agents Container / End -->
+       </div>
+      </div>
+     </div>
+    </div>
+    <!-- Sidebar -->
+    <div class="col-lg-4 col-md-4">
+     <div class="sidebar sticky right">
+      <!-- Widget -->
+      <div class="widget">
+       <h3 class="margin-bottom-30 margin-top-30">
+        Contact Us
+       </h3>
+       <!-- Agent Widget -->
+       <form method="GET">
+       <div class="agefnt-widget">
+         <input name="to" value="{{object.email}}" type="hidden" />
+         <input name="send" value="True" type="hidden" />
+        <input pattern="^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$" name="email" placeholder="Your Email" type="text"/>
+        <input placeholder="Your Phone" type="text"/>
+        <textarea name="message" value="Hi, I would like to know if you are able to help me in finding new home.">Hi, I would like to know if you are able to help me in finding new home.</textarea>
+        <button class="button fullwidth margin-top-5" type="submit">
+         Send Message
+        </button>
+        {{message}}
+       </div>
+     </form>
+       <!-- Agent Widget / End -->
+      </div>
+      <!-- Widget / End -->
+      <!-- Widget -->
+      <div class="widget">
+       <h3 class="margin-bottom-30 margin-top-30">
+        Our Location
+       </h3>
+       <div class="agency-map" id="propertyMap-container">
+        {{object.address}}
+       </div>
+      </div>
+      <!-- Widget / End -->
+     </div>
+    </div>
+    <!-- Sidebar / End -->
+   </div>
+  </div>
+  <!-- Flip banner / End -->
   <!-- Footer
 ================================================== -->
 <div class="sticky-footer" id="footer">

@@ -472,10 +472,10 @@ window.location.href="category" + queryString;
     <div class="row">
      <div class="col-md-12">
       <h2>
-       Partners
+       Developers
       </h2>
       <span>
-       Our Partners
+       Property Developers
       </span>
       <!-- Breadcrumbs -->
       <nav id="breadcrumbs">
@@ -486,7 +486,7 @@ window.location.href="category" + queryString;
          </a>
         </li>
         <li>
-        Partners
+         Agencies
         </li>
        </ul>
       </nav>
@@ -502,7 +502,7 @@ window.location.href="category" + queryString;
      <!-- Agency -->
      {% for item in object_list %}
      <div class="agent agent-page agency">
-      <a class="agent-avatar" href="{{item.url}}">
+      <a class="agent-avatar" href="{{item.get_absolute_url}}">
        <img alt="" src="{{item.image.url}}"/>
       </a>
       <div class="agent-content">
@@ -515,9 +515,25 @@ window.location.href="category" + queryString;
         <span>
          <i class="fa fa-map-marker">
          </i>
+        {{item.address}}
         </span>
        </div>
+       <p>
+        {{item.description}}
+       </p>
        <ul class="agent-contact-details">
+        <li>
+         <i class="sl sl-icon-call-in">
+         </i>
+         {{item.phone}}
+        </li>
+        <li>
+         <i class="fa fa-envelope-o">
+         </i>
+         <a href="#">
+          {{item.email}}
+         </a>
+        </li>
        </ul>
        <div class="clearfix">
        </div>

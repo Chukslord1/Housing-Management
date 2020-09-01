@@ -10,7 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.db.models import Q
-from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation
+from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation,Developer,Partner
 import random
 
 class IndexListView(ListView):
@@ -225,12 +225,13 @@ def submit_property(request):
     profile=''
     if request.user.is_authenticated:
         profile=UserProfile.objects.get(user=request.user)
-    context={'profile':profile,"agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
+    context={'profile':profile,"agencies":Agency.objects.all(),"compare":Comparison.objects.all(),"developers":Developer.objects.all()}
     if request.method=="POST":
         title=request.POST.get("title")
         status=request.POST.get("status")
         category=request.POST.get("category")
         price_new=request.POST.get("price")
+        developer=request.POST.get("developer")
         if price_new:
             price=int(price_new)
         else:
@@ -283,11 +284,11 @@ def submit_property(request):
         property_check=Property.objects.filter(title=title,address=address)
         trial_check=UserProfile.objects.get(user=request.user)
         if property_check:
-            context={'profile':profile,'message':"Property Already Exists","agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
+            context={'profile':profile,'message':"Property Already Exists","agencies":Agency.objects.all(),"agencies":Agency.objects.all(),"developers":Developer.objects.all(),"compare":Comparison.objects.all()}
         else:
             if trial_check.trials>0 or request.user.is_superuser:
                 property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
-                area=area,rooms=rooms,address=address,
+                area=area,rooms=rooms,developer=developer,address=address,
                 description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,name=name,email=email,phone=phone,slug=slug)
                 property.save()
                 for x in image_1:
@@ -324,7 +325,7 @@ def submit_property(request):
                     server.login("housing-send@advancescholar.com", "housing@24hubs.com")
                     text = msg.as_string()
                     server.sendmail(fromaddr, toaddr, text)
-                context={'profile':profile,"message":"Successfully Added Property"}
+                context={'profile':profile,"message":"Successfully Added Property","agencies":Agency.objects.all(),"developers":Developer.objects.all()}
             else:
                 context={'profile':profile,"message":"You have exceeded Your Trial of 3 properties submission, please subscribe for a package to continue submitting properties"}
                 return redirect("pricing-tables.html")
@@ -1155,6 +1156,42 @@ class AgencyListView(ListView):
         context['page_obj'] = page_obj
         return context
 
+class DeveloperListView(ListView):
+    model = Developer
+    template_name = "developer-list.html"
+    def get_context_data(self, **kwargs):
+        context = super(DeveloperListView, self).get_context_data(**kwargs)
+        if self.request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=self.request.user)
+            clear.delete()
+        if self.request.user.is_authenticated:
+            context["compare"] = Comparison.objects.all()
+            context['profile']=UserProfile.objects.get(user=self.request.user)
+        paginator= Paginator(Agency.objects.all(),10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
+        return context
+
+
+class PartnerListView(ListView):
+    model = Partner
+    template_name = "partners.html"
+    def get_context_data(self, **kwargs):
+        context = super(PartnerListView, self).get_context_data(**kwargs)
+        if self.request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=self.request.user)
+            clear.delete()
+        if self.request.user.is_authenticated:
+            context["compare"] = Comparison.objects.all()
+            context['profile']=UserProfile.objects.get(user=self.request.user)
+        paginator= Paginator(Partner.objects.all(),10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
+        return context
+
+
 class AgencyDetailView(DetailView):
     model = Agency
     template_name = "agency-page.html"
@@ -1283,6 +1320,139 @@ class AgencyDetailView(DetailView):
         context['search'] = Property.objects.filter(agency=obj.title)
         context['agents'] = Agent.objects.filter(agency=obj.title)
         paginator= Paginator(Agency.objects.all(),10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
+        return context
+
+class DeveloperDetailView(DetailView):
+    model = Developer
+    template_name = "developer-page.html"
+
+    def get_object(self, queryset=None):
+        global obj
+        obj = super(DeveloperDetailView, self).get_object(queryset=queryset)
+        return obj
+    def get_context_data(self, **kwargs):
+        context = super(DeveloperDetailView, self).get_context_data(**kwargs)
+        if self.request.GET.get('first_check')=="one":
+            query = self.request.GET.get('search')
+            if query:
+                search = Property.filter(Q(address__icontains=query),Q(developer=obj.title))
+                context['search'] = search
+            else:
+                search = self.model.objects.none()
+                context['search'] = search
+        if self.request.GET.get('second_check')=="two":
+            if self.request.user.is_authenticated:
+                title=self.request.GET.get('title')
+                address=self.request.GET.get('address')
+                date=self.request.GET.get('date')
+                category=self.request.GET.get('category')
+                sale_type=self.request.GET.get('sale_type')
+                price=self.request.GET.get('price')
+                price_per_unit=self.request.GET.get('price_per_unit')
+                image=self.request.GET.get('image')
+                image_url=image.replace('/media/','')
+                area=self.request.GET.get('area')
+                rooms=self.request.GET.get('rooms')
+                bedrooms=self.request.GET.get('bedrooms')
+                bathrooms=self.request.GET.get('bathrooms')
+                features=self.request.GET.get('features')
+                building_age=self.request.GET.get('building_age')
+                parking=self.request.GET.get('parking')
+                cooling=self.request.GET.get('cooling')
+                heating=self.request.GET.get('heating')
+                sewer=self.request.GET.get('sewer')
+                water=self.request.GET.get('water')
+                exercise_room=self.request.GET.get('exercise_room')
+                storage_room=self.request.GET.get('storage_room')
+                compare_check=Comparison.objects.filter(title=title,address=address,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
+                rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+                water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
+                if compare_check:
+                    pass
+                else:
+                    compare=Comparison.objects.create(title=title,address=address,date=date,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
+                    area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+                    water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
+                    compare.save()
+                compare_count=Comparison.objects.filter(creator=self.request.user).count()
+                if compare_count>3:
+                    compare_delete=Comparsion.objects.filter(creator=self.request.user)[4:]
+                    compare_delete.delete()
+                else:
+                    pass
+        elif self.request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=self.request.user)
+            clear.delete()
+        elif self.request.GET.get("send")=="True":
+            email=self.request.GET.get('email')
+            message=self.request.GET.get('message')
+            fromaddr = "housing-send@advancescholar.com"
+            toaddr = self.request.GET.get('to')
+            msg = MIMEMultipart()
+            msg['From'] = fromaddr
+            msg['To'] = toaddr
+            msg['Subject'] ="Assistance For Property"
+
+
+            body = message+ "my contacts are"  + " email " + email
+            msg.attach(MIMEText(body, 'plain'))
+
+            server = smtplib.SMTP('mail.advancescholar.com',  26)
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+            text = msg.as_string()
+            server.sendmail(fromaddr, toaddr, text)
+            context['message']="Sent Enquiry Successfully"
+        elif self.request.GET.get('third_check')=="three":
+            if self.request.user.is_authenticated:
+                title=self.request.GET.get('title')
+                address=self.request.GET.get('address')
+                date=self.request.GET.get('date')
+                category=self.request.GET.get('category')
+                sale_type=self.request.GET.get('sale_type')
+                price=self.request.GET.get('price')
+                price_per_unit=self.request.GET.get('price_per_unit')
+                image=self.request.GET.get('image')
+                print("hello")
+                image_url=image.replace('/media/','')
+                area=self.request.GET.get('area')
+                rooms=self.request.GET.get('rooms')
+                bedrooms=self.request.GET.get('bedrooms')
+                bathrooms=self.request.GET.get('bathrooms')
+                features=self.request.GET.get('features')
+                building_age=self.request.GET.get('building_age')
+                parking=self.request.GET.get('parking')
+                cooling=self.request.GET.get('cooling')
+                heating=self.request.GET.get('heating')
+                sewer=self.request.GET.get('sewer')
+                water=self.request.GET.get('water')
+                exercise_room=self.request.GET.get('exercise_room')
+                storage_room=self.request.GET.get('storage_room')
+                book_check=Bookmark.objects.filter(title=title,address=address,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
+                rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+                water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
+                if book_check:
+                    pass
+                else:
+                    book=Bookmark.objects.create(title=title,address=address,date=date,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
+                    area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+                    water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
+                    book.save()
+
+        if self.request.user.is_authenticated:
+            context['compare'] = Comparison.objects.filter(creator=self.request.user)
+            context['profile']=UserProfile.objects.get(user=self.request.user)
+        else:
+            pass
+
+        context['search'] = Property.objects.filter(developer=obj.title)
+        context['agents'] = Agent.objects.filter(agency=obj.title)
+        paginator= Paginator(Developer.objects.all(),10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj

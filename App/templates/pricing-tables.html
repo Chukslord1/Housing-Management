@@ -19,6 +19,323 @@
  <div id="wrapper">
   <!-- Compare Properties Widget
 ================================================== -->
+  <div class="compare-slide-menu">
+   <div class="csm-trigger">
+   </div>
+   <div class="csm-content">
+    <h4>
+     Compare Properties
+     <div class="csm-mobile-trigger">
+     </div>
+    </h4>
+    <div class="csm-properties">
+     <!-- Property -->
+     {% for item in compare %}
+     <div class="listing-item compact">
+      <a class="listing-img-container" href="{{item.get_absolute_url}}">
+       <div class="remove-from-compare">
+        <i class="fa fa-close">
+        </i>
+       </div>
+       <div class="listing-badges">
+        <span>
+         {{item.sale_type}}
+        </span>
+       </div>
+       <div class="listing-img-content">
+        <span class="listing-compact-title">
+         {{item.title}}
+         <i>
+          ₦{{item.price}}
+         </i>
+        </span>
+       </div>
+       <img alt="" src="{{item.image_1.url}}"/>
+      </a>
+     </div>
+     {% endfor %}
+     {% if user.is_authenticated %}
+     {% else %}
+     <a class="sign-in" href="{% url 'APP:login_register' %}">
+      <i class="fa fa-user">
+      </i>
+      Log In / Register To Compare
+     </a>
+     {% endif %}
+     <!-- Property -->
+     <!-- Property -->
+    </div>
+    {% if user.is_authenticated %}
+    <div class="csm-buttons">
+     <a class="button" href="{% url 'APP:compare' %}">
+      Compare
+     </a>
+     <form method="GET">
+      <input name="clear" value="True" type="hidden">
+     <button class="button reset" type="submit">
+      Reset
+    </button>
+   </form>
+    </div>
+    {% endif %}
+   </div>
+  </div>
+  <!-- Compare Properties Widget / End -->
+  <!-- Header Container
+================================================== -->
+  <header id="header-container">
+   <!-- Topbar -->
+   <div id="top-bar">
+    <div class="container">
+     <!-- Left Side Content -->
+     <div class="left-side">
+      <!-- Top bar -->
+      <ul class="top-bar-menu">
+       <li>
+        <i class="fa fa-phone">
+        </i>
+        +(234) 805 882 775, +(234) 905 2213 706
+       </li>
+       <li>
+        <i class="fa fa-envelope">
+        </i>
+        <a href="#">
+         sales@afriproperty.com.ng
+        </a>
+       </li>
+       <li>
+        <a href="#">
+         About
+        </a>
+       </li>
+       <li>
+        <a href="{% url 'APP:contact'%}">
+         Contact
+        </a>
+       </li>
+       <li>
+         <div class="top-bar-dropdown">
+           <span>Useful Links</span>
+           <ul class="options">
+             <li><div class="arrow"></div></li>
+             <li><a href="{% url 'APP:agents' %}">Agents</a></li>
+             <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
+             <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
+             <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
+             <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
+           </ul>
+         </div>
+       </li>
+      </ul>
+     </div>
+     <!-- Left Side Content / End -->
+     <!-- Left Side Content -->
+     <div class="right-side">
+      <!-- Social Icons -->
+      <ul class="social-icons">
+       <li>
+        <a class="facebook" href="#">
+         <i class="icon-facebook">
+         </i>
+        </a>
+       </li>
+       <li>
+        <a class="twitter" href="#">
+         <i class="icon-twitter">
+         </i>
+        </a>
+       </li>
+       <li>
+        <a class="gplus" href="#">
+         <i class="icon-gplus">
+         </i>
+        </a>
+       </li>
+       <li>
+        <a class="pinterest" href="#">
+         <i class="icon-pinterest">
+         </i>
+        </a>
+       </li>
+      </ul>
+     </div>
+     <!-- Left Side Content / End -->
+    </div>
+   </div>
+   <div class="clearfix">
+   </div>
+   <!-- Topbar / End -->
+   <!-- Header -->
+   <div id="header">
+    <div class="container">
+     <!-- Left Side Content -->
+     <div class="left-side">
+      <!-- Logo -->
+      <div id="logo">
+       <a href="{% url 'APP:index' %}">
+        <img alt="" src="{% static 'images/logo.png' %}"/>
+       </a>
+      </div>
+      <!-- Mobile Navigation -->
+      <div class="mmenu-trigger">
+       <button class="hamburger hamburger--collapse" type="button">
+        <span class="hamburger-box">
+         <span class="hamburger-inner">
+         </span>
+        </span>
+       </button>
+      </div>
+      <!-- Main Navigation -->
+      <nav class="style-1" id="navigation">
+       <ul id="responsive">
+        <li>
+         <a href="{% url 'APP:index' %}">
+          Home
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale" value="sale">
+         <a onclick="showsale()">
+          For Sale
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale2" value="rent">
+         <a onclick="showsale2()">
+          For Rent
+         </a>
+        </li>
+        <li><a href="#">More</a>
+          <ul>
+            <li>
+              <input type="hidden" id="sale3" value="shortlet">
+             <a onclick="showsale3()">
+              Shortlet
+             </a>
+            </li>
+            <li>
+              <input type="hidden" id="sale4" value="hotel">
+             <a onclick="showsale4()">
+              Hotels
+             </a>
+            </li>
+            <li>
+              <input type="hidden" id="sale11" value="park">
+             <a onclick="showsale11()">
+              Park and Recreation
+             </a>
+            </li>
+            <li>
+              <input type="hidden" id="sale10" value="travels">
+             <a onclick="showsale10()">
+              Travels and Tours Listing
+             </a>
+            </li>
+            <li>
+             <a href="{% url 'APP:pricing' %}">
+              Products and Services
+             </a>
+            </li>
+            <li>
+             <a href="{% url 'APP:property_video' %}">
+              Property Videos
+             </a>
+            </li>
+            <li>
+             <a href="{% url 'APP:multi_component' %}">
+            Multilevel Component
+             </a>
+            </li>
+            <li>
+             <a href="{% url 'APP:valuation' %}">
+              Property Valuation
+             </a>
+            </li>
+          </ul>
+        </li>
+       </ul>
+      </nav>
+      <div class="clearfix">
+      </div>
+      <!-- Main Navigation / End -->
+     </div>
+     <!-- Left Side Content / End -->
+     <!-- Right Side Content / End -->
+     <div class="right-side">
+       {% if user.is_authenticated %}
+       <a class="sign-in" onclick="window.location.href='{% url 'APP:logout' %}'">
+        <i class="fa fa-user">
+        </i>
+        Logout
+       </a>
+       <div class="user-menu">
+        <div class="user-name">
+         <span>
+           {% if profile.image %}
+           <img alt="" src="{{profile.image.url}}"/>
+           {% else %}
+          <img alt="" src="{% static 'images/agent-03.jpg' %}"/>
+          {% endif %}
+         </span>
+         Hi, {{user}}!
+        </div>
+        <ul>
+         <li>
+          <a href="{% url 'APP:profile' %}">
+           <i class="sl sl-icon-user">
+           </i>
+           My Profile
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:bookmarks' %}">
+           <i class="sl sl-icon-star">
+           </i>
+           Bookmarks
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:properties' %}">
+           <i class="sl sl-icon-docs">
+           </i>
+           My Properties
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:logout' %}">
+           <i class="sl sl-icon-power">
+           </i>
+           Log Out
+          </a>
+         </li>
+        </ul>
+       </div>
+       {% else %}
+      <a class="sign-in" href="{% url 'APP:login_register' %}">
+       <i class="fa fa-user">
+       </i>
+       Log In / Register
+      </a>
+      {% endif %}
+      <!-- Header Widget -->
+      <div class="header-widget">
+       <!-- User Menu -->
+
+
+
+       <a class="button border" href="{% url 'APP:submit_property' %}">
+        Submit Property
+       </a>
+
+      </div>
+
+      <!-- Header Widget / End -->
+     </div>
+     <!-- Right Side Content / End -->
+    </div>
+   </div>
+   <!-- Header / End -->
+  </header>
 <script>
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
@@ -143,325 +460,22 @@ function showsale4 () {
   window.location.href="category" + queryString;
 }
 function showsale11 () {
-var value=document.getElementById("sale11").value;
+  var value=document.getElementById("sale11").value;
 
 
-var paid="True";
-var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-window.location.href="category" + queryString;
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale10 () {
+  var value=document.getElementById("sale10").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
 }
 </script>
-  <div class="compare-slide-menu">
-   <div class="csm-trigger">
-   </div>
-   <div class="csm-content">
-    <h4>
-     Compare Properties
-     <div class="csm-mobile-trigger">
-     </div>
-    </h4>
-    <div class="csm-properties">
-     <!-- Property -->
-     {% for item in compare %}
-     <div class="listing-item compact">
-      <a class="listing-img-container" href="{{item.get_absolute_url}}">
-       <div class="remove-from-compare">
-        <i class="fa fa-close">
-        </i>
-       </div>
-       <div class="listing-badges">
-        <span>
-         {{item.sale_type}}
-        </span>
-       </div>
-       <div class="listing-img-content">
-        <span class="listing-compact-title">
-         {{item.title}}
-         <i>
-          ₦{{item.price}}
-         </i>
-        </span>
-       </div>
-       <img alt="" src="{{item.image_1.url}}"/>
-      </a>
-     </div>
-     {% endfor %}
-     {% if user.is_authenticated %}
-     {% else %}
-     <a class="sign-in" href="{% url 'APP:login_register' %}">
-      <i class="fa fa-user">
-      </i>
-      Log In / Register To Compare
-     </a>
-     {% endif %}
-     <!-- Property -->
-     <!-- Property -->
-    </div>
-    {% if user.is_authenticated %}
-    <div class="csm-buttons">
-     <a class="button" href="{% url 'APP:compare' %}">
-      Compare
-     </a>
-     <form method="GET">
-      <input name="clear" value="True" type="hidden">
-     <button class="button reset" type="submit">
-      Reset
-    </button>
-   </form>
-    </div>
-    {% endif %}
-   </div>
-  </div>
-  <!-- Compare Properties Widget / End -->
-  <!-- Header Container
-================================================== -->
-  <header id="header-container">
-   <!-- Topbar -->
-   <div id="top-bar">
-    <div class="container">
-     <!-- Left Side Content -->
-     <div class="left-side">
-      <!-- Top bar -->
-      <ul class="top-bar-menu">
-       <li>
-        <i class="fa fa-phone">
-        </i>
-        +(234) 805 882 775, +(234) 905 2213 706
-       </li>
-       <li>
-        <i class="fa fa-envelope">
-        </i>
-        <a href="#">
-         sales@afriproperty.com.ng
-        </a>
-       </li>
-       <li>
-        <a href="#">
-         About
-        </a>
-       </li>
-       <li>
-        <a href="{% url 'APP:contact'%}">
-         Contact
-        </a>
-       </li>
-       <li>
-         <div class="top-bar-dropdown">
-           <span>Useful Links</span>
-           <ul class="options">
-             <li><div class="arrow"></div></li>
-             <li><a href="{% url 'APP:agents' %}">Agents</a></li>
-             <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
-             <li><a href="">Developers</a></li>
-             <li><a href="">Partners</a></li>
-             <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
-           </ul>
-         </div>
-       </li>
-      </ul>
-     </div>
-     <!-- Left Side Content / End -->
-     <!-- Left Side Content -->
-     <div class="right-side">
-      <!-- Social Icons -->
-      <ul class="social-icons">
-       <li>
-        <a class="facebook" href="#">
-         <i class="icon-facebook">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="twitter" href="#">
-         <i class="icon-twitter">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="gplus" href="#">
-         <i class="icon-gplus">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="pinterest" href="#">
-         <i class="icon-pinterest">
-         </i>
-        </a>
-       </li>
-      </ul>
-     </div>
-     <!-- Left Side Content / End -->
-    </div>
-   </div>
-   <div class="clearfix">
-   </div>
-   <!-- Topbar / End -->
-   <!-- Header -->
-   <div id="header">
-    <div class="container">
-     <!-- Left Side Content -->
-     <div class="left-side">
-      <!-- Logo -->
-      <div id="logo">
-       <a href="{% url 'APP:index' %}">
-        <img alt="" src="{% static 'images/logo.png' %}"/>
-       </a>
-      </div>
-      <!-- Mobile Navigation -->
-      <div class="mmenu-trigger">
-       <button class="hamburger hamburger--collapse" type="button">
-        <span class="hamburger-box">
-         <span class="hamburger-inner">
-         </span>
-        </span>
-       </button>
-      </div>
-      <!-- Main Navigation -->
-      <nav class="style-1" id="navigation">
-       <ul id="responsive">
-        <li>
-         <a href="{% url 'APP:index' %}">
-          Home
-         </a>
-        </li>
-        <li>
-          <input type="hidden" id="sale" value="sale">
-         <a onclick="showsale()">
-          For Sale
-         </a>
-        </li>
-        <li>
-          <input type="hidden" id="sale2" value="rent">
-         <a onclick="showsale2()">
-          For Rent
-         </a>
-        </li>
-        <li><a href="#">More</a>
-          <ul>
-            <li>
-              <input type="hidden" id="sale3" value="shortlet">
-             <a onclick="showsale3()">
-              Shortlet
-             </a>
-            </li>
-            <li>
-              <input type="hidden" id="sale4" value="hotel">
-             <a onclick="showsale4()">
-              Hotels
-             </a>
-            </li>
-            <li>
-              <input type="hidden" id="sale11" value="park">
-             <a onclick="showsale11()">
-              Park and Recreation
-             </a>
-            </li>
-            <li>
-             <a href="{% url 'APP:pricing' %}">
-              Products and Services
-             </a>
-            </li>
-            <li>
-             <a href="">
-              Property Videos
-             </a>
-            </li>
-            <li>
-             <a href="">
-            Multilevel Component
-             </a>
-            </li>
-            <li>
-             <a href="">
-              Property Valuation
-             </a>
-            </li>
-          </ul>
-        </li>
-       </ul>
-      </nav>
-      <div class="clearfix">
-      </div>
-      <!-- Main Navigation / End -->
-     </div>
-     <!-- Left Side Content / End -->
-     <!-- Right Side Content / End -->
-     <div class="right-side">
-       {% if user.is_authenticated %}
-       <a class="sign-in" onclick="window.location.href='{% url 'APP:logout' %}'">
-        <i class="fa fa-user">
-        </i>
-        Logout
-       </a>
-       <div class="user-menu">
-        <div class="user-name">
-         <span>
-           {% if profile.image %}
-           <img alt="" src="{{profile.image.url}}"/>
-           {% else %}
-          <img alt="" src="{% static 'images/agent-03.jpg' %}"/>
-          {% endif %}
-         </span>
-         Hi, {{user}}!
-        </div>
-        <ul>
-         <li>
-          <a href="{% url 'APP:profile' %}">
-           <i class="sl sl-icon-user">
-           </i>
-           My Profile
-          </a>
-         </li>
-         <li>
-          <a href="{% url 'APP:bookmarks' %}">
-           <i class="sl sl-icon-star">
-           </i>
-           Bookmarks
-          </a>
-         </li>
-         <li>
-          <a href="{% url 'APP:properties' %}">
-           <i class="sl sl-icon-docs">
-           </i>
-           My Properties
-          </a>
-         </li>
-         <li>
-          <a href="{% url 'APP:logout' %}">
-           <i class="sl sl-icon-power">
-           </i>
-           Log Out
-          </a>
-         </li>
-        </ul>
-       </div>
-       {% else %}
-      <a class="sign-in" href="{% url 'APP:login_register' %}">
-       <i class="fa fa-user">
-       </i>
-       Log In / Register
-      </a>
-      {% endif %}
-      <!-- Header Widget -->
-      <div class="header-widget">
-       <!-- User Menu -->
-
-
-
-       <a class="button border" href="{% url 'APP:submit_property' %}">
-        Submit Property
-       </a>
-
-      </div>
-
-      <!-- Header Widget / End -->
-     </div>
-     <!-- Right Side Content / End -->
-    </div>
-   </div>
-   <!-- Header / End -->
-  </header>
   <div class="clearfix">
   </div>
   <!-- Header Container / End -->

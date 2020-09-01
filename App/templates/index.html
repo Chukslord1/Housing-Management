@@ -220,12 +220,24 @@
              </a>
             </li>
             <li>
+              <input type="hidden" id="sale11" value="park">
+             <a onclick="showsale11()">
+              Park and Recreation
+             </a>
+            </li>
+            <li>
+              <input type="hidden" id="sale10" value="travels">
+             <a onclick="showsale10()">
+              Travels and Tours Listing
+             </a>
+            </li>
+            <li>
              <a href="{% url 'APP:pricing' %}">
               Products and Services
              </a>
             </li>
             <li>
-             <a href="">
+             <a href="{% url 'APP:property_video' %}">
               Property Videos
              </a>
             </li>
@@ -235,7 +247,7 @@
              </a>
             </li>
             <li>
-             <a href="">
+             <a href="{% url 'APP:valuation' %}">
               Property Valuation
              </a>
             </li>
@@ -544,6 +556,22 @@ function showsale4 () {
   var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
   window.location.href="category" + queryString;
 }
+function showsale11 () {
+  var value=document.getElementById("sale11").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale10 () {
+  var value=document.getElementById("sale10").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
 </script>
           <!-- Row / End -->
           <!-- Browse Jobs -->
@@ -552,7 +580,7 @@ function showsale4 () {
           {% endfor %}
           <div class="adv-search-btn">
            Need more search options?
-           <a href="listings-list-full-width.html">
+           <a href="listing.html">
             Advanced Search
            </a>
           </div>
@@ -689,7 +717,7 @@ function showsale4 () {
           <li>
            Area
            <span>
-          {{house.area}}
+          {{house.area}}/sq m
            </span>
           </li>
           <li>
@@ -875,7 +903,7 @@ function showsale4 () {
      <!-- Image Box -->
      <a class="img-box" data-background-image="{% static 'images/port.jfif' %}" onclick="showpopular3()">
       <div class="img-box-content visible">
-        <input id="mypop3" name="mypop" type="hidden" value="port" />
+        <input id="mypop3" name="mypop" type="hidden" value="port harcourt" />
        <h4>
         Port Harcourt
        </h4>
@@ -1111,7 +1139,7 @@ function showsale4 () {
     <div class="row">
      <div class="col-md-12">
       <div class="copyrights">
-       <a href=" https://24hubs.com">powered by 24 Hubs©</a> 2020 Afriproperty. All Rights Reserved.
+       © 2020 Afriproperty. All Rights Reserved <a href=" https://24hubs.com">powered by 24 Hubs</a>.
       </div>
      </div>
     </div>

@@ -10,7 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.db.models import Q
-from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images
+from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation
 import random
 
 class IndexListView(ListView):
@@ -736,8 +736,8 @@ class PopularListView(ListView):
                 search = self.model.objects.none()
                 context['search'] = search
         elif self.request.GET.get('check_pop')=="True":
-            context['pop']="Popular"
             query = self.request.GET.get('pop')
+            context['pop']=query
             if query:
                 pop = self.model.objects.filter(Q(address__icontains=query))
                 context['search'] = pop
@@ -1018,9 +1018,52 @@ class PropertyDetailView(DetailView):
             if self.request.user.is_authenticated:
                 tour=Tour.objects.create(date=date,time=time,user=self.request.user,property=obj.title,phone=phone,name=name)
                 tour.save()
+                property=obj.title
+                email= self.request.user.email
+                message="Request for inspection of "+property +" on the "+ date+ " by " + time
+                fromaddr = "housing-send@advancescholar.com"
+                toaddr = "admin@afriproperty.com.ng"
+                msg = MIMEMultipart()
+                msg['From'] = fromaddr
+                msg['To'] = toaddr
+                msg['Subject'] ="Enquiry For Property"
+
+
+                body = message+ "my contacts are"  + " email " + email
+                msg.attach(MIMEText(body, 'plain'))
+
+                server = smtplib.SMTP('mail.advancescholar.com',  26)
+                server.ehlo()
+                server.starttls()
+                server.ehlo()
+                server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+                text = msg.as_string()
+                server.sendmail(fromaddr, toaddr, text)
+                context['message']="Inspection Request Saved Successfully"
             else:
                 tour=Tour.objects.create(date=date,time=time,property=obj.title,phone=phone,name=name)
                 tour.save()
+                property=obj.title
+                message="Request for inspection of "+property +" on the "+ date+ " by " + time
+                fromaddr = "housing-send@advancescholar.com"
+                toaddr = "admin@afriproperty.com.ng"
+                msg = MIMEMultipart()
+                msg['From'] = fromaddr
+                msg['To'] = toaddr
+                msg['Subject'] ="Enquiry For Property"
+
+
+                body = message+ "my contacts are"  + " phone " + phone
+                msg.attach(MIMEText(body, 'plain'))
+
+                server = smtplib.SMTP('mail.advancescholar.com',  26)
+                server.ehlo()
+                server.starttls()
+                server.ehlo()
+                server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+                text = msg.as_string()
+                server.sendmail(fromaddr, toaddr, text)
+                context['message']="Inspection Request Saved Successfully"
         elif self.request.GET.get("send")=="True":
             email=self.request.GET.get('email')
             message=self.request.GET.get('message')
@@ -1389,3 +1432,242 @@ def agents(request):
 def pricing(request):
 
     return render(request,"pricing-tables.html")
+
+
+def property_video(request):
+    pop=''
+    search=''
+    query=''
+    context = {}
+    if request.GET.get('first_check')=="one":
+        query = request.GET.get('search')
+        if query:
+            search = Property.objects.filter(Q(address__icontains=query))
+            context= {"search":search}
+        else:
+            search = Property.objects.none()
+            context= {"search":search}
+    elif request.GET.get('check_pop')=="True":
+        query = request.GET.get('pop')
+        context['pop']=query
+        if query:
+            pop = Property.objects.filter(Q(address__icontains=query))
+            context= {"search":pop}
+        else:
+            cat = Property.objects.none()
+            context= {"search":pop}
+    elif request.GET.get('clear')=="True":
+        clear=Comparison.objects.filter(creator=request.user)
+        clear.delete()
+    elif request.GET.get('second_check')=="two":
+        if request.user.is_authenticated:
+            title=request.GET.get('title')
+            address=request.GET.get('address')
+            date=request.GET.get('date')
+            category=request.GET.get('category')
+            sale_type=request.GET.get('sale_type')
+            price=request.GET.get('price')
+            price_per_unit=request.GET.get('price_per_unit')
+            image=request.GET.get('image')
+            image_url=image.replace('/media/','')
+            area=request.GET.get('area')
+            rooms=request.GET.get('rooms')
+            bedrooms=request.GET.get('bedrooms')
+            bathrooms=request.GET.get('bathrooms')
+            features=request.GET.get('features')
+            building_age=request.GET.get('building_age')
+            parking=request.GET.get('parking')
+            cooling=request.GET.get('cooling')
+            heating=request.GET.get('heating')
+            sewer=request.GET.get('sewer')
+            water=request.GET.get('water')
+            exercise_room=request.GET.get('exercise_room')
+            storage_room=request.GET.get('storage_room')
+            compare_check=Comparison.objects.filter(title=title,address=address,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
+            rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+            water=water,exercise_room=exercise_room,storage_room=storage_room,creator=request.user)
+            if compare_check:
+                pass
+            else:
+                compare=Comparison.objects.create(title=title,address=address,date=date,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
+                area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+                water=water,exercise_room=exercise_room,storage_room=storage_room,creator=request.user)
+                compare.save()
+            compare_count=Comparison.objects.filter(creator=request.user).count()
+            if compare_count>3:
+                compare_delete=Comparsion.objects.filter(creator=request.user)[4:]
+                compare_delete.delete()
+            else:
+                pass
+    elif request.GET.get("filter")=="True":
+        filter="True"
+        query = request.GET.get('search')
+        sale_type=request.GET.get('sale_type')
+        category = request.GET.get('category')
+        if category:
+            category = request.GET.get('category')
+        else:
+            category="e"
+        state = request.GET.get('state')
+        if state:
+            state = request.GET.get('state')
+        else:
+            state=query
+        if query:
+            query= request.GET.get('search')
+        else:
+            query=state
+        feature=request.GET.get('check')
+        min_area_1 = request.GET.get('min_area_1')
+        max_area_1 = request.GET.get('max_area_1')
+        min_price_1 = request.GET.get('min_price_1')
+        max_price_1 = request.GET.get('max_price_1')
+        min_area_2=min_area_1.replace("+","")
+        max_area_2=max_area_1.replace("+","")
+        min_price_2=min_price_1.replace("+","")
+        max_price_2=max_price_1.replace("+","")
+        min_area=min_area_1.replace(" ","")
+        max_area=max_area_1.replace(" ","")
+        min_price=min_price_1.replace(" ","")
+        max_price=max_price_1.replace(" ","")
+        bedrooms_1 = request.GET.get('bedrooms')
+        if bedrooms_1:
+            bedrooms=int(bedrooms_1)
+            bedrooms=bedrooms+1
+        else:
+            bedrooms=6
+        bathrooms_1 = request.GET.get('bathrooms')
+        if bathrooms_1:
+            bathrooms=int(bathrooms_1)
+            bathrooms=bathrooms+1
+        else:
+            bathrooms=6
+        if max_price:
+            new_max=int(max_price)
+        else:
+            new_max=10000000000
+        if max_area:
+            new_max_area=int(max_area)
+        else:
+            new_max_area=10000000000
+        if sale_type:
+            sale_type=request.GET.get('sale_type')
+        else:
+            sale_type="e"
+        if filter=="True":
+            zero=0
+            search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
+            context['search'] = search
+        else:
+            search = Property.objects.none()
+            context['search'] = search
+    elif request.GET.get('third_check')=="three":
+        if request.user.is_authenticated:
+            title=request.GET.get('title')
+            address=request.GET.get('address')
+            date=request.GET.get('date')
+            category=request.GET.get('category')
+            sale_type=request.GET.get('sale_type')
+            price=request.GET.get('price')
+            price_per_unit=request.GET.get('price_per_unit')
+            image=request.GET.get('image')
+            print("hello")
+            image_url=image.replace('/media/','')
+            area=request.GET.get('area')
+            rooms=request.GET.get('rooms')
+            bedrooms=request.GET.get('bedrooms')
+            bathrooms=request.GET.get('bathrooms')
+            features=request.GET.get('features')
+            building_age=request.GET.get('building_age')
+            parking=request.GET.get('parking')
+            cooling=request.GET.get('cooling')
+            heating=request.GET.get('heating')
+            sewer=request.GET.get('sewer')
+            water=request.GET.get('water')
+            exercise_room=request.GET.get('exercise_room')
+            storage_room=request.GET.get('storage_room')
+            book_check=Bookmark.objects.filter(title=title,address=address,category=category,sale_type=sale_type,image_1=image_url,
+            rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+            water=water,exercise_room=exercise_room,storage_room=storage_room,creator=request.user)
+            if book_check:
+                pass
+            else:
+                book=Bookmark.objects.create(title=title,address=address,date=date,category=category,sale_type=sale_type,price=price,price_per_unit=price_per_unit,image_1=image_url,
+                area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
+                water=water,exercise_room=exercise_room,storage_room=storage_room,creator=request.user)
+                book.save()
+
+    check_login=request.user
+    context['houses'] = Property.objects.all()[:6]
+    context['articles'] = Article.objects.all()[:3]
+    context['popular'] = Property.objects.filter(Q(address__icontains=query))
+    if request.user.is_authenticated:
+        context['compare'] = Comparison.objects.filter(creator=request.user)
+        context['profile']=UserProfile.objects.get(user=request.user)
+    else:
+        pass
+    if pop:
+        paginator= Paginator(Property.objects.filter(address__icontains=query),10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
+    elif search:
+        paginator= Paginator(search,10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
+    return render(request,"property-video.html",context)
+
+
+def property_valuation(request):
+    profile=''
+    if request.user.is_authenticated:
+        profile=UserProfile.objects.get(user=request.user)
+    context={'profile':profile,"agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
+    if request.method=="POST":
+        status=request.POST.get("status")
+        category=request.POST.get("category")
+        price=request.POST.get("price")
+        area=request.POST.get("area")
+        rooms=request.POST.get("rooms")
+        address=request.POST.get("address")
+        bedrooms=request.POST.get("bedrooms")
+        building_age=request.POST.get("building_age")
+        bathrooms=request.POST.get("bathrooms")
+        features=request.POST.get("features")
+        name=request.POST.get("name")
+        email=request.POST.get("email")
+        phone=request.POST.get("phone")
+        parking=request.POST.get("parking")
+        cooling=request.POST.get("cooling")
+        heating=request.POST.get("heating")
+        sewer=request.POST.get("sewer")
+        image=request.FILES.get("image")
+
+        fromaddr = "housing-send@advancescholar.com"
+        toaddr = "admin@afripropert.com.ng"
+        subject="Property Request"
+        msg = MIMEMultipart()
+        msg['From'] = fromaddr
+        msg['To'] = toaddr
+        msg['Subject'] = "A request for a Property Valuation"
+
+        test=Valuation.objects.create(image=image,sale_type=status,category=category,price=price,area=area,rooms=rooms,address=address,bedrooms=bedrooms,building_age=building_age,bathrooms=bathrooms,
+        features=features,user=name,email=email,phone=phone,parking=parking,cooling=cooling,heating=heating,sewer=sewer)
+        test.save()
+        body = "A request for a property valuation has been sent from "+name+" email is  "+ email + ".  Requirements are:"+" A "+category+ " property for " + status + ","+ " with a price of "+price+" with an area of "+area+" per sq m "+","+rooms+" rooms "+" at a location: "+address+" with "+bedrooms+" bedrooms "+building_age+" years building age "+bathrooms+" bathrooms. "+" extra features: "+features+","+parking+" parking,"+cooling+' cooling,'+heating+' heating,'+sewer+' sewage.'
+        msg.attach(MIMEText(body, 'plain'))
+
+        server = smtplib.SMTP('mail.advancescholar.com',  26)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+        text = msg.as_string()
+        server.sendmail(fromaddr, toaddr, text)
+        context={'profile':profile,"message":"Successfully Submitted  Request"}
+    elif request.method=="GET":
+        if request.GET.get('clear')=="True":
+            clear=Comparison.objects.filter(creator=request.user)
+            clear.delete()
+    return render(request,"property-valuation.html",context)

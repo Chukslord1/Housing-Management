@@ -7,7 +7,7 @@ from django.shortcuts import reverse
 class Images(models.Model):
     title =models.TextField()
     image = models.ImageField()
-    
+
 class Property(models.Model):
     title=models.TextField(blank=True, null=True)
     answer = (
@@ -221,3 +221,33 @@ class Bookmark(models.Model):
     exercise_room = models.CharField(max_length = 100, choices = answer,blank=True, null=True)
     storage_room = models.CharField(max_length = 100, choices = answer,blank=True, null=True)
     creator = models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)
+
+class Valuation(models.Model):
+    answer = (
+        ('Yes', 'Yes'),
+        ('No', 'No'),
+    )
+    type= (
+        ('Public', 'Public'),
+        ('City', 'City'),
+    )
+    address=models.TextField(blank=True, null=True)
+    date=models.DateTimeField(auto_now_add=True)
+    category=models.TextField(blank=True, null=True)
+    sale_type=models.TextField(blank=True, null=True)
+    price=models.IntegerField(blank=True, null=True)
+    price_per_unit = models.TextField(blank=True, null=True)
+    image = models.ImageField(blank=True, null=True)
+    area = models.IntegerField(blank=True, null=True)
+    rooms = models.IntegerField(blank=True, null=True)
+    bedrooms = models.IntegerField(blank=True, null=True)
+    bathrooms = models.IntegerField(blank=True, null=True)
+    features = models.TextField(blank=True, null=True)
+    building_age = models.IntegerField(blank=True, null=True)
+    parking = models.TextField(blank=True, null=True)
+    cooling = models.TextField(blank=True, null=True)
+    heating = models.TextField(blank=True, null=True)
+    sewer = models.CharField(max_length = 100, choices = type,blank=True, null=True)
+    user = models.TextField(blank=True, null=True)
+    phone = models.TextField(blank=True, null=True)
+    email = models.TextField(blank=True, null=True)

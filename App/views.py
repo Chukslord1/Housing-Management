@@ -1087,6 +1087,27 @@ class PropertyDetailView(DetailView):
             text = msg.as_string()
             server.sendmail(fromaddr, toaddr, text)
             context['message']="Sent Enquiry Successfully"
+        elif self.request.GET.get("report")=="True":
+            title=self.request.GET.get("title")
+            fromaddr = "housing-send@advancescholar.com"
+            toaddr = "admin@afriproperty.com.ng"
+            msg = MIMEMultipart()
+            msg['From'] = fromaddr
+            msg['To'] = toaddr
+            msg['Subject'] ="Report Listing"
+
+
+            body = "A listing was reported, A Property Listing with the name :" + title
+            msg.attach(MIMEText(body, 'plain'))
+
+            server = smtplib.SMTP('mail.advancescholar.com',  26)
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+            text = msg.as_string()
+            server.sendmail(fromaddr, toaddr, text)
+            context['message']="Reported Successfully"
         check_login=self.request.user
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)

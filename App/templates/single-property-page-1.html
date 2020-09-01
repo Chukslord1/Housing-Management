@@ -336,146 +336,146 @@
    </div>
    <!-- Header / End -->
   </header>
-<script>
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function showOutput () {
-  var value=document.getElementById("myInput").value;
-  var value_2=document.getElementById("myInput2").value;
-  var value_3=document.getElementById("myInput3").value;
-  if (document.getElementById("myInput7").checked == true){
-    var value_4=document.getElementById("myInput7").value;
-  } else if (document.getElementById("myInput5").checked == true){
-    var value_4=document.getElementById("myInput5").value;
-  } else if (document.getElementById("myInput6").checked == true){
-    var value_4=document.getElementById("myInput6").value;
-  }else if (document.getElementById("myInput4").checked == true){
-    var value_4=document.getElementById("myInput4").value;
+  <script>
+  /* When the user clicks on the button,
+  toggle between hiding and showing the dropdown content */
+  function showOutput () {
+    var value=document.getElementById("myInput").value;
+    var value_2=document.getElementById("myInput2").value;
+    var value_3=document.getElementById("myInput3").value;
+    if (document.getElementById("myInput7").checked == true){
+      var value_4=document.getElementById("myInput7").value;
+    } else if (document.getElementById("myInput5").checked == true){
+      var value_4=document.getElementById("myInput5").value;
+    } else if (document.getElementById("myInput6").checked == true){
+      var value_4=document.getElementById("myInput6").value;
+    }else if (document.getElementById("myInput4").checked == true){
+      var value_4=document.getElementById("myInput4").value;
+    }
+     else {
+      var value_4="e";
+    }
+
+    var paid="one";
+    var queryString = "?first_check=" +paid  + "&search=" + value + "&category=" + value_2 + "&max_price=" + value_3 + "&tab=" + value_4;
+    window.location.href="{% url 'APP:advanced_search' %}" + queryString;
   }
-   else {
-    var value_4="e";
+
+  function showcat () {
+    var value=document.getElementById("myCat").value;
+
+    var paid="True";
+    var queryString = "?check_cat=" +paid  + "&cat=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
+  }
+  function showcat2 () {
+    var value=document.getElementById("myCat2").value;
+
+
+    var paid="True";
+    var queryString = "?check_cat=" +paid  + "&cat=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
   }
 
-  var paid="one";
-  var queryString = "?first_check=" +paid  + "&search=" + value + "&category=" + value_2 + "&max_price=" + value_3 + "&tab=" + value_4;
-  window.location.href="listing.html" + queryString;
-}
-
-function showcat () {
-  var value=document.getElementById("myCat").value;
-
-  var paid="True";
-  var queryString = "?check_cat=" +paid  + "&cat=" + value;
-  window.location.href="category" + queryString;
-}
-function showcat2 () {
-  var value=document.getElementById("myCat2").value;
+  function showcat3 () {
+    var value=document.getElementById("myCat3").value;
 
 
-  var paid="True";
-  var queryString = "?check_cat=" +paid  + "&cat=" + value;
-  window.location.href="category" + queryString;
-}
+    var paid="True";
+    var queryString = "?check_cat=" +paid  + "&cat=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
+  }
 
-function showcat3 () {
-  var value=document.getElementById("myCat3").value;
-
-
-  var paid="True";
-  var queryString = "?check_cat=" +paid  + "&cat=" + value;
-  window.location.href="category" + queryString;
-}
-
-function showcat4 () {
-  var value=document.getElementById("myCat4").value;
+  function showcat4 () {
+    var value=document.getElementById("myCat4").value;
 
 
-  var paid="True";
-  var queryString = "?check_cat=" +paid  + "&cat=" + value;
-  window.location.href="category" + queryString;
-}
-function showpopular () {
-  var value=document.getElementById("mypop").value;
+    var paid="True";
+    var queryString = "?check_cat=" +paid  + "&cat=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
+  }
+  function showpopular () {
+    var value=document.getElementById("mypop").value;
 
 
-  var paid="True";
-  var queryString = "?check_pop=" +paid  + "&pop=" + value;
-  window.location.href="popular" + queryString;
-}
-function showpopular2 () {
-  var value=document.getElementById("mypop2").value;
+    var paid="True";
+    var queryString = "?check_pop=" +paid  + "&pop=" + value;
+    window.location.href="{% url 'APP:popular' %}" + queryString;
+  }
+  function showpopular2 () {
+    var value=document.getElementById("mypop2").value;
 
 
-  var paid="True";
-  var queryString = "?check_pop=" +paid  + "&pop=" + value;
-  window.location.href="popular" + queryString;
-}
-function showpopular3 () {
-  var value=document.getElementById("mypop3").value;
+    var paid="True";
+    var queryString = "?check_pop=" +paid  + "&pop=" + value;
+    window.location.href="{% url 'APP:popular' %}" + queryString;
+  }
+  function showpopular3 () {
+    var value=document.getElementById("mypop3").value;
 
 
-  var paid="True";
-  var queryString = "?check_pop=" +paid  + "&pop=" + value;
-  window.location.href="popular" + queryString;
-}
+    var paid="True";
+    var queryString = "?check_pop=" +paid  + "&pop=" + value;
+    window.location.href="{% url 'APP:popular' %}" + queryString;
+  }
 
-function showpopular4 () {
-  var value=document.getElementById("mypop4").value;
-
-
-  var paid="True";
-  var queryString = "?check_pop=" +paid  + "&pop=" + value;
-  window.location.href="popular" + queryString;
-}
-function showsale () {
-  var value=document.getElementById("sale").value;
+  function showpopular4 () {
+    var value=document.getElementById("mypop4").value;
 
 
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-function showsale2 () {
-  var value=document.getElementById("sale2").value;
+    var paid="True";
+    var queryString = "?check_pop=" +paid  + "&pop=" + value;
+    window.location.href="{% url 'APP:popular' %}" + queryString;
+  }
+  function showsale () {
+    var value=document.getElementById("sale").value;
 
 
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-function showsale3 () {
-  var value=document.getElementById("sale3").value;
+    var paid="True";
+    var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
+  }
+  function showsale2 () {
+    var value=document.getElementById("sale2").value;
 
 
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-function showsale4 () {
-  var value=document.getElementById("sale4").value;
+    var paid="True";
+    var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
+  }
+  function showsale3 () {
+    var value=document.getElementById("sale3").value;
 
 
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-function showsale11 () {
-  var value=document.getElementById("sale11").value;
+    var paid="True";
+    var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
+  }
+  function showsale4 () {
+    var value=document.getElementById("sale4").value;
 
 
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-function showsale10 () {
-  var value=document.getElementById("sale10").value;
+    var paid="True";
+    var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
+  }
+  function showsale11 () {
+    var value=document.getElementById("sale11").value;
 
 
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-</script>
+    var paid="True";
+    var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
+  }
+  function showsale10 () {
+    var value=document.getElementById("sale10").value;
+
+
+    var paid="True";
+    var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+    window.location.href="{% url 'APP:category' %}" + queryString;
+  }
+  </script>
 
 <style type="text/css">
 
@@ -702,6 +702,15 @@ display: inline;
     </a>
 
 
+</div>
+
+<div id="share-buttons">
+  <form method="GET">
+    <input type="hidden" name="report" value="True" />
+    <input type="hidden" name="title" value="{{object.title}}" />
+    <button type="submit">Report Listing<i class="fa fa-bullhorn" aria-hidden="true"></i></button>
+    {{message}}
+  </form>
 </div>
       <!-- Similar Listings Container -->
       {% if houses %}

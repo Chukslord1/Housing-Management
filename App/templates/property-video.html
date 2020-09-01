@@ -568,6 +568,7 @@ window.location.href="category" + queryString;
       <!-- Listing Item -->
       {% if search %}
       {% for item in search %}
+      {% if item.video %}
       <div class="listing-item">
        <a class="listing-img-container" href="{{item.get_absolute_url}}">
         <div class="listing-badges">
@@ -698,6 +699,7 @@ window.location.href="category" + queryString;
         </div>
        </div>
       </div>
+      {% endif %}
       {% endfor %}
       {% else %}
       {% for item in popular %}

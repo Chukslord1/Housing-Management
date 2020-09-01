@@ -26,6 +26,7 @@ urlpatterns = [
     path("property-valuation", views.property_valuation, name="valuation"),
     path("pricing-tables.html", views.pricing, name="pricing"),
     path("property_video.html", views.property_video, name="property_video"),
+    path("multilevel-component.html", views.multi_component, name="multi_component"),
     path("blog-post.html/<slug>", views.ArticleDetailView.as_view(), name="blog"),
     path("blog.html", views.ArticleListView.as_view(), name="blog-list"),
     path("agencies-list.html", views.AgencyListView.as_view(), name="agencies-list"),

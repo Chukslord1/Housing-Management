@@ -285,7 +285,6 @@ def submit_property(request):
             video=request.FILES.get("video")
         else:
             video=''
-        print(video)
         sewer=request.POST.get("sewer")
         title_new=title.replace(" ","")
         title_final=title_new.replace(":","")
@@ -299,7 +298,7 @@ def submit_property(request):
         if property_check:
             context={'profile':profile,'message':"Property Already Exists","agencies":Agency.objects.all(),"agencies":Agency.objects.all(),"developers":Developer.objects.all(),"compare":Comparison.objects.all()}
         else:
-            if trial_check.trials>0 or request.user.is_superuser:
+            if trial_check.trials>0 or request.user.is_superuser or Agent.objects.get(name=request.user.username):
                 property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
                 area=area,rooms=rooms,developer=developer,address=address,
                 description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,name=name,email=email,phone=phone,slug=slug,creator=creator,video=video)

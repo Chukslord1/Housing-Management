@@ -19,7 +19,7 @@ class Property(models.Model):
         ('City', 'City'),
     )
     address=models.TextField(blank=True, null=True)
-    date=models.DateTimeField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True)
     category=models.TextField(blank=True, null=True)
     sale_type=models.TextField(blank=True, null=True)
     price=models.IntegerField(blank=True, null=True)
@@ -67,7 +67,7 @@ class Property(models.Model):
 class Article(models.Model):
     title=models.TextField(blank=True, null=True)
     image = models.ImageField(blank=True, null=True)
-    date=models.DateTimeField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True)
     summmary=models.TextField(blank=True, null=True)
     body=models.TextField(blank=True, null=True)
     author=models.TextField(blank=True, null=True)
@@ -95,7 +95,7 @@ class Comparison(models.Model):
         ('City', 'City'),
     )
     address=models.TextField(blank=True, null=True)
-    date=models.DateTimeField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True)
     category=models.TextField(blank=True, null=True)
     sale_type=models.TextField(blank=True, null=True)
     price=models.IntegerField(blank=True, null=True)
@@ -202,13 +202,16 @@ class Boost(models.Model):
     address=models.TextField(blank=True, null=True)
     category=models.TextField(blank=True, null=True)
     sale_type=models.TextField(blank=True, null=True)
-    date=models.DateTimeField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True)
+    expire=models.DateField()
     area = models.TextField(blank=True, null=True)
     rooms = models.TextField(blank=True, null=True)
     bedrooms = models.TextField(blank=True, null=True)
     bathrooms = models.TextField(blank=True, null=True)
     price = models.TextField(blank=True, null=True)
     price_per_unit = models.TextField(blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True)
+    time=models.TextField()
     creator = models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -245,7 +248,7 @@ class Bookmark(models.Model):
         ('City', 'City'),
     )
     address=models.TextField(blank=True, null=True)
-    date=models.DateTimeField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True)
     category=models.TextField(blank=True, null=True)
     sale_type=models.TextField(blank=True, null=True)
     price=models.IntegerField(blank=True, null=True)
@@ -276,7 +279,7 @@ class Valuation(models.Model):
         ('City', 'City'),
     )
     address=models.TextField(blank=True, null=True)
-    date=models.DateTimeField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True)
     category=models.TextField(blank=True, null=True)
     sale_type=models.TextField(blank=True, null=True)
     price=models.IntegerField(blank=True, null=True)

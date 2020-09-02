@@ -323,10 +323,12 @@
 
 
 
+       {% if user.is_authenticated %}
        <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
        </a>
-
+       {% else %}
+       {% endif %}
       </div>
 
       <!-- Header Widget / End -->
@@ -605,15 +607,11 @@ function boosturl (){
       {% for item in boost %}
       <script>
       function boosturl{{item.price}} (){
-        document.getElementById('boost{{item.price}}').submit();
+        var value=document.getElementById("slug{{item.price}}").value;
+        window.location.href="single-property-page-1.html/" + value;
       }
       </script>
-      <form id="boost{{item.price}}" method="GET">
-        <input name="check_boost" value="True" />
-        <input name="title" value="{{item.title}}" />
-        <input name="price" value="{{item.price}}" />
-        <button type="submit" style="visibility:hidden;"></button>
-      </form>
+        <input id="slug{{item.price}}" name="slug" value="{{item.slug}}" />
       <div class="listing-item">
        <a class="listing-img-container" onclick=boosturl{{item.price}}()>
         <div class="listing-badges">
@@ -820,15 +818,11 @@ function boosturl (){
       {% for item in boost %}
       <script>
       function boosturl{{item.price}} (){
-        document.getElementById('boost{{item.price}}').submit();
+        var value=document.getElementById("slug2{{item.price}}").value;
+        window.location.href="single-property-page-1.html/" + value;
       }
       </script>
-      <form id="boost{{item.price}}" method="GET">
-        <input name="check_boost" value="True" />
-        <input name="title" value="{{item.title}}" />
-        <input name="price" value="{{item.price}}" />
-        <button type="submit" style="visibility:hidden;"></button>
-      </form>
+      <input id="slug2{{item.price}}" name="slug" value="{{item.slug}}" />
       <div class="listing-item">
        <a class="listing-img-container" href="onclick=boosturl{{item.price}}()">
         <div class="listing-badges">

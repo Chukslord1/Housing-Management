@@ -323,9 +323,12 @@
 
 
 
+       {% if user.is_authenticated %}
        <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
        </a>
+       {% else %}
+       {% endif %}
 
       </div>
 
@@ -575,6 +578,7 @@ function showsale10 () {
   <!-- Container / Start -->
   <div class="container">
    <!-- Row / Start -->
+    <center><h1>LISTING PACKAGES<h1></center>
    <div class="row">
     <div class="col-md-12">
      <div class="pricing-container margin-top-30">
@@ -604,7 +608,7 @@ function showsale10 () {
          </li>
         </ul>
         <a class="button border" href="index.html">
-         Get Started
+         You are currently on this plan
         </a>
        </div>
       </div>
@@ -669,10 +673,16 @@ function showsale10 () {
           24/7 Support
          </li>
         </ul>
+        {% if user.is_authenticated %}
         <script src="https://js.paystack.co/v1/inline.js"></script>
         <a class="button" onclick="payWithPaystack2()">
          Get Started
         </a>
+        {% else %}
+        <a class="button" href="login-register.html">
+         Login To Subscribe
+        </a>
+        {% endif %}
        </div>
       </div>
 
@@ -710,6 +720,85 @@ function showsale10 () {
      </div>
     </div>
    </div>
+   <center><h1>BOOSTING PACKAGES<h1></center>
+  <div class="row">
+   <div class="col-md-12">
+    <div class="pricing-container margin-top-30">
+     <!-- Plan #1 -->
+     <!-- Plan #3 -->
+     <div class="plan featured">
+      <div class="listing-badges">
+       <span class="featured">
+        Featured
+       </span>
+      </div>
+      <div class="plan-price">
+       <h3>
+        Basic
+       </h3>
+       <span class="value">
+        ₦ 2000
+       </span>
+       <span class="period">
+          One time fee for 1 week Boosting of One Property
+       </span>
+      </div>
+      <div class="plan-features">
+       <ul>
+         <li>
+        Property Will Appear at the Top of All Listing Pages
+         </li>
+         <li>
+          Up to 10000 Views
+         </li>
+       </ul>
+       {% if user.is_authenticated %}
+       <a class="button" href="my-properties.html">
+        Get Started
+       </a>
+       {% else %}
+       <a class="button" href="login-register.html">
+        Login To Subscribe
+       </a>
+       {% endif %}
+      </div>
+     </div>
+     <!-- Plan #3 -->
+     <div class="plan">
+      <div class="plan-price">
+       <h3>
+        Standard
+       </h3>
+       <span class="value">
+         ₦ 5000
+       </span>
+       <span class="period">
+        One time fee for 2 week Boosting of One Property
+       </span>
+      </div>
+      <div class="plan-features">
+       <ul>
+        <li>
+         Property Will Appear at the Top of All Listing Pages
+        </li>
+        <li>
+         24/7 Support
+        </li>
+       </ul>
+       {% if user.is_authenticated %}
+       <a class="button" href="my-properties.html">
+        Get Started
+       </a>
+       {% else %}
+       <a class="button" href="login-register.html">
+        Login To Subscribe
+       </a>
+       {% endif %}
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
    <!-- Row / End -->
   </div>
   <!-- Container / End -->

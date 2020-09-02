@@ -323,9 +323,12 @@
 
 
 
+       {% if user.is_authenticated %}
        <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
        </a>
+       {% else %}
+       {% endif %}
 
       </div>
 
@@ -628,12 +631,57 @@ function showsale10 () {
      </form>
      <td class="action">
      <script src="https://js.paystack.co/v1/inline.js"></script>
-             <button class="button" onclick="payWithPaystack{{item.slug}}()">
-              Boost
-              <i class="fa fa-rocket" aria-hidden="true"></i>
-            </button>
+     <div class="dropdown">
+       <button class="dropbtn">Boost
+         <i class="fa fa-rocket" aria-hidden="true"></i></button>
+       <div class="dropdown-content">
+         <a onclick="payWithPaystack{{item.slug}}()">Boost For 1 week(₦2000)</a>
+        <a onclick="payWithPaystack2{{item.slug}}()">Boost For 2 weeks(₦5000)</a>
+      </div>
+    </div>
     </td>
+<style>
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
 
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+</style>
      <form id="theForm{{item.slug}}" method="POST">
        {% csrf_token %}
        <input type="hidden" name="title" value="{{item.title}}"/>
@@ -646,6 +694,8 @@ function showsale10 () {
        <input type="hidden" name="area" value="{{item.area}}"/>
        <input type="hidden" name="price" value="{{item.price}}"/>
        <input type="hidden" name="price_per_unit" value="{{item.price_per_unit}}"/>
+       <input type="hidden" name="slug" value="{{item.slug}}"/>
+       <input type="hidden" name="time" value="1"/>
        {% for i in item.image_1.all %}
        {% if forloop.first %}
        <input type="hidden" name="image" value="{% get_media_prefix %}{{i.image}}"/>
@@ -657,13 +707,38 @@ function showsale10 () {
      </button>
      </td>
    </form>
+   <form id="theForm2{{item.slug}}" method="POST">
+     {% csrf_token %}
+     <input type="hidden" name="title" value="{{item.title}}"/>
+     <input type="hidden" name="sale_type" value="{{item.sale_type}}"/>
+     <input type="hidden" name="category" value="{{item.category}}"/>
+     <input type="hidden" name="address" value="{{item.address}}"/>
+     <input type="hidden" name="rooms" value="{{item.rooms}}"/>
+     <input type="hidden" name="bathrooms" value="{{item.bathrooms}}"/>
+     <input type="hidden" name="bedrooms" value="{{item.bedrooms}}"/>
+     <input type="hidden" name="area" value="{{item.area}}"/>
+     <input type="hidden" name="price" value="{{item.price}}"/>
+     <input type="hidden" name="price_per_unit" value="{{item.price_per_unit}}"/>
+     <input type="hidden" name="slug" value="{{item.slug}}"/>
+     <input type="hidden" name="time" value="2"/>
+     {% for i in item.image_1.all %}
+     {% if forloop.first %}
+     <input type="hidden" name="image" value="{% get_media_prefix %}{{i.image}}"/>
+     {% endif %}
+     {% endfor %}
+     <input type="hidden" name="boost" value="True" />
+   <td class="action">
+    <button type="submit" style="visibility:hidden;">
+   </button>
+   </td>
+ </form>
 
    <script>
    function payWithPaystack{{item.slug}}(){
      var handler = PaystackPop.setup({
        key: 'pk_test_0839daaec39a1f1ddfd646abbf078516cd1a2ec4',
        email: "chukslord1@gmail.com",
-       amount: 100000,
+       amount: 200000,
        ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
        metadata: {
           custom_fields: [
@@ -677,6 +752,31 @@ function showsale10 () {
        callback: function(response){
            alert('success. transaction ref is ' + response.reference);
            document.getElementById('theForm{{item.slug}}').submit();
+         },
+       onClose: function(){
+           alert('window closed');
+       }
+     });
+     handler.openIframe();
+   }
+   function payWithPaystack2{{item.slug}}(){
+     var handler = PaystackPop.setup({
+       key: 'pk_test_3d0588c562bbbab6b96b0ecdb80927f9fcc86825',
+       email: "chukslord1@gmail.com",
+       amount: 500000,
+       ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+       metadata: {
+          custom_fields: [
+             {
+                 display_name: "chukslord1",
+                 variable_name: "Boost Listing",
+                 value: "+2348012345678"
+             }
+          ]
+       },
+       callback: function(response){
+           alert('success. transaction ref is ' + response.reference);
+           document.getElementById('theForm2{{item.slug}}').submit();
          },
        onClose: function(){
            alert('window closed');

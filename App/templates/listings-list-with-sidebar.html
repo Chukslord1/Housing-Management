@@ -323,9 +323,12 @@
 
 
 
+       {% if user.is_authenticated %}
        <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
        </a>
+       {% else %}
+       {% endif %}
 
       </div>
 
@@ -615,7 +618,7 @@ function showsale10 () {
            ₦{{item.price_per_unit}}/sq m
           </i>
          </span>
-         
+
         </div>
         <div class="listing-carousel">
           <div>

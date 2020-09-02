@@ -323,10 +323,12 @@
 
 
 
+       {% if user.is_authenticated %}
        <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
        </a>
-
+       {% else %}
+       {% endif %}
       </div>
 
       <!-- Header Widget / End -->

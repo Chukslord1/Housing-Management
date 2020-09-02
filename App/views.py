@@ -12,13 +12,15 @@ from email.mime.multipart import MIMEMultipart
 from django.db.models import Q
 from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation,Developer,Partner,Boost
 import random
-import urllib
+import datetime
 
 class IndexListView(ListView):
     model = Property
     template_name = "index.html"
     def get_context_data(self, **kwargs):
         context = super(IndexListView, self).get_context_data(**kwargs)
+        boost_delete=Boost.objects.filter(expire=datetime.datetime.now().date())
+        boost_delete.delete()
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
             sale= self.request.GET.get('sale')
@@ -574,7 +576,6 @@ class CategoryListView(ListView):
             title = self.request.GET.get('title')
             price = self.request.GET.get('price')
             check = Property.objects.get(Q(title__icontains=title),Q(price__icontains=price))
-            redirect_for_me(check)
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
@@ -1594,8 +1595,13 @@ def properties(request):
             price=request.POST.get("price")
             price_per_unit=request.POST.get("price_per_unit")
             area=request.POST.get("area")
+            slug=request.POST.get("slug")
+            time=request.POST.get("time")
             image=request.POST.get("image")
             image_url=image.replace('/media/','')
+            date1 = datetime.timedelta(days=7)
+            date2 = datetime.timedelta(days=14)
+            date=datetime.datetime.now().date()
             if request.user.is_authenticated:
                 creator=request.user
             else:
@@ -1603,8 +1609,14 @@ def properties(request):
             if Boost.objects.filter(title=title,sale_type=sale_type,category=category,address=address):
                 pass
             else:
-                data=Boost.objects.create(title=title,image=image_url,price=price,price_per_unit=price_per_unit,sale_type=sale_type,category=category,address=address,creator=creator)
-                data.save
+                if time=="1":
+                    expire=date+date1
+                    data=Boost.objects.create(title=title,image=image_url,price=price,price_per_unit=price_per_unit,sale_type=sale_type,category=category,address=address,creator=creator,slug=slug,time=time,expire=expire)
+                    data.save
+                else:
+                    expire=date+date2
+                    data=Boost.objects.create(title=title,image=image_url,price=price,price_per_unit=price_per_unit,sale_type=sale_type,category=category,address=address,creator=creator,slug=slug,time=time,expire=expire)
+                    data.save
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)

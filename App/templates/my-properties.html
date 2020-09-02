@@ -637,6 +637,9 @@ function showsale10 () {
      <form id="theForm{{item.slug}}" method="POST">
        {% csrf_token %}
        <input type="hidden" name="title" value="{{item.title}}"/>
+       <input type="hidden" name="sale_type" value="{{item.sale_type}}"/>
+       <input type="hidden" name="category" value="{{item.category}}"/>
+       <input type="hidden" name="address" value="{{item.address}}"/>
        {% for i in item.image_1.all %}
        {% if forloop.first %}
        <input type="hidden" name="image" value="{% get_media_prefix %}{{i.image}}"/>

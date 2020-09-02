@@ -540,8 +540,9 @@ class CategoryListView(ListView):
             query = self.request.GET.get('search')
             if query:
                 search = self.model.objects.filter(Q(address__icontains=query))
-                boost = Boost.objects.all()
+                boost = Boost.objects.filter(Q(address__icontains=query))
                 context['search'] = search
+                context['boost'] = boost
 
             else:
                 search = self.model.objects.none()
@@ -550,8 +551,10 @@ class CategoryListView(ListView):
             query = self.request.GET.get('cat')
             if query:
                 cat = self.model.objects.filter(Q(category__icontains=query))
+                boost = Boost.objects.filter(Q(category__icontains=query))
                 context['search'] = cat
                 context["cat"]=query
+                context['boost'] = boost
             else:
                 cat = self.model.objects.none()
                 context['search'] = cat
@@ -559,8 +562,10 @@ class CategoryListView(ListView):
             query = self.request.GET.get('sale_type')
             if query:
                 cat = self.model.objects.filter(Q(sale_type__icontains=query))
+                boost = Boost.objects.filter(Q(sale_type__icontains=query))
                 context['search'] = cat
                 context['sale'] = query
+                context['boost'] = boost
             else:
                 cat = self.model.objects.none()
                 context['search'] = cat
@@ -743,7 +748,9 @@ class PopularListView(ListView):
             query = self.request.GET.get('search')
             if query:
                 search = self.model.objects.filter(Q(address__icontains=query))
+                boost=Boost.objects.filter(Q(address__icontains=query))
                 context['search'] = search
+                context['boost']= boost
             else:
                 search = self.model.objects.none()
                 context['search'] = search
@@ -752,6 +759,8 @@ class PopularListView(ListView):
             context['pop']=query
             if query:
                 pop = self.model.objects.filter(Q(address__icontains=query))
+                boost=Boost.objects.filter(Q(address__icontains=query))
+                context['boost']= boost
                 context['search'] = pop
             else:
                 cat = self.model.objects.none()
@@ -1570,9 +1579,12 @@ def properties(request):
             data.delete()
         elif request.POST.get("boost")=="True":
             title=request.POST.get("title")
+            sale_type=request.POST.get("sale_type")
+            address=request.POST.get("address")
+            category=request.POST.get("category")
             image=request.POST.get("image")
             image_url=image.replace('/media/','')
-            data=Boost.objects.create(title=title,image=image_url)
+            data=Boost.objects.create(title=title,image=image_url,sale_type=sale_type,category=category,address=address)
             data.save
     elif request.method=="GET":
         if request.GET.get('clear')=="True":

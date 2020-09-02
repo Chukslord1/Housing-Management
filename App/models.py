@@ -196,6 +196,15 @@ class Partner(models.Model):
     def __str__(self):
         return self.title
 
+class Boost(models.Model):
+    title=models.TextField()
+    image=models.ImageField()
+    address=models.TextField(blank=True, null=True)
+    category=models.TextField(blank=True, null=True)
+    sale_type=models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
 
 class Agent(models.Model):
     name=models.TextField(blank=True, null=True)

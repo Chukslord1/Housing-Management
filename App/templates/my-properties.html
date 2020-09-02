@@ -592,7 +592,11 @@ function showsale10 () {
       {% for item in properties %}
       <tr>
        <td class="title-container">
-        <img alt="" src="{% static 'images/listing-06.jpg' %}"/>
+         {% for i in item.image_1.all %}
+         {% if forloop.first %}
+         <img alt="" src="{% get_media_prefix %}{{i.image}}"/>
+         {% endif %}
+         {% endfor %}
         <div class="title">
          <h4>
           <a href="#">
@@ -622,6 +626,58 @@ function showsale10 () {
        </button>
        </td>
      </form>
+     <td class="action">
+     <script src="https://js.paystack.co/v1/inline.js"></script>
+             <button class="button" onclick="payWithPaystack{{item.slug}}()">
+              Boost
+              <i class="fa fa-rocket" aria-hidden="true"></i>
+            </button>
+    </td>
+
+     <form id="theForm{{item.slug}}" method="POST">
+       {% csrf_token %}
+       <input type="hidden" name="title" value="{{item.title}}"/>
+       {% for i in item.image_1.all %}
+       {% if forloop.first %}
+       <input type="hidden" name="image" value="{% get_media_prefix %}{{i.image}}"/>
+       {% endif %}
+       {% endfor %}
+       <input type="hidden" name="boost" value="True" />
+     <td class="action">
+      <button type="submit" style="visibility:hidden;">
+     </button>
+     </td>
+   </form>
+
+   <script>
+   function payWithPaystack{{item.slug}}(){
+     var handler = PaystackPop.setup({
+       key: 'pk_test_0839daaec39a1f1ddfd646abbf078516cd1a2ec4',
+       email: "chukslord1@gmail.com",
+       amount: 100000,
+       ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+       metadata: {
+          custom_fields: [
+             {
+                 display_name: "chukslord1",
+                 variable_name: "Boost Listing",
+                 value: "+2348012345678"
+             }
+          ]
+       },
+       callback: function(response){
+           alert('success. transaction ref is ' + response.reference);
+           document.getElementById('theForm{{item.slug}}').submit();
+         },
+       onClose: function(){
+           alert('window closed');
+       }
+     });
+     handler.openIframe();
+   }
+   </script>
+
+
       </tr>
       {% endfor %}
      </table>

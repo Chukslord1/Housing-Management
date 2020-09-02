@@ -10,7 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.db.models import Q
-from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation,Developer,Partner
+from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation,Developer,Partner,Boost
 import random
 
 class IndexListView(ListView):
@@ -277,19 +277,29 @@ def submit_property(request):
         parking=request.POST.get("parking")
         cooling=request.POST.get("cooling")
         heating=request.POST.get("heating")
+        video=request.FILES.get("video")
+        if video:
+            video=request.FILES.get("video")
+        else:
+            video=''
+        print(video)
         sewer=request.POST.get("sewer")
-        title_new=title.replace(" ","-")
-        title_final=title_new.replace(":","-")
+        title_new=title.replace(" ","")
+        title_final=title_new.replace(":","")
         slug=title_final+status+address+price_new
         property_check=Property.objects.filter(title=title,address=address)
         trial_check=UserProfile.objects.get(user=request.user)
+        if request.user.is_authenticated:
+            creator=request.user.username
+        else:
+            creator=""
         if property_check:
             context={'profile':profile,'message':"Property Already Exists","agencies":Agency.objects.all(),"agencies":Agency.objects.all(),"developers":Developer.objects.all(),"compare":Comparison.objects.all()}
         else:
             if trial_check.trials>0 or request.user.is_superuser:
                 property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
                 area=area,rooms=rooms,developer=developer,address=address,
-                description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,name=name,email=email,phone=phone,slug=slug)
+                description=description,building_age=building_age,bedrooms=bedrooms,bathrooms=bathrooms,features=features,parking=parking,cooling=cooling,heating=heating,sewer=sewer,name=name,email=email,phone=phone,slug=slug,creator=creator,video=video)
                 property.save()
                 for x in image_1:
                     new_image=Images.objects.create(title=title,image=x)
@@ -530,6 +540,7 @@ class CategoryListView(ListView):
             query = self.request.GET.get('search')
             if query:
                 search = self.model.objects.filter(Q(address__icontains=query))
+                boost = Boost.objects.all()
                 context['search'] = search
 
             else:
@@ -1557,6 +1568,12 @@ def properties(request):
             title=request.POST.get("title")
             data=Property.objects.filter(title=title)
             data.delete()
+        elif request.POST.get("boost")=="True":
+            title=request.POST.get("title")
+            image=request.POST.get("image")
+            image_url=image.replace('/media/','')
+            data=Boost.objects.create(title=title,image=image_url)
+            data.save
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)
@@ -1648,7 +1665,10 @@ def property_video(request):
         query = request.GET.get('search')
         if query:
             search = Property.objects.filter(Q(address__icontains=query))
-            context= {"search":search}
+            paginator= Paginator(search,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context= {"search":search,'page_obj':page_obj}
         else:
             search = Property.objects.none()
             context= {"search":search}
@@ -1657,7 +1677,10 @@ def property_video(request):
         context['pop']=query
         if query:
             pop = Property.objects.filter(Q(address__icontains=query))
-            context= {"search":pop}
+            paginator= Paginator(pop,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context= {"search":pop,'page_obj':page_obj}
         else:
             cat = Property.objects.none()
             context= {"search":pop}
@@ -1762,7 +1785,10 @@ def property_video(request):
         if filter=="True":
             zero=0
             search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
-            context={"search":search}
+            paginator= Paginator(search,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context={"search":search,"page_obj":page_obj}
         else:
             search = Property.objects.none()
             context={"search":search}
@@ -1776,7 +1802,6 @@ def property_video(request):
             price=request.GET.get('price')
             price_per_unit=request.GET.get('price_per_unit')
             image=request.GET.get('image')
-            print("hello")
             image_url=image.replace('/media/','')
             area=request.GET.get('area')
             rooms=request.GET.get('rooms')
@@ -1802,25 +1827,19 @@ def property_video(request):
                 water=water,exercise_room=exercise_room,storage_room=storage_room,creator=request.user)
                 book.save()
 
-    check_login=request.user
-    context={"houses":Property.objects.all()[:6]}
-    context={'articles':Article.objects.all()[:3]}
-    context={'popular':Property.objects.filter(Q(address__icontains=query))}
-    if request.user.is_authenticated:
-        context={"compare":Comparison.objects.filter(creator=request.user)}
-        context={'profile':UserProfile.objects.get(user=request.user)}
     else:
-        pass
-    if pop:
-        paginator= Paginator(Property.objects.filter(address__icontains=query),10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context={'page_obj':page_obj}
-    elif search:
-        paginator= Paginator(search,10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context={'page_obj':page_obj}
+        if request.user.is_authenticated:
+            pop=Property.objects.filter(Q(address__icontains=query))
+            paginator= Paginator(pop,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+        else:
+            pop=Property.objects.filter(Q(address__icontains=query))
+            paginator= Paginator(pop,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context={'popular':Property.objects.filter(Q(address__icontains=query)),"page_obj":page_obj}
     return render(request,"property-video.html",context)
 
 
@@ -1888,7 +1907,10 @@ def multi_component(request):
         query = request.GET.get('search')
         if query:
             search = Property.objects.filter(Q(address__icontains=query))
-            context= {"search":search}
+            paginator= Paginator(search,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context= {"search":search,'page_obj':page_obj}
         else:
             search = Property.objects.none()
             context= {"search":search}
@@ -1897,7 +1919,10 @@ def multi_component(request):
         context['pop']=query
         if query:
             pop = Property.objects.filter(Q(address__icontains=query))
-            context= {"search":pop}
+            paginator= Paginator(pop,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context= {"search":pop,'page_obj':page_obj}
         else:
             cat = Property.objects.none()
             context= {"search":pop}
@@ -2002,7 +2027,10 @@ def multi_component(request):
         if filter=="True":
             zero=0
             search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
-            context={"search":search}
+            paginator= Paginator(search,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context={"search":search,"page_obj":page_obj}
         else:
             search = Property.objects.none()
             context={"search":search}
@@ -2016,7 +2044,6 @@ def multi_component(request):
             price=request.GET.get('price')
             price_per_unit=request.GET.get('price_per_unit')
             image=request.GET.get('image')
-            print("hello")
             image_url=image.replace('/media/','')
             area=request.GET.get('area')
             rooms=request.GET.get('rooms')
@@ -2042,23 +2069,17 @@ def multi_component(request):
                 water=water,exercise_room=exercise_room,storage_room=storage_room,creator=request.user)
                 book.save()
 
-    check_login=request.user
-    context={"houses":Property.objects.all()[:6]}
-    context={'articles':Article.objects.all()[:3]}
-    context={'popular':Property.objects.filter(Q(address__icontains=query))}
-    if request.user.is_authenticated:
-        context={"compare":Comparison.objects.filter(creator=request.user)}
-        context={'profile':UserProfile.objects.get(user=request.user)}
     else:
-        pass
-    if pop:
-        paginator= Paginator(Property.objects.filter(address__icontains=query),10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context={'page_obj':page_obj}
-    elif search:
-        paginator= Paginator(search,10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context={'page_obj':page_obj}
+        if request.user.is_authenticated:
+            pop=Property.objects.filter(Q(address__icontains=query))
+            paginator= Paginator(pop,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+        else:
+            pop=Property.objects.filter(Q(address__icontains=query))
+            paginator= Paginator(pop,10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context={'popular':Property.objects.filter(Q(address__icontains=query)),"page_obj":page_obj}
     return render(request,"multilevel-component.html",context)

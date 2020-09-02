@@ -202,6 +202,14 @@ class Boost(models.Model):
     address=models.TextField(blank=True, null=True)
     category=models.TextField(blank=True, null=True)
     sale_type=models.TextField(blank=True, null=True)
+    date=models.DateTimeField(auto_now_add=True)
+    area = models.TextField(blank=True, null=True)
+    rooms = models.TextField(blank=True, null=True)
+    bedrooms = models.TextField(blank=True, null=True)
+    bathrooms = models.TextField(blank=True, null=True)
+    price = models.TextField(blank=True, null=True)
+    price_per_unit = models.TextField(blank=True, null=True)
+    creator = models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title

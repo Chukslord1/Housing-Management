@@ -475,6 +475,9 @@ function showsale10 () {
   var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
   window.location.href="category" + queryString;
 }
+function boosturl (){
+  document.getElementById('boost').submit();
+}
 </script>
   <div class="clearfix">
   </div>
@@ -600,8 +603,19 @@ function showsale10 () {
       <!-- Listing Item -->
       {% if search %}
       {% for item in boost %}
+      <script>
+      function boosturl{{item.price}} (){
+        document.getElementById('boost{{item.price}}').submit();
+      }
+      </script>
+      <form id="boost{{item.price}}" method="GET">
+        <input name="check_boost" value="True" />
+        <input name="title" value="{{item.title}}" />
+        <input name="price" value="{{item.price}}" />
+        <button type="submit" style="visibility:hidden;"></button>
+      </form>
       <div class="listing-item">
-       <a class="listing-img-container" href="{{item.get_absolute_url}}">
+       <a class="listing-img-container" onclick=boosturl{{item.price}}()>
         <div class="listing-badges">
          <span class="featured">
           Featured
@@ -617,58 +631,7 @@ function showsale10 () {
            ₦{{item.price_per_unit}}/sq m
           </i>
          </span>
-         <form method="GET">
-           <input name="third_check"  type="hidden" value="three" />
-           <input name="title"  type="hidden" value="{{item.title}}" />
-           <input name="address"  type="hidden" value="{{item.address}}" />
-           <input name="date"  type="hidden" value="{{item.date}}" />
-           <input name="category"  type="hidden" value="{{item.category}}" />
-           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
-           <input name="price"  type="hidden" value="{{item.price}}" />
-           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
-           <input name="image"  type="hidden" value="{{item.image.url}}" />
-           <input name="area"  type="hidden" value="{{item.area}}" />
-           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
-           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
-           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
-           <input name="features"  type="hidden" value="{{item.features}}" />
-           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
-           <input name="parking"  type="hidden" value="{{item.parking}}" />
-           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
-           <input name="heating"  type="hidden" value="{{item.heating}}" />
-           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
-           <input name="water"  type="hidden" value="{{item.water}}" />
-           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
-           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
-           <button class="fa fa-star ml-auto"  type="submit">
-           </button>
-         </form>
-         <form method="GET">
-           <input name="second_check"  type="hidden" value="two" />
-           <input name="title"  type="hidden" value="{{item.title}}" />
-           <input name="address"  type="hidden" value="{{item.address}}" />
-           <input name="date"  type="hidden" value="{{item.date}}" />
-           <input name="category"  type="hidden" value="{{item.category}}" />
-           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
-           <input name="price"  type="hidden" value="{{item.price}}" />
-           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
-           <input name="image"  type="hidden" value="{{item.image.url}}" />
-           <input name="area"  type="hidden" value="{{item.area}}" />
-           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
-           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
-           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
-           <input name="features"  type="hidden" value="{{item.features}}" />
-           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
-           <input name="parking"  type="hidden" value="{{item.parking}}" />
-           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
-           <input name="heating"  type="hidden" value="{{item.heating}}" />
-           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
-           <input name="water"  type="hidden" value="{{item.water}}" />
-           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
-           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
-         <button class="compare-button" type="submit">
-         </button>
-         </form>
+
         </div>
         <div class="listing-carousel">
           <div>
@@ -679,7 +642,7 @@ function showsale10 () {
        <div class="listing-content">
         <div class="listing-title">
          <h4>
-          <a href="{{item.get_absolute_url}}">
+          <a onclick=boosturl()>
           {{item.title}}
           </a>
          </h4>
@@ -688,7 +651,7 @@ function showsale10 () {
           </i>
           {{item.address}}
          </a>
-         <a class="details button border" href="{{item.get_absolute_url}}">
+         <a class="details button border" href="boosturl{{item.price}}()">
           Details
          </a>
         </div>
@@ -855,8 +818,19 @@ function showsale10 () {
       {% endfor %}
       {% else %}
       {% for item in boost %}
+      <script>
+      function boosturl{{item.price}} (){
+        document.getElementById('boost{{item.price}}').submit();
+      }
+      </script>
+      <form id="boost{{item.price}}" method="GET">
+        <input name="check_boost" value="True" />
+        <input name="title" value="{{item.title}}" />
+        <input name="price" value="{{item.price}}" />
+        <button type="submit" style="visibility:hidden;"></button>
+      </form>
       <div class="listing-item">
-       <a class="listing-img-container" href="{{item.get_absolute_url}}">
+       <a class="listing-img-container" href="onclick=boosturl{{item.price}}()">
         <div class="listing-badges">
          <span class="featured">
           Featured
@@ -872,58 +846,6 @@ function showsale10 () {
            ₦{{item.price_per_unit}}/sq m
           </i>
          </span>
-         <form method="GET">
-           <input name="third_check"  type="hidden" value="three" />
-           <input name="title"  type="hidden" value="{{item.title}}" />
-           <input name="address"  type="hidden" value="{{item.address}}" />
-           <input name="date"  type="hidden" value="{{item.date}}" />
-           <input name="category"  type="hidden" value="{{item.category}}" />
-           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
-           <input name="price"  type="hidden" value="{{item.price}}" />
-           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
-           <input name="image"  type="hidden" value="{{item.image.url}}" />
-           <input name="area"  type="hidden" value="{{item.area}}" />
-           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
-           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
-           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
-           <input name="features"  type="hidden" value="{{item.features}}" />
-           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
-           <input name="parking"  type="hidden" value="{{item.parking}}" />
-           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
-           <input name="heating"  type="hidden" value="{{item.heating}}" />
-           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
-           <input name="water"  type="hidden" value="{{item.water}}" />
-           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
-           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
-           <button class="fa fa-star ml-auto"  type="submit">
-           </button>
-         </form>
-         <form method="GET">
-           <input name="second_check"  type="hidden" value="two" />
-           <input name="title"  type="hidden" value="{{item.title}}" />
-           <input name="address"  type="hidden" value="{{item.address}}" />
-           <input name="date"  type="hidden" value="{{item.date}}" />
-           <input name="category"  type="hidden" value="{{item.category}}" />
-           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
-           <input name="price"  type="hidden" value="{{item.price}}" />
-           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
-           <input name="image"  type="hidden" value="{{item.image.url}}" />
-           <input name="area"  type="hidden" value="{{item.area}}" />
-           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
-           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
-           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
-           <input name="features"  type="hidden" value="{{item.features}}" />
-           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
-           <input name="parking"  type="hidden" value="{{item.parking}}" />
-           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
-           <input name="heating"  type="hidden" value="{{item.heating}}" />
-           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
-           <input name="water"  type="hidden" value="{{item.water}}" />
-           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
-           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
-         <button class="compare-button" type="submit">
-         </button>
-         </form>
         </div>
         <div class="listing-carousel">
           <div>
@@ -934,7 +856,7 @@ function showsale10 () {
        <div class="listing-content">
         <div class="listing-title">
          <h4>
-          <a href="{{item.get_absolute_url}}">
+          <a href="onclick=boosturl{{item.price}}()">
           {{item.title}}
           </a>
          </h4>
@@ -943,7 +865,7 @@ function showsale10 () {
           </i>
           {{item.address}}
          </a>
-         <a class="details button border" href="{{item.get_absolute_url}}">
+         <a class="details button border" href="boosturl{{item.price}}()">
           Details
          </a>
         </div>

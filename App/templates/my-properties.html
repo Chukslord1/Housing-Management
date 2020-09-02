@@ -640,6 +640,12 @@ function showsale10 () {
        <input type="hidden" name="sale_type" value="{{item.sale_type}}"/>
        <input type="hidden" name="category" value="{{item.category}}"/>
        <input type="hidden" name="address" value="{{item.address}}"/>
+       <input type="hidden" name="rooms" value="{{item.rooms}}"/>
+       <input type="hidden" name="bathrooms" value="{{item.bathrooms}}"/>
+       <input type="hidden" name="bedrooms" value="{{item.bedrooms}}"/>
+       <input type="hidden" name="area" value="{{item.area}}"/>
+       <input type="hidden" name="price" value="{{item.price}}"/>
+       <input type="hidden" name="price_per_unit" value="{{item.price_per_unit}}"/>
        {% for i in item.image_1.all %}
        {% if forloop.first %}
        <input type="hidden" name="image" value="{% get_media_prefix %}{{i.image}}"/>

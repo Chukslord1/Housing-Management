@@ -12,6 +12,7 @@ from email.mime.multipart import MIMEMultipart
 from django.db.models import Q
 from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation,Developer,Partner,Boost
 import random
+import urllib
 
 class IndexListView(ListView):
     model = Property
@@ -569,6 +570,11 @@ class CategoryListView(ListView):
             else:
                 cat = self.model.objects.none()
                 context['search'] = cat
+        elif self.request.GET.get('check_boost')=="True":
+            title = self.request.GET.get('title')
+            price = self.request.GET.get('price')
+            check = Property.objects.get(Q(title__icontains=title),Q(price__icontains=price))
+            redirect_for_me(check)
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
@@ -1582,10 +1588,23 @@ def properties(request):
             sale_type=request.POST.get("sale_type")
             address=request.POST.get("address")
             category=request.POST.get("category")
+            rooms=request.POST.get("rooms")
+            bathrooms=request.POST.get("bathrooms")
+            bedrooms=request.POST.get("bedrooms")
+            price=request.POST.get("price")
+            price_per_unit=request.POST.get("price_per_unit")
+            area=request.POST.get("area")
             image=request.POST.get("image")
             image_url=image.replace('/media/','')
-            data=Boost.objects.create(title=title,image=image_url,sale_type=sale_type,category=category,address=address)
-            data.save
+            if request.user.is_authenticated:
+                creator=request.user
+            else:
+                creator=''
+            if Boost.objects.filter(title=title,sale_type=sale_type,category=category,address=address):
+                pass
+            else:
+                data=Boost.objects.create(title=title,image=image_url,price=price,price_per_unit=price_per_unit,sale_type=sale_type,category=category,address=address,creator=creator)
+                data.save
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)

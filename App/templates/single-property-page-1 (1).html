@@ -916,6 +916,7 @@ function closeForm() {
          <input name="exercise_room"  type="hidden" value="{{house.exercise_room}}" />
          <input name="storage_room"  type="hidden" value="{{house.storage_room}}" />
          <button class="fa fa-star ml-auto"  type="submit">
+           Save To Bookmark
          </button>
      </form>
        <form method="GET">
@@ -1026,9 +1027,9 @@ function closeForm() {
      </form>
        <!-- Agent Widget / End -->
        {% if user.is_authenticated %}
-       <button class"button full width" href="{% url APP:login_register %}">Advertise Property</button>
+       <center></center><a class="button" href="{% url 'APP:submit_property' %}">Advertise Property</a></center>
        {% else %}
-       <button class"button full width" href="{% url APP:login_register %}">Login or Register now to Advertise Your Property</button>
+       <center></center><a class="button" href="{% url 'APP:login_register' %}">Login or Register now to Advertise Your Property</a></center>
        {% endif %}
       </div>
       <!-- Widget / End -->

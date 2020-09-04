@@ -13,7 +13,6 @@
 ================================================== -->
  <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
  <link href="{% static 'css/color.css' %}" rel="stylesheet"/>
-  <link rel="icon" type="image/png" href="{% static 'images/favicon.jpg' %}">
 </head>
 <body>
  <!-- Wrapper -->
@@ -87,66 +86,85 @@
   <header id="header-container">
    <!-- Topbar -->
    <div id="top-bar">
- <div class="container">
-  <!-- Left Side Content -->
-  <div class="left-side">
-   <!-- Top bar -->
-   <ul class="top-bar-menu">
-    <li>
-     <i class="fa fa-phone">
-     </i>
-     +(234) 805 882 775
-    </li>
-    <li>
-     <i class="fa fa-envelope">
-     </i>
-     <a href="#">
-      sales@afriproperty.com.ng
-     </a>
-    </li>
-    <li>
-      <div class="top-bar-dropdown">
-        <span>Useful Links</span>
-        <ul class="options">
-          <li><div class="arrow"></div></li>
-          <li><a href="{% url 'APP:agents' %}">Agents</a></li>
-          <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
-          <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
-          <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
-          <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
-        </ul>
-      </div>
-    </li>
-   </ul>
-  </div>
-  <!-- Left Side Content / End -->
-  <!-- Left Side Content -->
-  <div class="right-side">
-   <!-- Social Icons -->
-   <ul class="social-icons">
-    <li>
-     <a class="facebook" href="http://facebook.com/afripropertyconnect">
-      <i class="icon-facebook">
-      </i>
-     </a>
-    </li>
-    <li>
-     <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
-      <i class="icon-twitter">
-      </i>
-     </a>
-    </li>
-    <li>
-     <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
-      <i class="icon-instagram">
-      </i>
-     </a>
-    </li>
-   </ul>
-  </div>
-  <!-- Left Side Content / End -->
- </div>
-</div>
+    <div class="container">
+     <!-- Left Side Content -->
+     <div class="left-side">
+      <!-- Top bar -->
+      <ul class="top-bar-menu">
+       <li>
+        <i class="fa fa-phone">
+        </i>
+        +(234) 805 882 775, +(234) 905 2213 706
+       </li>
+       <li>
+        <i class="fa fa-envelope">
+        </i>
+        <a href="#">
+         sales@afriproperty.com.ng
+        </a>
+       </li>
+       <li>
+        <a href="#">
+         About
+        </a>
+       </li>
+       <li>
+        <a href="{% url 'APP:contact'%}">
+         Contact
+        </a>
+       </li>
+       <li>
+         <div class="top-bar-dropdown">
+           <span>Useful Links</span>
+           <ul class="options">
+             <li><div class="arrow"></div></li>
+             <li><a href="{% url 'APP:agents' %}">Agents</a></li>
+             <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
+             <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
+             <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
+             <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
+           </ul>
+         </div>
+       </li>
+      </ul>
+     </div>
+     <!-- Left Side Content / End -->
+     <!-- Left Side Content -->
+     <div class="right-side">
+      <!-- Social Icons -->
+      <ul class="social-icons">
+       <li>
+        <a class="facebook" href="#">
+         <i class="icon-facebook">
+         </i>
+        </a>
+       </li>
+       <li>
+        <a class="twitter" href="#">
+         <i class="icon-twitter">
+         </i>
+        </a>
+       </li>
+       <li>
+        <a class="gplus" href="#">
+         <i class="icon-gplus">
+         </i>
+        </a>
+       </li>
+       <li>
+        <a class="pinterest" href="#">
+         <i class="icon-pinterest">
+         </i>
+        </a>
+       </li>
+      </ul>
+     </div>
+     <!-- Left Side Content / End -->
+    </div>
+   </div>
+   <div class="clearfix">
+   </div>
+   <!-- Topbar / End -->
    <!-- Header -->
    <div id="header">
     <div class="container">
@@ -460,16 +478,6 @@ function showsale10 () {
   var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
   window.location.href="category" + queryString;
 }
-function pricelow () {
-  var value=document.getElementById("pricelow").value;
-  var value2=document.URL;
-  var value3=value2.replace("&arrange=pricelow","");
-  var value4=value3.replace("&arrange=pricehigh","");
-  var value5=value4.replace("&arrange=new","");
-  var value6=value5.replace("&arrange=old","");
-  var queryString = "&arrange=" +value;
-  window.location.href= value6 + queryString;
-}
 </script>
   <div class="clearfix">
   </div>
@@ -482,18 +490,8 @@ function pricelow () {
      <div class="row">
       <div class="col-md-12">
        <h2>
-        Listings
+      Multi-Level Component
        </h2>
-       <span>
-         {% if pop %}
-        Properties in {{pop}}, Nigeria.
-        {% elif value %}
-        {{value}}  Listings
-        {% elif filter %}
-        {{filter}} Listings
-        {% else %} Listings
-        {% endif %}
-       </span>
        <!-- Breadcrumbs -->
        <nav id="breadcrumbs">
         <ul>
@@ -503,15 +501,7 @@ function pricelow () {
           </a>
          </li>
          <li>
-           {% if pop %}
-          Properties in {{pop}}, Nigeria.
-          {% elif value %}
-          {{value}}  Listings
-          {% elif  filter %}
-          {{filter}} Listings
-          {% else %}
-          Listings
-          {% endif %}
+           Multi-Level Component
          </li>
         </ul>
        </nav>
@@ -527,8 +517,10 @@ function pricelow () {
    <div class="row sticky-wrapper">
     <div class="col-md-8">
       <div class="card">
-  <div class="notification notice large margin-bottom-55">
-    The Information displayed about this property comprises of property advertisement. Afriproperty Connect makes no warranty as to the accuracy or completeness of the advertisement or any linked or associated information, and Afriproperty Connect has no control over the content. This property listing does not constitute property particulars. The Information is provided and maintained by Property Connect Nigeria Limited. Afriproperty Connect shall not in any way be held liable for the actions of any agent and/or property owner/landlord on or off this website.
+  <div class="card-body">
+    The Information displayed about this property comprises of property advertisement. Nigeria Property Centre makes no waranty as to the accuracy or completeness of the advertisement
+    or any linked or associated information, and Nigeria Property Center has no control over the content. This property listing does not constitute property particulars. The Information
+     is provided and maintained by <b>Hausworks Limited</b>.Nigeria Property Centre shall not in any way be held liable for the actions of any agent and/or property owner/landlord on or off this website.
   </div>
 </div>
 <div class="main-search-input margin-bottom-35">
@@ -548,458 +540,321 @@ function pricelow () {
       <div class="col-md-6">
        <!-- Sort by -->
        <div class="sort-by">
- <label>
-  Sort by:
- </label>
- <div class="sort-by-select">
-  <select id="pricelow" onchange="this.options[this.selectedIndex].value && (pricelow());" class="chosen-select-no-single" data-placeholder="Default order">
-   <option value="">
-    Default Order
-   </option>
-   <option  value="pricelow">
-   Price Low to High
-   <option value="pricehigh">
-    Price High to Low
-   </option>
-   <option value="new">
-    Newest to Oldest
-   </option>
-   <option value="old">
-    Oldest to Newest
-   </option>
-  </select>
- </div>
-</div>
+        <label>
+         Sort by:
+        </label>
+        <div class="sort-by-select">
+         <select class="chosen-select-no-single" data-placeholder="Default order">
+          <option>
+           Default Order
+          </option>
+          <option>
+           Price Low to High
+          </option>
+          <option>
+           Price High to Low
+          </option>
+          <option>
+           Newest Properties
+          </option>
+          <option>
+           Oldest Properties
+          </option>
+         </select>
+        </div>
+       </div>
       </div>
       <div class="col-md-6">
        <!-- Layout Switcher -->
        <div class="layout-switcher">
-        <a class="list" href="#">
-         <i class="fa fa-th-list">
-         </i>
-        </a>
         <a class="grid" href="#">
          <i class="fa fa-th-large">
+         </i>
+        </a>
+        <a class="list" href="#">
+         <i class="fa fa-th-list">
          </i>
         </a>
        </div>
       </div>
      </div>
      <!-- Listings -->
-     <div class="listings-container list-layout">
+     <div class="listings-container grid-layout">
       <!-- Listing Item -->
-      {% if search %}
-      {% for item in boost %}
-      <div class="listing-item">
-       <a class="listing-img-container" href="{{item.get_absolute_url}}">
-        <div class="listing-badges">
-         <span class="featured">
-          Featured
-         </span>
-         <span>
-          for {{item.sale_type}}
-         </span>
-        </div>
-        <div class="listing-img-content">
-         <span class="listing-price">
-          ₦{{item.price}}
-          <i>
-           ₦{{item.price_per_unit}}/sq m
-          </i>
-         </span>
-
-        </div>
-        <div class="listing-carousel">
-          <div>
-          <img alt="" src="{{item.image.url}}"/>
-          </div>
-        </div>
-       </a>
-       <div class="listing-content">
-        <div class="listing-title">
-         <h4>
-          <a href="{{item.get_absolute_url}}">
-          {{item.title}}
-          </a>
-         </h4>
-         <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
-          <i class="fa fa-map-marker">
-          </i>
-          {{item.address}}
-         </a>
-         <a class="details button border" href="{{item.get_absolute_url}}">
-          Details
-         </a>
-        </div>
-        <ul class="listing-details">
-         <li>
-          {{item.area}}/sq m
-         </li>
-         <li>
-          {{item.bedrooms}} Bedroom
-         </li>
-         <li>
-          {{item.rooms}} Rooms
-         </li>
-         <li>
-          {{item.bathrooms}} Bathroom
-         </li>
-        </ul>
-        <div class="listing-footer">
-         <a href="#">
-          <i class="fa fa-user">
-          </i>
-          {{item.creator}}
-         </a>
-         <span>
-          <i class="fa fa-calendar-o">
-          </i>
-          {{item.date}}
-         </span>
-        </div>
-       </div>
-      </div>
-      {% endfor %}
-      {% for item in search %}
-      <div class="listing-item">
-       <a class="listing-img-container" href="{{item.get_absolute_url}}">
-        <div class="listing-badges">
-         <span class="featured">
-          Featured
-         </span>
-         <span>
-          for {{item.sale_type}}
-         </span>
-        </div>
-        <div class="listing-img-content">
-         <span class="listing-price">
-          ₦{{item.price}}
-          <i>
-           ₦{{item.price_per_unit}}/sq m
-          </i>
-         </span>
-         <form method="GET">
-           <input name="third_check"  type="hidden" value="three" />
-           <input name="title"  type="hidden" value="{{item.title}}" />
-           <input name="address"  type="hidden" value="{{item.address}}" />
-           <input name="date"  type="hidden" value="{{item.date}}" />
-           <input name="category"  type="hidden" value="{{item.category}}" />
-           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
-           <input name="price"  type="hidden" value="{{item.price}}" />
-           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
-           {% for i in item.image_1.all %}
-           {% if forloop.first %}
-           <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
-           {% endif %}
-           {% endfor %}
-           <input name="area"  type="hidden" value="{{item.area}}" />
-           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
-           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
-           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
-           <input name="features"  type="hidden" value="{{item.features}}" />
-           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
-           <input name="parking"  type="hidden" value="{{item.parking}}" />
-           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
-           <input name="heating"  type="hidden" value="{{item.heating}}" />
-           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
-           <input name="water"  type="hidden" value="{{item.water}}" />
-           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
-           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
-           <button class="fa fa-star ml-auto"  type="submit">
-           </button>
-         </form>
-         <form method="GET">
-           <input name="second_check"  type="hidden" value="two" />
-           <input name="title"  type="hidden" value="{{item.title}}" />
-           <input name="address"  type="hidden" value="{{item.address}}" />
-           <input name="date"  type="hidden" value="{{item.date}}" />
-           <input name="category"  type="hidden" value="{{item.category}}" />
-           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
-           <input name="price"  type="hidden" value="{{item.price}}" />
-           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
-           {% for i in item.image_1.all %}
-           {% if forloop.first %}
-           <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
-           {% endif %}
-           {% endfor %}
-           <input name="area"  type="hidden" value="{{item.area}}" />
-           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
-           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
-           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
-           <input name="features"  type="hidden" value="{{item.features}}" />
-           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
-           <input name="parking"  type="hidden" value="{{item.parking}}" />
-           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
-           <input name="heating"  type="hidden" value="{{item.heating}}" />
-           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
-           <input name="water"  type="hidden" value="{{item.water}}" />
-           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
-           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
-         <button class="compare-button" type="submit">
-         </button>
-         </form>
-        </div>
-        <div class="listing-carousel">
-          {% for i in item.image_1.all %}
-          <div>
-          <img alt="" src="{% get_media_prefix %}{{i.image}}"/>
-          </div>
-          {% endfor %}
-        </div>
-       </a>
-       <div class="listing-content">
-        <div class="listing-title">
-         <h4>
-          <a href="{{item.get_absolute_url}}">
-          {{item.title}}
-          </a>
-         </h4>
-         <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
-          <i class="fa fa-map-marker">
-          </i>
-          {{item.address}}
-         </a>
-         <a class="details button border" href="{{item.get_absolute_url}}">
-          Details
-         </a>
-        </div>
-        <ul class="listing-details">
-         <li>
-          {{item.area}}/sq m
-         </li>
-         <li>
-          {{item.bedrooms}} Bedroom
-         </li>
-         <li>
-          {{item.rooms}} Rooms
-         </li>
-         <li>
-          {{item.bathrooms}} Bathroom
-         </li>
-        </ul>
-        <div class="listing-footer">
-         <a href="#">
-          <i class="fa fa-user">
-          </i>
-          {{item.creator}}
-         </a>
-         <span>
-          <i class="fa fa-calendar-o">
-          </i>
-          {{item.date}}
-         </span>
-        </div>
-       </div>
-      </div>
-      {% endfor %}
-      {% else %}
-      {% for item in boost %}
-      <div class="listing-item">
-       <a class="listing-img-container" href="{{item.get_absolute_url}}">
-        <div class="listing-badges">
-         <span class="featured">
-          Featured
-         </span>
-         <span>
-          for {{item.sale_type}}
-         </span>
-        </div>
-        <div class="listing-img-content">
-         <span class="listing-price">
-          ₦{{item.price}}
-          <i>
-           ₦{{item.price_per_unit}}/sq m
-          </i>
-         </span>
-
-        </div>
-        <div class="listing-carousel">
-          <div>
-          <img alt="" src="{{item.image.url}}"/>
-          </div>
-        </div>
-       </a>
-       <div class="listing-content">
-        <div class="listing-title">
-         <h4>
-          <a href="{{item.get_absolute_url}}">
-          {{item.title}}
-          </a>
-         </h4>
-         <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
-          <i class="fa fa-map-marker">
-          </i>
-          {{item.address}}
-         </a>
-         <a class="details button border" href="{{item.get_absolute_url}}">
-          Details
-         </a>
-        </div>
-        <ul class="listing-details">
-         <li>
-          {{item.area}}/sq m
-         </li>
-         <li>
-          {{item.bedrooms}} Bedroom
-         </li>
-         <li>
-          {{item.rooms}} Rooms
-         </li>
-         <li>
-          {{item.bathrooms}} Bathroom
-         </li>
-        </ul>
-        <div class="listing-footer">
-         <a href="#">
-          <i class="fa fa-user">
-          </i>
-          {{item.creator}}
-         </a>
-         <span>
-          <i class="fa fa-calendar-o">
-          </i>
-          {{item.date}}
-         </span>
-        </div>
-       </div>
-      </div>
-      {% endfor %}
-      {% for item in popular %}
-      <div class="listing-item">
-       <a class="listing-img-container" href="{{item.get_absolute_url}}">
-        <div class="listing-badges">
-         <span class="featured">
-          Featured
-         </span>
-         <span>
-          for {{item.sale_type}}
-         </span>
-        </div>
-        <div class="listing-img-content">
-         <span class="listing-price">
-          ₦{{item.price}}
-          <i>
-           ₦{{item.price_per_unit}}/sq m
-          </i>
-         </span>
-         <form method="GET">
-           <input name="third_check"  type="hidden" value="three" />
-           <input name="title"  type="hidden" value="{{item.title}}" />
-           <input name="address"  type="hidden" value="{{item.address}}" />
-           <input name="date"  type="hidden" value="{{item.date}}" />
-           <input name="category"  type="hidden" value="{{item.category}}" />
-           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
-           <input name="price"  type="hidden" value="{{item.price}}" />
-           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
-           {% for i in item.image_1.all %}
-           {% if forloop.first %}
-           <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
-           {% endif %}
-           {% endfor %}
-           <input name="area"  type="hidden" value="{{item.area}}" />
-           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
-           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
-           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
-           <input name="features"  type="hidden" value="{{item.features}}" />
-           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
-           <input name="parking"  type="hidden" value="{{item.parking}}" />
-           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
-           <input name="heating"  type="hidden" value="{{item.heating}}" />
-           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
-           <input name="water"  type="hidden" value="{{item.water}}" />
-           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
-           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
-           <button class="fa fa-star ml-auto"  type="submit">
-           </button>
-         </form>
-         <form method="GET">
-           <input name="second_check"  type="hidden" value="two" />
-           <input name="title"  type="hidden" value="{{item.title}}" />
-           <input name="address"  type="hidden" value="{{item.address}}" />
-           <input name="date"  type="hidden" value="{{item.date}}" />
-           <input name="category"  type="hidden" value="{{item.category}}" />
-           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
-           <input name="price"  type="hidden" value="{{item.price}}" />
-           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
-           {% for i in item.image_1.all %}
-           {% if forloop.first %}
-           <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
-           {% endif %}
-           {% endfor %}
-           <input name="area"  type="hidden" value="{{item.area}}" />
-           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
-           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
-           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
-           <input name="features"  type="hidden" value="{{item.features}}" />
-           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
-           <input name="parking"  type="hidden" value="{{item.parking}}" />
-           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
-           <input name="heating"  type="hidden" value="{{item.heating}}" />
-           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
-           <input name="water"  type="hidden" value="{{item.water}}" />
-           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
-           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
-         <button class="compare-button" type="submit">
-         </button>
-         </form>
-        </div>
-        <div class="listing-carousel">
-          {% for i in item.image_1.all %}
-          <div>
-          <img alt="" src="{% get_media_prefix %}{{i.image}}"/>
-          </div>
-          {% endfor %}
-        </div>
-       </a>
-       <div class="listing-content">
-        <div class="listing-title">
-         <h4>
-          <a href="{{item.get_absolute_url}}">
-          {{item.title}}
-          </a>
-         </h4>
-         <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
-          <i class="fa fa-map-marker">
-          </i>
-          {{item.address}}
-         </a>
-         <a class="details button border" href="{{item.get_absolute_url}}">
-          Details
-         </a>
-        </div>
-        <ul class="listing-details">
-         <li>
-          {{item.area}}/sq m
-         </li>
-         <li>
-          {{item.bedrooms}} Bedroom
-         </li>
-         <li>
-          {{item.rooms}} Rooms
-         </li>
-         <li>
-          {{item.bathrooms}} Bathroom
-         </li>
-        </ul>
-        <div class="listing-footer">
-         <a href="#">
-          <i class="fa fa-user">
-          </i>
-          {{item.creator}}
-         </a>
-         <span>
-          <i class="fa fa-calendar-o">
-          </i>
-          {{item.date}}
-         </span>
-        </div>
-       </div>
-      </div>
-      {% endfor %}
-      {% endif %}
       <!-- Listing Item / End -->
       <!-- Listing Item -->
-
+      {% if search %}
+      {% for item in search %}
+        {% if item.features %}
+      <div class="listing-item">
+       <a class="listing-img-container" href="{{item.get_absolute_url}}">
+        <div class="listing-badges">
+         <span class="featured">
+          Featured
+         </span>
+         <span>
+          for {{item.sale_type}}
+         </span>
+        </div>
+        <div class="listing-img-content">
+         <span class="listing-price">
+          ₦{{item.price}}
+          <i>
+           ₦{{item.price_per_unit}}/sq m
+          </i>
+         </span>
+         <form method="GET">
+           <input name="third_check"  type="hidden" value="three" />
+           <input name="title"  type="hidden" value="{{item.title}}" />
+           <input name="address"  type="hidden" value="{{item.address}}" />
+           <input name="date"  type="hidden" value="{{item.date}}" />
+           <input name="category"  type="hidden" value="{{item.category}}" />
+           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
+           <input name="price"  type="hidden" value="{{item.price}}" />
+           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
+           {% for i in item.image_1.all %}
+           {% if forloop.first %}
+           <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
+           {% endif %}
+           {% endfor %}
+           <input name="area"  type="hidden" value="{{item.area}}" />
+           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
+           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
+           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
+           <input name="features"  type="hidden" value="{{item.features}}" />
+           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
+           <input name="parking"  type="hidden" value="{{item.parking}}" />
+           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
+           <input name="heating"  type="hidden" value="{{item.heating}}" />
+           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
+           <input name="water"  type="hidden" value="{{item.water}}" />
+           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
+           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
+           <button class="fa fa-star ml-auto"  type="submit">
+           </button>
+         </form>
+         <form method="GET">
+           <input name="second_check"  type="hidden" value="two" />
+           <input name="title"  type="hidden" value="{{item.title}}" />
+           <input name="address"  type="hidden" value="{{item.address}}" />
+           <input name="date"  type="hidden" value="{{item.date}}" />
+           <input name="category"  type="hidden" value="{{item.category}}" />
+           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
+           <input name="price"  type="hidden" value="{{item.price}}" />
+           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
+           {% for i in item.image_1.all %}
+           {% if forloop.first %}
+           <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
+           {% endif %}
+           {% endfor %}
+           <input name="area"  type="hidden" value="{{item.area}}" />
+           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
+           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
+           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
+           <input name="features"  type="hidden" value="{{item.features}}" />
+           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
+           <input name="parking"  type="hidden" value="{{item.parking}}" />
+           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
+           <input name="heating"  type="hidden" value="{{item.heating}}" />
+           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
+           <input name="water"  type="hidden" value="{{item.water}}" />
+           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
+           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
+         <button class="compare-button" type="submit">
+         </button>
+         </form>
+        </div>
+        <div class="listing-carousel">
+          {% for i in item.image_1.all %}
+          <div>
+          <img alt="" src="{% get_media_prefix %}{{i.image}}"/>
+          </div>
+          {% endfor %}
+        </div>
+       </a>
+       <div class="listing-content">
+        <div class="listing-title">
+         <h4>
+          <a href="{{item.get_absolute_url}}">
+          {{item.title}}
+          </a>
+         </h4>
+         <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
+          <i class="fa fa-map-marker">
+          </i>
+          {{item.address}}
+         </a>
+         <a class="details button border" href="{{item.get_absolute_url}}">
+          Details
+         </a>
+        </div>
+        <ul class="listing-details">
+         <li>
+          {{item.area}}/sq m
+         </li>
+         <li>
+          {{item.bedrooms}} Bedroom
+         </li>
+         <li>
+          {{item.rooms}} Rooms
+         </li>
+         <li>
+          {{item.bathrooms}} Bathroom
+         </li>
+        </ul>
+        <div class="listing-footer">
+         <a href="#">
+          <i class="fa fa-user">
+          </i>
+          {{item.creator}}
+         </a>
+         <span>
+          <i class="fa fa-calendar-o">
+          </i>
+          {{item.date}}
+         </span>
+        </div>
+       </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% else %}
+      {% for item in popular %}
+      {% if item.features %}
+      <div class="listing-item">
+       <a class="listing-img-container" href="{{item.get_absolute_url}}">
+        <div class="listing-badges">
+         <span class="featured">
+          Featured
+         </span>
+         <span>
+          for {{item.sale_type}}
+         </span>
+        </div>
+        <div class="listing-img-content">
+         <span class="listing-price">
+          ₦{{item.price}}
+          <i>
+           ₦{{item.price_per_unit}}/sq m
+          </i>
+         </span>
+         <form method="GET">
+           <input name="third_check"  type="hidden" value="three" />
+           <input name="title"  type="hidden" value="{{item.title}}" />
+           <input name="address"  type="hidden" value="{{item.address}}" />
+           <input name="date"  type="hidden" value="{{item.date}}" />
+           <input name="category"  type="hidden" value="{{item.category}}" />
+           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
+           <input name="price"  type="hidden" value="{{item.price}}" />
+           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
+           {% for i in item.image_1.all %}
+           {% if forloop.first %}
+           <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
+           {% endif %}
+           {% endfor %}
+           <input name="area"  type="hidden" value="{{item.area}}" />
+           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
+           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
+           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
+           <input name="features"  type="hidden" value="{{item.features}}" />
+           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
+           <input name="parking"  type="hidden" value="{{item.parking}}" />
+           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
+           <input name="heating"  type="hidden" value="{{item.heating}}" />
+           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
+           <input name="water"  type="hidden" value="{{item.water}}" />
+           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
+           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
+           <button class="fa fa-star ml-auto"  type="submit">
+           </button>
+         </form>
+         <form method="GET">
+           <input name="second_check"  type="hidden" value="two" />
+           <input name="title"  type="hidden" value="{{item.title}}" />
+           <input name="address"  type="hidden" value="{{item.address}}" />
+           <input name="date"  type="hidden" value="{{item.date}}" />
+           <input name="category"  type="hidden" value="{{item.category}}" />
+           <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
+           <input name="price"  type="hidden" value="{{item.price}}" />
+           <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
+           {% for i in item.image_1.all %}
+           {% if forloop.first %}
+           <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
+           {% endif %}
+           {% endfor %}
+           <input name="area"  type="hidden" value="{{item.area}}" />
+           <input name="rooms"  type="hidden" value="{{item.rooms}}" />
+           <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
+           <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
+           <input name="features"  type="hidden" value="{{item.features}}" />
+           <input name="building_age"  type="hidden" value="{{item.building_age}}" />
+           <input name="parking"  type="hidden" value="{{item.parking}}" />
+           <input name="cooling"  type="hidden" value="{{item.cooling}}" />
+           <input name="heating"  type="hidden" value="{{item.heating}}" />
+           <input name="sewer"  type="hidden" value="{{item.sewer}}" />
+           <input name="water"  type="hidden" value="{{item.water}}" />
+           <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
+           <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
+         <button class="compare-button" type="submit">
+         </button>
+         </form>
+        </div>
+        <div class="listing-carousel">
+          {% for i in item.image_1.all %}
+          <div>
+          <img alt="" src="{% get_media_prefix %}{{i.image}}"/>
+          </div>
+          {% endfor %}
+        </div>
+       </a>
+       <div class="listing-content">
+        <div class="listing-title">
+         <h4>
+          <a href="{{item.get_absolute_url}}">
+          {{item.title}}
+          </a>
+         </h4>
+         <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
+          <i class="fa fa-map-marker">
+          </i>
+          {{item.address}}
+         </a>
+         <a class="details button border" href="{{item.get_absolute_url}}">
+          Details
+         </a>
+        </div>
+        <ul class="listing-details">
+         <li>
+          {{item.area}}/sq m
+         </li>
+         <li>
+          {{item.bedrooms}} Bedroom
+         </li>
+         <li>
+          {{item.rooms}} Rooms
+         </li>
+         <li>
+          {{item.bathrooms}} Bathroom
+         </li>
+        </ul>
+        <div class="listing-footer">
+         <a href="#">
+          <i class="fa fa-user">
+          </i>
+          {{item.creator}}
+         </a>
+         <span>
+          <i class="fa fa-calendar-o">
+          </i>
+          {{item.date}}
+         </span>
+        </div>
+       </div>
+      </div>
+      {% else %}
+      {% endif %}
+      {% endfor %}
+      {% endif %}
       <!-- Listing Item / End -->
      </div>
      <!-- Listings Container / End -->
@@ -1050,16 +905,17 @@ function pricelow () {
       {% endif %}
      </div>
      <!-- Pagination / End -->
+
     </div>
     <div class="col-md-4">
-      <div class="sidebar sticky right">
+			<div class="sidebar sticky right">
 
-        <!-- Widget -->
-        <div class="widget margin-bottom-40">
-          <h3 class="margin-top-0 margin-bottom-35">Filter Options</h3>
+				<!-- Widget -->
+				<div class="widget margin-bottom-40">
+					<h3 class="margin-top-0 margin-bottom-35">Filter Options</h3>
 
 
-          <!-- Row -->
+					<!-- Row -->
           <form method="GET">
         <div class="row with-forms">
           <div class="col-md-12">
@@ -1067,44 +923,44 @@ function pricelow () {
           <input id="search" class="ico-01"  placeholder="Enter address e.g. street, city and state or zip" name="search" type="text" value=""/>
         </div>
       </div>
-          <div class="row with-forms">
-            <!-- Status -->
-            <div class="col-md-12">
-              <select id=sale_type data-placeholder="Any Status" class="chosen-select-no-single" name="sale_type">
-                <option value="">Any Status</option>
-                <option value="sale">For Sale</option>
-                <option value="rent">For Rent</option>
+					<div class="row with-forms">
+						<!-- Status -->
+						<div class="col-md-12">
+							<select id=sale_type data-placeholder="Any Status" class="chosen-select-no-single" name="sale_type">
+								<option value="">Any Status</option>
+								<option value="sale">For Sale</option>
+								<option value="rent">For Rent</option>
                 <option value="hotel">Hotel</option>
                 <option value="shortlet">Shortlet</option>
-              </select>
-            </div>
-          </div>
-          <!-- Row / End -->
+							</select>
+						</div>
+					</div>
+					<!-- Row / End -->
 
 
-          <!-- Row -->
-          <div class="row with-forms">
-            <!-- Type -->
-            <div class="col-md-12">
-              <select id="category" data-placeholder="Any Type" class="chosen-select-no-single" name="category">
-                <option value="">Any Type</option>
-                <option value="apartment">Apartments</option>
-                <option value="house">Houses</option>
-                <option value="commercial">Commercial</option>
-                <option value="garage">Garages</option>
-                <option value="lot">Lots</option>
-              </select>
-            </div>
-          </div>
-          <!-- Row / End -->
+					<!-- Row -->
+					<div class="row with-forms">
+						<!-- Type -->
+						<div class="col-md-12">
+							<select id="category" data-placeholder="Any Type" class="chosen-select-no-single" name="category">
+								<option value="">Any Type</option>
+								<option value="apartment">Apartments</option>
+								<option value="house">Houses</option>
+								<option value="commercial">Commercial</option>
+								<option value="garage">Garages</option>
+								<option value="lot">Lots</option>
+							</select>
+						</div>
+					</div>
+					<!-- Row / End -->
 
 
-          <!-- Row -->
-          <div class="row with-forms">
-            <!-- States -->
-            <div class="col-md-12">
-              <select id="state" data-placeholder="All States" class="chosen-select" name="state">
-                <option>All States</option>
+					<!-- Row -->
+					<div class="row with-forms">
+						<!-- States -->
+						<div class="col-md-12">
+							<select id="state" data-placeholder="All States" class="chosen-select" name="state">
+								<option>All States</option>
                 <option value="" selected="selected">- Select -</option>
               <option value="Abuja FCT">Abuja FCT</option>
               <option value="Abia">Abia</option>
@@ -1143,49 +999,49 @@ function pricelow () {
               <option value="Taraba">Taraba</option>
               <option value="Yobe">Yobe</option>
               <option value="Zamfara">Zamfara</option>
-              </select>
-            </div>
-          </div>
-          <!-- Row / End -->
+							</select>
+						</div>
+					</div>
+					<!-- Row / End -->
 
 
-          <!-- Row -->
-          <!-- Row / End -->
+					<!-- Row -->
+					<!-- Row / End -->
 
 
-          <!-- Row -->
-          <div class="row with-forms">
+					<!-- Row -->
+					<div class="row with-forms">
 
-            <!-- Min Area -->
-            <div class="col-md-6">
-              <select id="bedrooms" data-placeholder="Beds" class="chosen-select-no-single" name="bedrooms">
-                <option label="blank"></option>
-                <option value="">Beds (Any)</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
+						<!-- Min Area -->
+						<div class="col-md-6">
+							<select id="bedrooms" data-placeholder="Beds" class="chosen-select-no-single" name="bedrooms">
+								<option label="blank"></option>
+								<option value="">Beds (Any)</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
+						</div>
 
-            <!-- Max Area -->
-            <div class="col-md-6">
-              <select id="bathrooms" data-placeholder="Baths" class="chosen-select-no-single" name="bathrooms">
-                <option label="blank"></option>
-                <option value="">Baths (Any)</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
+						<!-- Max Area -->
+						<div class="col-md-6">
+							<select id="bathrooms" data-placeholder="Baths" class="chosen-select-no-single" name="bathrooms">
+								<option label="blank"></option>
+								<option value="">Baths (Any)</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
+						</div>
 
-          </div>
-          <!-- Row / End -->
+					</div>
+					<!-- Row / End -->
 
-          <br>
+					<br>
           <div class="select-input disabled-first-option">
            <input  placeholder="Min Price" name="min_price_1" data-unit="₦" type="text"/>
            <select name="min_price_2">
@@ -1257,7 +1113,7 @@ function pricelow () {
             </option>
            </select>
           </div>
-          <!-- Area Range -->
+					<!-- Area Range -->
           <div class="select-input disabled-first-option">
            <input  placeholder="Max Price" name="max_price_1" data-unit="₦" type="text"/>
            <select name="max_price_2">
@@ -1330,9 +1186,9 @@ function pricelow () {
            </select>
           </div>
 
-          <br>
+					<br>
 
-          <!-- Price Range -->
+					<!-- Price Range -->
           <div class="select-input disabled-first-option">
            <input   placeholder="Min Area" data-unit="sq m" name="min_area_1" type="text"/>
            <select name="min_area_2">
@@ -1394,62 +1250,58 @@ function pricelow () {
 
 
 
-          <!-- More Search Options -->
-          <a href="#" class="more-search-options-trigger margin-bottom-10 margin-top-30" data-open-title="Additional Features" data-close-title="Additional Features"></a>
+					<!-- More Search Options -->
+					<a href="#" class="more-search-options-trigger margin-bottom-10 margin-top-30" data-open-title="Additional Features" data-close-title="Additional Features"></a>
 
-          <div class="more-search-options relative">
+					<div class="more-search-options relative">
 
-            <!-- Checkboxes -->
-            <div class="checkboxes one-in-row margin-bottom-10">
+						<!-- Checkboxes -->
+						<div class="checkboxes one-in-row margin-bottom-10">
 
-              <input id="check-2"  type="checkbox" name="check" value="air conditioning">
-              <label for="check-2">Air Conditioning</label>
+							<input id="check-2"  type="checkbox" name="check" value="air conditioning">
+							<label for="check-2">Air Conditioning</label>
 
-              <input id="check-3" type="checkbox" name="check" value="swimming pool">
-              <label for="check-3">Swimming Pool</label>
+							<input id="check-3" type="checkbox" name="check" value="swimming pool">
+							<label for="check-3">Swimming Pool</label>
 
-              <input id="check-4" type="checkbox" name="check" value="central heating">
-              <label for="check-4">Central Heating</label>
+							<input id="check-4" type="checkbox" name="check" value="central heating">
+							<label for="check-4">Central Heating</label>
 
-              <input id="check-5" type="checkbox" name="check" value="laundry">
-              <label for="check-5">Laundry Room</label>
-
-
-              <input id="check-6" type="checkbox" name="check" value="gym">
-              <label for="check-6">Gym</label>
-
-              <input id="check-7" type="checkbox" name="check" value="alarm">
-              <label for="check-7">Alarm</label>
-
-              <input id="check-8" type="checkbox" name="check" value="window covering">
-              <label for="check-8">Window Covering</label>
-
-            </div>
-            <!-- Checkboxes / End -->
-
-          </div>
-          <!-- More Search Options / End -->
-
-          <button class="button fullwidth margin-top-30" type="submit">Search</button>
+							<input id="check-5" type="checkbox" name="check" value="laundry">
+							<label for="check-5">Laundry Room</label>
 
 
-        </div>
+							<input id="check-6" type="checkbox" name="check" value="gym">
+							<label for="check-6">Gym</label>
+
+							<input id="check-7" type="checkbox" name="check" value="alarm">
+							<label for="check-7">Alarm</label>
+
+							<input id="check-8" type="checkbox" name="check" value="window covering">
+							<label for="check-8">Window Covering</label>
+
+						</div>
+						<!-- Checkboxes / End -->
+
+					</div>
+					<!-- More Search Options / End -->
+
+					<button class="button fullwidth margin-top-30" type="submit">Search</button>
+
+
+				</div>
       </form>
-        <!-- Widget / End -->
+				<!-- Widget / End -->
 
-      </div>
-
-    </div>
-
+			</div>
+		</div>
     <!-- Sidebar
 		================================================== -->
 
-    <div class="col-md-4">
-
-    </div>
     <!-- Sidebar / End -->
    </div>
   </div>
+
   <!-- Footer
 ================================================== -->
 <div class="sticky-footer" id="footer">
@@ -1528,25 +1380,31 @@ function pricelow () {
       <br/>
      </div>
      <ul class="social-icons margin-top-20">
- <li>
-   <a class="facebook" href="http://facebook.com/afripropertyconnect">
-    <i class="icon-facebook">
-    </i>
-   </a>
- </li>
- <li>
-   <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
-     <i class="icon-twitter">
-     </i>
-   </a>
- </li>
- <li>
-   <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
-     <i class="icon-instagram">
-     </i>
-   </a>
- </li>
-</ul>
+      <li>
+       <a class="facebook" href="#">
+        <i class="icon-facebook">
+        </i>
+       </a>
+      </li>
+      <li>
+       <a class="twitter" href="#">
+        <i class="icon-twitter">
+        </i>
+       </a>
+      </li>
+      <li>
+       <a class="gplus" href="#">
+        <i class="icon-gplus">
+        </i>
+       </a>
+      </li>
+      <li>
+       <a class="vimeo" href="#">
+        <i class="icon-vimeo">
+        </i>
+       </a>
+      </li>
+     </ul>
     </div>
    </div>
   <!-- Copyright -->

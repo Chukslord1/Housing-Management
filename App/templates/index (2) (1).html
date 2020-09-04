@@ -13,7 +13,6 @@
 ================================================== -->
  <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
  <link href="{% static 'css/color.css' %}" rel="stylesheet"/>
-  <link rel="icon" type="image/png" href="{% static 'images/favicon.jpg' %}">
 </head>
 <body>
  <!-- Wrapper -->
@@ -87,66 +86,61 @@
   <header id="header-container">
    <!-- Topbar -->
    <div id="top-bar">
- <div class="container">
-  <!-- Left Side Content -->
-  <div class="left-side">
-   <!-- Top bar -->
-   <ul class="top-bar-menu">
-    <li>
-     <i class="fa fa-phone">
-     </i>
-     +(234) 805 882 775
-    </li>
-    <li>
-     <i class="fa fa-envelope">
-     </i>
-     <a href="#">
-      sales@afriproperty.com.ng
-     </a>
-    </li>
-    <li>
-      <div class="top-bar-dropdown">
-        <span>Useful Links</span>
-        <ul class="options">
-          <li><div class="arrow"></div></li>
-          <li><a href="{% url 'APP:agents' %}">Agents</a></li>
-          <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
-          <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
-          <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
-          <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
-        </ul>
-      </div>
-    </li>
-   </ul>
-  </div>
-  <!-- Left Side Content / End -->
-  <!-- Left Side Content -->
-  <div class="right-side">
-   <!-- Social Icons -->
-   <ul class="social-icons">
-    <li>
-     <a class="facebook" href="http://facebook.com/afripropertyconnect">
-      <i class="icon-facebook">
-      </i>
-     </a>
-    </li>
-    <li>
-     <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
-      <i class="icon-twitter">
-      </i>
-     </a>
-    </li>
-    <li>
-     <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
-      <i class="icon-instagram">
-      </i>
-     </a>
-    </li>
-   </ul>
-  </div>
-  <!-- Left Side Content / End -->
- </div>
-</div>
+    <div class="container">
+     <!-- Left Side Content -->
+     <div class="left-side">
+      <!-- Top bar -->
+      <ul class="top-bar-menu">
+       <li>
+        <i class="fa fa-phone">
+        </i>
+        +(234) 805 882 775, +(234) 905 2213 706
+       </li>
+       <li>
+        <i class="fa fa-envelope">
+        </i>
+        <a href="#">
+         sales@afriproperty.com.ng
+        </a>
+       </li>
+      </ul>
+     </div>
+     <!-- Left Side Content / End -->
+     <!-- Left Side Content -->
+     <div class="right-side">
+      <!-- Social Icons -->
+      <ul class="social-icons">
+       <li>
+        <a class="facebook" href="#">
+         <i class="icon-facebook">
+         </i>
+        </a>
+       </li>
+       <li>
+        <a class="twitter" href="#">
+         <i class="icon-twitter">
+         </i>
+        </a>
+       </li>
+       <li>
+        <a class="gplus" href="#">
+         <i class="icon-gplus">
+         </i>
+        </a>
+       </li>
+       <li>
+        <a class="pinterest" href="#">
+         <i class="icon-pinterest">
+         </i>
+        </a>
+       </li>
+      </ul>
+     </div>
+     <!-- Left Side Content / End -->
+    </div>
+   </div>
+   <div class="clearfix">
+   </div>
    <!-- Topbar / End -->
    <!-- Header -->
    <div id="header">
@@ -188,53 +182,17 @@
           For Rent
          </a>
         </li>
-        <li><a href="#">More</a>
-          <ul>
-            <li>
-              <input type="hidden" id="sale3" value="shortlet">
-             <a onclick="showsale3()">
-              Shortlet
-             </a>
-            </li>
-            <li>
-              <input type="hidden" id="sale4" value="hotel">
-             <a onclick="showsale4()">
-              Hotels
-             </a>
-            </li>
-            <li>
-              <input type="hidden" id="sale11" value="park">
-             <a onclick="showsale11()">
-              Park and Recreation
-             </a>
-            </li>
-            <li>
-              <input type="hidden" id="sale10" value="travels">
-             <a onclick="showsale10()">
-              Travels and Tours Listing
-             </a>
-            </li>
-            <li>
-             <a href="{% url 'APP:pricing' %}">
-              Products and Services
-             </a>
-            </li>
-            <li>
-             <a href="{% url 'APP:property_video' %}">
-              Property Videos
-             </a>
-            </li>
-            <li>
-             <a href="{% url 'APP:multi_component' %}">
-            Multilevel Component
-             </a>
-            </li>
-            <li>
-             <a href="{% url 'APP:valuation' %}">
-              Property Valuation
-             </a>
-            </li>
-          </ul>
+        <li>
+          <input type="hidden" id="sale3" value="shortlet">
+         <a onclick="showsale3()">
+          Shortlet
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale4" value="hotel">
+         <a onclick="showsale4()">
+          Hotels
+         </a>
         </li>
        </ul>
       </nav>
@@ -305,12 +263,10 @@
        <!-- User Menu -->
 
 
-       {% if user.is_authenticated %}
+
        <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
        </a>
-       {% else %}
-       {% endif %}
 
       </div>
 
@@ -341,7 +297,7 @@
          <div class="main-search-form">
          <div class="search-type">
           <label class="active">
-           <input id="myInput10"  name="tab" value="e" type="radio"/>
+           <input checked="checked" class="first-tab" name="tab" type="radio"/>
            Any Status
           </label>
           <label>
@@ -425,17 +381,14 @@ function showOutput () {
   var value=document.getElementById("myInput").value;
   var value_2=document.getElementById("myInput2").value;
   var value_3=document.getElementById("myInput3").value;
-  if (document.getElementById("myInput7").checked == true){
-    var value_4=document.getElementById("myInput7").value;
+  if (document.getElementById("myInput4").checked == true){
+    var value_4=document.getElementById("myInput4").value;
   } else if (document.getElementById("myInput5").checked == true){
     var value_4=document.getElementById("myInput5").value;
   } else if (document.getElementById("myInput6").checked == true){
     var value_4=document.getElementById("myInput6").value;
-  }else if (document.getElementById("myInput4").checked == true){
-    var value_4=document.getElementById("myInput4").value;
-  }
-   else {
-    var value_4="e";
+  } else {
+    var value_4=document.getElementById("myInput7").value;
   }
 
   var paid="one";
@@ -541,22 +494,6 @@ function showsale4 () {
   var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
   window.location.href="category" + queryString;
 }
-function showsale11 () {
-  var value=document.getElementById("sale11").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
-function showsale10 () {
-  var value=document.getElementById("sale10").value;
-
-
-  var paid="True";
-  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
-  window.location.href="category" + queryString;
-}
 </script>
           <!-- Row / End -->
           <!-- Browse Jobs -->
@@ -612,7 +549,7 @@ function showsale10 () {
           <span class="listing-price">
            ₦{{house.price}}
            <i>
-            ₦{{house.price_per_unit}}per sq m
+            ₦{{house.price_per_unit}}/ sq m
            </i>
           </span>
 
@@ -625,11 +562,7 @@ function showsale10 () {
             <input name="sale_type"  type="hidden" value="{{house.sale_type}}" />
             <input name="price"  type="hidden" value="{{house.price}}" />
             <input name="price_per_unit"  type="hidden" value="{{house.price_per_unit}}" />
-            {% for item in house.image_1.all %}
-            {% if forloop.first %}
-            <input name="image"  type="hidden" value="{% get_media_prefix %}{{item.image}}" />
-            {% endif %}
-            {% endfor %}
+            <input name="image"  type="hidden" value="{{house.image_1.url}}" />
             <input name="area"  type="hidden" value="{{house.area}}" />
             <input name="rooms"  type="hidden" value="{{house.rooms}}" />
             <input name="bedrooms"  type="hidden" value="{{house.bedrooms}}" />
@@ -655,11 +588,7 @@ function showsale10 () {
             <input name="sale_type"  type="hidden" value="{{house.sale_type}}" />
             <input name="price"  type="hidden" value="{{house.price}}" />
             <input name="price_per_unit"  type="hidden" value="{{house.price_per_unit}}" />
-            {% for item in house.image_1.all %}
-            {% if forloop.first %}
-            <input name="image"  type="hidden" value="{% get_media_prefix %}{{item.image}}" />
-            {% endif %}
-            {% endfor %}
+            <input name="image"  type="hidden" value="{{house.image_1.url}}" />
             <input name="area"  type="hidden" value="{{house.area}}" />
             <input name="rooms"  type="hidden" value="{{house.rooms}}" />
             <input name="bedrooms"  type="hidden" value="{{house.bedrooms}}" />
@@ -678,11 +607,27 @@ function showsale10 () {
         </form>
          </div>
          <div class="listing-carousel">
-           {% for item in house.image_1.all %}
           <div>
-           <img alt="" src="{% get_media_prefix %}{{item.image}}"/>
+            {% if house.image_1 %}
+           <img alt="" src="{{house.image_1.url}}"/>
+           {% else %}
+           <img alt="" src="{% static 'images/listing-01c.jpg' %}"/>
+           {% endif %}
           </div>
-          {% endfor %}
+          <div>
+            {% if house.image_2 %}
+           <img alt="" src="{{house.image_2.url}}"/>
+           {% else %}
+           <img alt="" src="{% static 'images/listing-01c.jpg' %}"/>
+           {% endif %}
+          </div>
+          <div>
+            {% if house.image_2 %}
+           <img alt="" src="{{house.image_2.url}}"/>
+           {% else %}
+           <img alt="" src="{% static 'images/listing-01c.jpg' %}"/>
+           {% endif %}
+          </div>
          </div>
         </a>
         <div class="listing-content">
@@ -702,7 +647,7 @@ function showsale10 () {
           <li>
            Area
            <span>
-          {{house.area}}/sq m
+          {{house.area}}
            </span>
           </li>
           <li>
@@ -770,6 +715,9 @@ function showsale10 () {
        <h3>
         Lots
        </h3>
+       <p>
+        Aliquam dictum elit vitae mauris facilisis, at dictum urna dignissim donec vel lectus vel felis.
+       </p>
       </div>
      </div>
      <div class="col-md-3 col-sm-6">
@@ -791,6 +739,9 @@ function showsale10 () {
        <h3>
         Houses
        </h3>
+       <p>
+        Aliquam dictum elit vitae mauris facilisis, at dictum urna dignissim donec vel lectus vel felis.
+       </p>
       </div>
      </div>
      <div class="col-md-3 col-sm-6">
@@ -812,6 +763,9 @@ function showsale10 () {
        <h3>
         Garages
        </h3>
+       <p>
+        Aliquam dictum elit vitae mauris facilisis, at dictum urna dignissim donec vel lectus vel felis.
+       </p>
       </div>
      </div>
      <div class="col-md-3 col-sm-6">
@@ -833,6 +787,9 @@ function showsale10 () {
        <h3>
         Commercial
        </h3>
+       <p>
+        Aliquam dictum elit vitae mauris facilisis, at dictum urna dignissim donec vel lectus vel felis.
+       </p>
       </div>
      </div>
     </div>
@@ -852,7 +809,7 @@ function showsale10 () {
     </div>
     <div class="col-md-4">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/lagos.jfif' %}" onclick="showpopular()">
+     <a class="img-box" data-background-image="{% static 'images/popular-location-01.jpg' %}" onclick="showpopular()">
       <!-- Badge -->
       <div class="listing-badges">
        <span class="featured">
@@ -872,7 +829,7 @@ function showsale10 () {
     </div>
     <div class="col-md-8">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/abuja.jfif' %}" onclick="showpopular2()">
+     <a class="img-box" data-background-image="{% static 'images/popular-location-02.jpg' %}" onclick="showpopular2()">
       <div class="img-box-content visible">
         <input id="mypop2" name="mypop" type="hidden" value="abuja" />
        <h4>
@@ -886,9 +843,9 @@ function showsale10 () {
     </div>
     <div class="col-md-8">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/port.jfif' %}" onclick="showpopular3()">
+     <a class="img-box" data-background-image="{% static 'images/popular-location-03.jpg' %}" onclick="showpopular3()">
       <div class="img-box-content visible">
-        <input id="mypop3" name="mypop" type="hidden" value="port harcourt" />
+        <input id="mypop3" name="mypop" type="hidden" value="port" />
        <h4>
         Port Harcourt
        </h4>
@@ -900,7 +857,7 @@ function showsale10 () {
     </div>
     <div class="col-md-4">
      <!-- Image Box -->
-     <a class="img-box" data-background-image="{% static 'images/niger.jfif' %}" onclick="showpopular4()">
+     <a class="img-box" data-background-image="{% static 'images/popular-location-04.jpg' %}" onclick="showpopular4()">
       <div class="img-box-content visible">
         <input id="mypop4" name="mypop" type="hidden" value="niger" />
        <h4>
@@ -953,52 +910,6 @@ function showsale10 () {
      {% endfor %}
     </div>
    </div>
-  </section>
-  <section class="fullwidth border-top margin-top-40 margin-bottom-0 padding-top-60 padding-bottom-65" data-background-color="#ffffff">
-   <!-- Logo Carousel -->
-   <div class="container">
-    <div class="row">
-     <div class="col-md-12">
-      <h3 class="headline centered margin-bottom-40 margin-top-10">
-       Our Partners
-       <span>
-        We can assist you with your innovation or commercialisation journey!
-       </span>
-      </h3>
-     </div>
-     <!-- Carousel -->
-     <div class="col-md-12">
-      <div class="logo-carousel dot-navigation">
-       <div class="item">
-        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/24_hubs.png"/>
-       </div>
-       <div class="item">
-        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/celebworld_multiconcept_nig_ltd.png"/>
-       </div>
-       <div class="item">
-        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/artarc.png"/>
-       </div>
-       <div class="item">
-        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/concarc.png"/>
-       </div>
-       <div class="item">
-        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/citec_villas_international_ltd.png"/>
-       </div>
-       <div class="item">
-        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/nido___e.png"/>
-       </div>
-       <div class="item">
-        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/life_style_hub.png"/>
-       </div>
-       <div class="item">
-        <img alt="" src="https://takemygist.com.ng/wp-content/uploads/2017/02/errand_boss.png"/>
-       </div>
-      </div>
-     </div>
-     <!-- Carousel / End -->
-    </div>
-   </div>
-   <!-- Logo Carousel / End -->
   </section>
   <!-- Fullwidth Section / End -->
   <!-- Flip banner -->
@@ -1093,32 +1004,38 @@ function showsale10 () {
         <br/>
        </div>
        <ul class="social-icons margin-top-20">
- <li>
-   <a class="facebook" href="http://facebook.com/afripropertyconnect">
-    <i class="icon-facebook">
-    </i>
-   </a>
- </li>
- <li>
-   <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
-     <i class="icon-twitter">
-     </i>
-   </a>
- </li>
- <li>
-   <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
-     <i class="icon-instagram">
-     </i>
-   </a>
- </li>
-</ul>
+        <li>
+         <a class="facebook" href="#">
+          <i class="icon-facebook">
+          </i>
+         </a>
+        </li>
+        <li>
+         <a class="twitter" href="#">
+          <i class="icon-twitter">
+          </i>
+         </a>
+        </li>
+        <li>
+         <a class="gplus" href="#">
+          <i class="icon-gplus">
+          </i>
+         </a>
+        </li>
+        <li>
+         <a class="vimeo" href="#">
+          <i class="icon-vimeo">
+          </i>
+         </a>
+        </li>
+       </ul>
       </div>
      </div>
     <!-- Copyright -->
     <div class="row">
      <div class="col-md-12">
       <div class="copyrights">
-       © 2020 Afriproperty. All Rights Reserved <a href=" https://24hubs.com">powered by 24 Hubs</a>.
+       Â© 2020 Afriproperty. All Rights Reserved.
       </div>
      </div>
     </div>

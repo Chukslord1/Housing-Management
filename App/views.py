@@ -170,7 +170,8 @@ class ArticleListView(ListView):
                     check=Comment.objects.filter(blog=i.title).count()
                     x = Article.objects.filter(title=i.title)
                     popular.append(x)
-        context['popular'] = popular[0]
+        if len(popular)>0:
+            context['popular'] = popular[0]
         if len(popular)>2:
             context['popular_2'] = popular[1]
             context['popular_3'] = popular[2]
@@ -211,7 +212,7 @@ def login_register(request):
                         username=username, password=password1, email=email)
                     user.set_password(user.password)
                     user.save()
-                    profile = UserProfile.objects.create(user=user, username=username,email=email)
+                    profile = UserProfile.objects.create(user=user, username=username,email=email,trials=3)
                     profile.save()
                     context = {'profile':profile,"messages": "User Added"}
                     return render(request,'login-register.html',context)
@@ -358,6 +359,7 @@ class SearchListView(ListView):
             first_check="one"
             query = self.request.GET.get('search')
             tab= self.request.GET.get('tab')
+            arrange=self.request.GET.get('arrange')
             if tab:
                 tab= self.request.GET.get('tab')
             else:
@@ -373,15 +375,33 @@ class SearchListView(ListView):
             else:
                 new_max=10000000000
             if first_check=="one":
-                search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=tab), Q(category__icontains=category),Q(price__lte=new_max))
-                context['search'] = search
+                if arrange=="pricelow":
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=tab), Q(category__icontains=category),Q(price__lte=new_max)).order_by('price')
+                    context['search'] = search
+                elif arrange=="pricehigh":
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=tab), Q(category__icontains=category),Q(price__lte=new_max)).order_by('-price')
+                    context['search'] = search
+                elif arrange=="new":
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=tab), Q(category__icontains=category),Q(price__lte=new_max)).order_by('-date')
+                    context['search'] = search
+                elif arrange=="pricelow":
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=tab), Q(category__icontains=category),Q(price__lte=new_max)).order_by('date')
+                    context['search'] = search
+                else:
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=tab), Q(category__icontains=category),Q(price__lte=new_max))
+                    context['search'] = search
             else:
                 search = self.model.objects.none()
                 context['search'] = search
         elif self.request.GET.get('realcheck')=="True":
             query = self.request.GET.get('search')
             sale_type=self.request.GET.get('sale_type')
+            if sale_type:
+                pass
+            else:
+                sale_type="e"
             category = self.request.GET.get('category')
+            arrange= self.request.GET.get("arrange")
             min_area_1 = self.request.GET.get('min_area_1')
             max_area_1 = self.request.GET.get('max_area_1')
             min_price_1 = self.request.GET.get('min_price_1')
@@ -418,14 +438,39 @@ class SearchListView(ListView):
                 new_max=int(max_price)
             else:
                 new_max=10000000000
+            if min_price:
+                new_min=int(min_price)
+            else:
+                new_min=1000
             if max_area:
                 new_max_area=int(max_area)
             else:
                 new_max_area=10000000000
+            if min_area:
+                new_min_area=int(min_area)
+            else:
+                new_min_area=100
             if query:
-                zero=0
-                search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type=sale_type) | Q(sale_type__icontains="e"), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area) | Q(area__lte=100000),Q(building_age__gte=zero),Q(bedrooms__gte=zero),Q(rooms__gte=zero),Q(bathrooms__gte=zero))
-                context['search'] = search
+                if arrange=="pricelow":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(building_age__gte=zero),Q(bedrooms__gte=zero),Q(rooms__gte=zero),Q(bathrooms__gte=zero)).order_by('price')
+                    context['search'] = search
+                elif arrange=="pricehigh":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(building_age__gte=zero),Q(bedrooms__gte=zero),Q(rooms__gte=zero),Q(bathrooms__gte=zero)).order_by('-price')
+                    context['search'] = search
+                elif arrange=="new":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(building_age__gte=zero),Q(bedrooms__gte=zero),Q(rooms__gte=zero),Q(bathrooms__gte=zero)).order_by('-date')
+                    context['search'] = search
+                elif arrange=="old":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(building_age__gte=zero),Q(bedrooms__gte=zero),Q(rooms__gte=zero),Q(bathrooms__gte=zero)).order_by('date')
+                    context['search'] = search
+                else:
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(building_age__gte=zero),Q(bedrooms__gte=zero),Q(rooms__gte=zero),Q(bathrooms__gte=zero))
+                    context['search'] = search
             else:
                 search = self.model.objects.none()
                 context['search'] = search
@@ -540,34 +585,107 @@ class CategoryListView(ListView):
         if self.request.GET.get('first_check')=="one":
             context['value'] = "Search"
             query = self.request.GET.get('search')
+            arrange=self.request.GET.get('arrange')
             if query:
-                search = self.model.objects.filter(Q(address__icontains=query))
-                boost = Boost.objects.filter(Q(address__icontains=query))
-                context['search'] = search
-                context['boost'] = boost
-
+                if arrange=="pricelow":
+                    search = self.model.objects.filter(Q(address__icontains=query)).order_by('price')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('price')
+                    context['search'] = search
+                    context['boost']= boost
+                elif arrange=="pricehigh":
+                    search = self.model.objects.filter(Q(address__icontains=query)).order_by('-price')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('-price')
+                    context['search'] = search
+                    context['boost']= boost
+                elif arrange=="new":
+                    search = self.model.objects.filter(Q(address__icontains=query)).order_by('-date')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('-date')
+                    context['search'] = search
+                    context['boost']= boost
+                elif arrange=="old":
+                    search = self.model.objects.filter(Q(address__icontains=query)).order_by('date')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('date')
+                    context['search'] = search
+                    context['boost']= boost
+                else:
+                    search = self.model.objects.filter(Q(address__icontains=query))
+                    boost=Boost.objects.filter(Q(address__icontains=query))
+                    context['search'] = search
+                    context['boost']= boost
             else:
                 search = self.model.objects.none()
                 context['search'] = search
         elif self.request.GET.get('check_cat')=="True":
             query = self.request.GET.get('cat')
+            arrange= self.request.GET.get('arrange')
             if query:
-                cat = self.model.objects.filter(Q(category__icontains=query))
-                boost = Boost.objects.filter(Q(category__icontains=query))
-                context['search'] = cat
-                context["cat"]=query
-                context['boost'] = boost
+                if arrange=="pricelow":
+                    cat = self.model.objects.filter(Q(category__icontains=query)).order_by('price')
+                    boost = Boost.objects.filter(Q(category__icontains=query)).order_by('price')
+                    context['search'] = cat
+                    context["cat"]=query
+                    context['boost'] = boost
+                elif arrange=="pricehigh":
+                    cat = self.model.objects.filter(Q(category__icontains=query)).order_by('-price')
+                    boost = Boost.objects.filter(Q(category__icontains=query)).order_by('-price')
+                    context['search'] = cat
+                    context["cat"]=query
+                    context['boost'] = boost
+                elif arrange=="new":
+                    cat = self.model.objects.filter(Q(category__icontains=query)).order_by('-date')
+                    boost = Boost.objects.filter(Q(category__icontains=query)).order_by('-date')
+                    context['search'] = cat
+                    context["cat"]=query
+                    context['boost'] = boost
+                elif arrange=="old":
+                    cat = self.model.objects.filter(Q(category__icontains=query)).order_by('date')
+                    boost = Boost.objects.filter(Q(category__icontains=query)).order_by('date')
+                    context['search'] = cat
+                    context["cat"]=query
+                    context['boost'] = boost
+                else:
+                    cat = self.model.objects.filter(Q(category__icontains=query))
+                    boost = Boost.objects.filter(Q(category__icontains=query))
+                    context['search'] = cat
+                    context["cat"]=query
+                    context['boost'] = boost
             else:
                 cat = self.model.objects.none()
                 context['search'] = cat
         elif self.request.GET.get('check_sale')=="True":
             query = self.request.GET.get('sale_type')
+            arrange=self.request.GET.get('arrange')
             if query:
-                cat = self.model.objects.filter(Q(sale_type__icontains=query))
-                boost = Boost.objects.filter(Q(sale_type__icontains=query))
-                context['search'] = cat
-                context['sale'] = query
-                context['boost'] = boost
+                if arrange=="pricelow":
+                    cat = self.model.objects.filter(Q(sale_type__icontains=query)).order_by('price')
+                    boost = Boost.objects.filter(Q(sale_type__icontains=query)).order_by('price')
+                    context['search'] = cat
+                    context['sale'] = query
+                    context['boost'] = boost
+                elif arrange=="pricelow":
+                    cat = self.model.objects.filter(Q(sale_type__icontains=query)).order_by('-price')
+                    boost = Boost.objects.filter(Q(sale_type__icontains=query)).order_by('-price')
+                    context['search'] = cat
+                    context['sale'] = query
+                    context['boost'] = boost
+                elif arrange=="new":
+                    cat = self.model.objects.filter(Q(sale_type__icontains=query)).order_by('-date')
+                    boost = Boost.objects.filter(Q(sale_type__icontains=query)).order_by('-date')
+                    context['search'] = cat
+                    context['sale'] = query
+                    context['boost'] = boost
+                elif arrange=="pricelow":
+                    cat = self.model.objects.filter(Q(sale_type__icontains=query)).order_by('date')
+                    boost = Boost.objects.filter(Q(sale_type__icontains=query)).order_by('date')
+                    context['search'] = cat
+                    context['sale'] = query
+                    context['boost'] = boost
+                else:
+                    cat = self.model.objects.filter(Q(sale_type__icontains=query))
+                    boost = Boost.objects.filter(Q(sale_type__icontains=query))
+                    context['search'] = cat
+                    context['sale'] = query
+                    context['boost'] = boost
             else:
                 cat = self.model.objects.none()
                 context['search'] = cat
@@ -624,6 +742,7 @@ class CategoryListView(ListView):
             query = self.request.GET.get('search')
             sale_type=self.request.GET.get('sale_type')
             category = self.request.GET.get('category')
+            arrange = self.request.GET.get('arrange')
             if category:
                 category = self.request.GET.get('category')
             else:
@@ -666,19 +785,48 @@ class CategoryListView(ListView):
                 new_max=int(max_price)
             else:
                 new_max=10000000000
+            if min_price:
+                new_min=int(min_price)
+            else:
+                new_min=100
             if max_area:
                 new_max_area=int(max_area)
             else:
                 new_max_area=10000000000
+            if min_area:
+                new_min_area=int(min_area)
+            else:
+                new_min_area=100
             if sale_type:
                 sale_type=self.request.GET.get('sale_type')
             else:
                 sale_type="e"
             if filter=="True":
-                zero=0
-                search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
-                context['search'] = search
-                context['filter'] = "Filter"
+                if arrange=="pricelow":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('price')
+                    context['search'] = search
+                    context['filter'] = "Filter"
+                elif arrange=="pricehigh":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('-price')
+                    context['search'] = search
+                    context['filter'] = "Filter"
+                elif arrange=="new":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('-date')
+                    context['search'] = search
+                    context['filter'] = "Filter"
+                elif arrange=="old":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('date')
+                    context['search'] = search
+                    context['filter'] = "Filter"
+                else:
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
+                    context['search'] = search
+                    context['filter'] = "Filter"
             else:
                 search = self.model.objects.none()
                 context['search'] = search
@@ -752,22 +900,66 @@ class PopularListView(ListView):
         if self.request.GET.get('first_check')=="one":
             context['value'] = "Search"
             query = self.request.GET.get('search')
+            arrange=self.request.GET.get('arrange')
             if query:
-                search = self.model.objects.filter(Q(address__icontains=query))
-                boost=Boost.objects.filter(Q(address__icontains=query))
-                context['search'] = search
-                context['boost']= boost
+                if arrange=="pricelow":
+                    search = self.model.objects.filter(Q(address__icontains=query)).order_by('price')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('price')
+                    context['search'] = search
+                    context['boost']= boost
+                elif arrange=="pricehigh":
+                    search = self.model.objects.filter(Q(address__icontains=query)).order_by('-price')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('-price')
+                    context['search'] = search
+                    context['boost']= boost
+                elif arrange=="new":
+                    search = self.model.objects.filter(Q(address__icontains=query)).order_by('-date')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('-date')
+                    context['search'] = search
+                    context['boost']= boost
+                elif arrange=="old":
+                    search = self.model.objects.filter(Q(address__icontains=query)).order_by('date')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('date')
+                    context['search'] = search
+                    context['boost']= boost
+                else:
+                    search = self.model.objects.filter(Q(address__icontains=query))
+                    boost=Boost.objects.filter(Q(address__icontains=query))
+                    context['search'] = search
+                    context['boost']= boost
             else:
                 search = self.model.objects.none()
                 context['search'] = search
         elif self.request.GET.get('check_pop')=="True":
             query = self.request.GET.get('pop')
+            arrange = self.request.GET.get("arrange")
             context['pop']=query
             if query:
-                pop = self.model.objects.filter(Q(address__icontains=query))
-                boost=Boost.objects.filter(Q(address__icontains=query))
-                context['boost']= boost
-                context['search'] = pop
+                if arrange=="pricelow":
+                    pop = self.model.objects.filter(Q(address__icontains=query)).order_by('price')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('price')
+                    context['boost']= boost
+                    context['search'] = pop
+                elif arrange=="pricehigh":
+                    pop = self.model.objects.filter(Q(address__icontains=query)).order_by('-price')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('-price')
+                    context['boost']= boost
+                    context['search'] = pop
+                elif arrange=="new":
+                    pop = self.model.objects.filter(Q(address__icontains=query)).order_by('-date')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('-date')
+                    context['boost']= boost
+                    context['search'] = pop
+                elif arrange=="pricehigh":
+                    pop = self.model.objects.filter(Q(address__icontains=query)).order_by('date')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('date')
+                    context['boost']= boost
+                    context['search'] = pop
+                else:
+                    pop = self.model.objects.filter(Q(address__icontains=query)).order_by('price')
+                    boost=Boost.objects.filter(Q(address__icontains=query)).order_by('price')
+                    context['boost']= boost
+                    context['search'] = pop
             else:
                 cat = self.model.objects.none()
                 context['search'] = pop
@@ -815,11 +1007,11 @@ class PopularListView(ListView):
                 else:
                     pass
         elif self.request.GET.get("filter")=="True":
-            context['filter']="Filter"
             filter="True"
             query = self.request.GET.get('search')
             sale_type=self.request.GET.get('sale_type')
             category = self.request.GET.get('category')
+            arrange = self.request.GET.get('arrange')
             if category:
                 category = self.request.GET.get('category')
             else:
@@ -862,18 +1054,48 @@ class PopularListView(ListView):
                 new_max=int(max_price)
             else:
                 new_max=10000000000
+            if min_price:
+                new_min=int(min_price)
+            else:
+                new_min=100
             if max_area:
                 new_max_area=int(max_area)
             else:
                 new_max_area=10000000000
+            if min_area:
+                new_min_area=int(min_area)
+            else:
+                new_min_area=100
             if sale_type:
                 sale_type=self.request.GET.get('sale_type')
             else:
                 sale_type="e"
             if filter=="True":
-                zero=0
-                search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
-                context['search'] = search
+                if arrange=="pricelow":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('price')
+                    context['search'] = search
+                    context['filter'] = "Filter"
+                elif arrange=="pricehigh":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('-price')
+                    context['search'] = search
+                    context['filter'] = "Filter"
+                elif arrange=="new":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('-date')
+                    context['search'] = search
+                    context['filter'] = "Filter"
+                elif arrange=="old":
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('date')
+                    context['search'] = search
+                    context['filter'] = "Filter"
+                else:
+                    zero=0
+                    search = self.model.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min, new_max)),Q(area__range=(new_min_area, new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
+                    context['search'] = search
+                    context['filter'] = "Filter"
             else:
                 search = self.model.objects.none()
                 context['search'] = search
@@ -1114,7 +1336,11 @@ class PropertyDetailView(DetailView):
             server.sendmail(fromaddr, toaddr, text)
             context['message']="Sent Enquiry Successfully"
         elif self.request.GET.get("report")=="True":
+            reason=self.request.GET.get("reason")
             title=self.request.GET.get("title")
+            name=self.request.GET.get("name")
+            email=self.request.GET.get("email")
+            comment=self.request.GET.get("comments")
             fromaddr = "housing-send@advancescholar.com"
             toaddr = "admin@afriproperty.com.ng"
             msg = MIMEMultipart()
@@ -1123,7 +1349,7 @@ class PropertyDetailView(DetailView):
             msg['Subject'] ="Report Listing"
 
 
-            body = "A listing was reported, A Property Listing with the name :" + title
+            body = "A listing was reported, A Property Listing with the name :" + title + " for reasons: "+reason+" user details are "+"name: "+name+" email: "+email+" comments "+comment
             msg.attach(MIMEText(body, 'plain'))
 
             server = smtplib.SMTP('mail.advancescholar.com',  26)
@@ -1249,15 +1475,29 @@ class AgencyDetailView(DetailView):
         return obj
     def get_context_data(self, **kwargs):
         context = super(AgencyDetailView, self).get_context_data(**kwargs)
-        if self.request.GET.get('first_check')=="one":
+        if self.request.GET.get('first_check')=="True":
             query = self.request.GET.get('search')
+            arrange=self.request.GET.get('arrange')
             if query:
-                search = Property.filter(Q(address__icontains=query),Q(agency=obj.title))
-                context['search'] = search
+                if arrange=="pricelow":
+                    search = Property.objects.filter(Q(address__icontains=query),Q(agency=obj.title)).order_by('price')
+                    context['search'] = search
+                elif arrange=="pricehigh":
+                    search = Property.objects.filter(Q(address__icontains=query),Q(agency=obj.title)).order_by('-price')
+                    context['search'] = search
+                elif arrange=="new":
+                    search = Property.objects.filter(Q(address__icontains=query),Q(agency=obj.title)).order_by('-date')
+                    context['search'] = search
+                elif arrange=="old":
+                    search = Property.objects.filter(Q(address__icontains=query),Q(agency=obj.title)).order_by('date')
+                    context['search'] = search
+                else:
+                    search = Property.objects.filter(Q(address__icontains=query),Q(agency=obj.title))
+                    context['search'] = search
             else:
-                search = self.model.objects.none()
+                search = Property.objects.none()
                 context['search'] = search
-        if self.request.GET.get('second_check')=="two":
+        elif self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
                 address=self.request.GET.get('address')
@@ -1364,7 +1604,22 @@ class AgencyDetailView(DetailView):
         else:
             pass
 
-        context['search'] = Property.objects.filter(agency=obj.title)
+        arrange=self.request.GET.get("arrange")
+        if arrange=="pricelow":
+            search=Property.objects.filter(agency=obj.title).order_by('price')
+            context['agencyprops'] = search
+        elif arrange=="pricelow":
+            search=Property.objects.filter(agency=obj.title).order_by('-price')
+            context['agencyprops'] = search
+        elif arrange=="new":
+            search=Property.objects.filter(agency=obj.title).order_by('-date')
+            context['agencyprops'] = search
+        elif arrange=="old":
+            search=Property.objects.filter(agency=obj.title).order_by('date')
+            context['agencyprops'] = search
+        else:
+            search=Property.objects.filter(agency=obj.title)
+            context['agencyprops'] = search
         context['agents'] = Agent.objects.filter(agency=obj.title)
         paginator= Paginator(Agency.objects.all(),10)
         page_number = self.request.GET.get('page')
@@ -1384,13 +1639,28 @@ class DeveloperDetailView(DetailView):
         context = super(DeveloperDetailView, self).get_context_data(**kwargs)
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
+            arrange=self.request.GET.get('arrange')
             if query:
-                search = Property.filter(Q(address__icontains=query),Q(developer=obj.title))
-                context['search'] = search
+                if arrange=="pricelow":
+                    search = Property.objects.filter(Q(address__icontains=query),Q(developer=obj.title)).order_by('price')
+                    context['search'] = search
+                elif arrange=="pricehigh":
+                    search = Property.objects.filter(Q(address__icontains=query),Q(developer=obj.title)).order_by('-price')
+                    context['search'] = search
+                elif arrange=="new":
+                    search = Property.objects.filter(Q(address__icontains=query),Q(developer=obj.title)).order_by('-date')
+                    context['search'] = search
+                elif arrange=="old":
+                    search = Property.objects.filter(Q(address__icontains=query),Q(developer=obj.title)).order_by('date')
+                    context['search'] = search
+                else:
+                    search = Property.objects.filter(Q(address__icontains=query),Q(developer=obj.title))
+                    context['search'] = search
             else:
-                search = self.model.objects.none()
+                search = Property.objects.none()
                 context['search'] = search
-        if self.request.GET.get('second_check')=="two":
+                context['message']="Not Found"
+        elif self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
                 address=self.request.GET.get('address')
@@ -1496,10 +1766,24 @@ class DeveloperDetailView(DetailView):
             context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
-
-        context['search'] = Property.objects.filter(developer=obj.title)
+        arrange=self.request.GET.get("arrange")
+        if arrange=="pricelow":
+            search=Property.objects.filter(developer=obj.title).order_by('price')
+            context['devprops'] = search
+        elif arrange=="pricelow":
+            search=Property.objects.filter(developer=obj.title).order_by('-price')
+            context['devprops'] = search
+        elif arrange=="new":
+            search=Property.objects.filter(developer=obj.title).order_by('-date')
+            context['devprops'] = search
+        elif arrange=="old":
+            search=Property.objects.filter(developer=obj.title).order_by('date')
+            context['devprops'] = search
+        else:
+            search=Property.objects.filter(developer=obj.title)
+            context['devprops'] = search
         context['agents'] = Agent.objects.filter(agency=obj.title)
-        paginator= Paginator(Developer.objects.all(),10)
+        paginator= Paginator(search,10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
@@ -1705,27 +1989,79 @@ def property_video(request):
     context = {}
     if request.GET.get('first_check')=="one":
         query = request.GET.get('search')
+        arrange=request.GET.get('arrange')
         if query:
-            search = Property.objects.filter(Q(address__icontains=query))
-            paginator= Paginator(search,10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            context= {"search":search,'page_obj':page_obj}
+            if arrange=="pricelow":
+                search = Property.objects.filter(Q(address__icontains=query)).order_by('price')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
+            elif arrange=="pricehigh":
+                search = Property.objects.filter(Q(address__icontains=query)).order_by('-price')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
+            elif arrange=="new":
+                search = Property.objects.filter(Q(address__icontains=query)).order_by('-date')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
+            elif arrange=="old":
+                search = Property.objects.filter(Q(address__icontains=query)).order_by('date')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
+            else:
+                search = Property.objects.filter(Q(address__icontains=query))
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
         else:
             search = Property.objects.none()
             context= {"search":search}
     elif request.GET.get('check_pop')=="True":
         query = request.GET.get('pop')
+        arrange=request.GET.get('arrange')
         context['pop']=query
         if query:
-            pop = Property.objects.filter(Q(address__icontains=query))
-            paginator= Paginator(pop,10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            context= {"search":pop,'page_obj':page_obj}
+            if arrange=="pricelow":
+                pop = Property.objects.filter(Q(address__icontains=query)).order_by('price')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
+            elif arrange=="pricehigh":
+                pop = Property.objects.filter(Q(address__icontains=query)).order_by('-price')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
+            elif arrange=="new":
+                pop = Property.objects.filter(Q(address__icontains=query)).order_by('-date')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
+            elif arrange=="old":
+                pop = Property.objects.filter(Q(address__icontains=query)).order_by('date')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
+            else:
+                pop = Property.objects.filter(Q(address__icontains=query))
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
         else:
             cat = Property.objects.none()
-            context= {"search":pop}
+            context= {"search":cat}
     elif request.GET.get('clear')=="True":
         clear=Comparison.objects.filter(creator=request.user)
         clear.delete()
@@ -1816,21 +2152,59 @@ def property_video(request):
             new_max=int(max_price)
         else:
             new_max=10000000000
+        if min_price:
+            new_min=int(min_price)
+        else:
+            new_min=100
         if max_area:
             new_max_area=int(max_area)
         else:
             new_max_area=10000000000
+        if min_area:
+            new_min_area=int(min_area)
+        else:
+            new_min_area=100
         if sale_type:
             sale_type=request.GET.get('sale_type')
         else:
             sale_type="e"
         if filter=="True":
-            zero=0
-            search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
-            paginator= Paginator(search,10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            context={"search":search,"page_obj":page_obj}
+            arrange=request.GET.get('arrange')
+            if arrange=="pricelow":
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('price')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
+            elif arrange=="pricehigh":
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('-price')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
+            elif arrange=="new":
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('-date')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
+            elif arrange=="old":
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('date')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
+            else:
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
         else:
             search = Property.objects.none()
             context={"search":search}
@@ -1871,17 +2245,69 @@ def property_video(request):
 
     else:
         if request.user.is_authenticated:
-            pop=Property.objects.filter(Q(address__icontains=query))
-            paginator= Paginator(pop,10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+            arrange=request.GET.get('arrange')
+            if arrange=="pricelow":
+                pop=Property.objects.filter(Q(address__icontains=query)).order_by('price')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+            elif arrange=="pricehigh":
+                pop=Property.objects.filter(Q(address__icontains=query)).order_by('-price')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+            elif arrange=="new":
+                pop=Property.objects.filter(Q(address__icontains=query)).order_by('-date')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+            elif arrange=="old":
+                pop=Property.objects.filter(Q(address__icontains=query)).order_by('date')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+            else:
+                pop=Property.objects.filter(Q(address__icontains=query))
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
         else:
-            pop=Property.objects.filter(Q(address__icontains=query))
-            paginator= Paginator(pop,10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            context={'popular':Property.objects.filter(Q(address__icontains=query)),"page_obj":page_obj}
+            arrange=request.GET.get('arrange')
+            if arrange=="pricelow":
+                pop=Property.objects.filter(Q(address__icontains=query)).order_by('price')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+            elif arrange=="pricehigh":
+                pop=Property.objects.filter(Q(address__icontains=query)).order_by('-price')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+            elif arrange=="new":
+                pop=Property.objects.filter(Q(address__icontains=query)).order_by('-date')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+            elif arrange=="old":
+                pop=Property.objects.filter(Q(address__icontains=query)).order_by('date')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"compare":Comparison.objects.filter(creator=request.user),'popular':pop,'profile':UserProfile.objects.get(user=request.user),"page_obj":page_obj}
+            else:
+                pop=Property.objects.filter(Q(address__icontains=query))
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={'popular':Property.objects.filter(Q(address__icontains=query)),"page_obj":page_obj}
     return render(request,"property-video.html",context)
 
 
@@ -1947,27 +2373,79 @@ def multi_component(request):
     context = {}
     if request.GET.get('first_check')=="one":
         query = request.GET.get('search')
+        arrange=request.GET.get('arrange')
         if query:
-            search = Property.objects.filter(Q(address__icontains=query))
-            paginator= Paginator(search,10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            context= {"search":search,'page_obj':page_obj}
+            if arrange=="pricelow":
+                search = Property.objects.filter(Q(address__icontains=query)).order_by('price')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
+            elif arrange=="pricehigh":
+                search = Property.objects.filter(Q(address__icontains=query)).order_by('-price')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
+            elif arrange=="new":
+                search = Property.objects.filter(Q(address__icontains=query)).order_by('-date')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
+            elif arrange=="old":
+                search = Property.objects.filter(Q(address__icontains=query)).order_by('date')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
+            else:
+                search = Property.objects.filter(Q(address__icontains=query))
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":search,'page_obj':page_obj}
         else:
             search = Property.objects.none()
             context= {"search":search}
     elif request.GET.get('check_pop')=="True":
         query = request.GET.get('pop')
+        arrange=request.GET.get('arrange')
         context['pop']=query
         if query:
-            pop = Property.objects.filter(Q(address__icontains=query))
-            paginator= Paginator(pop,10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            context= {"search":pop,'page_obj':page_obj}
+            if arrange=="pricelow":
+                pop = Property.objects.filter(Q(address__icontains=query)).order_by('price')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
+            elif arrange=="pricehigh":
+                pop = Property.objects.filter(Q(address__icontains=query)).order_by('-price')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
+            elif arrange=="new":
+                pop = Property.objects.filter(Q(address__icontains=query)).order_by('-date')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
+            elif arrange=="old":
+                pop = Property.objects.filter(Q(address__icontains=query)).order_by('date')
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
+            else:
+                pop = Property.objects.filter(Q(address__icontains=query))
+                paginator= Paginator(pop,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context= {"search":pop,'page_obj':page_obj}
         else:
             cat = Property.objects.none()
-            context= {"search":pop}
+            context= {"search":cat}
     elif request.GET.get('clear')=="True":
         clear=Comparison.objects.filter(creator=request.user)
         clear.delete()
@@ -2058,21 +2536,59 @@ def multi_component(request):
             new_max=int(max_price)
         else:
             new_max=10000000000
+        if min_price:
+            new_min=int(min_price)
+        else:
+            new_min=1000
         if max_area:
             new_max_area=int(max_area)
         else:
             new_max_area=10000000000
+        if min_area:
+            new_min_area=int(min_area)
+        else:
+            new_min_area=100
         if sale_type:
             sale_type=request.GET.get('sale_type')
         else:
             sale_type="e"
         if filter=="True":
-            zero=0
-            search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__lte=new_max),Q(area__lte=new_max_area),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
-            paginator= Paginator(search,10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            context={"search":search,"page_obj":page_obj}
+            arrange=request.GET.get('arrange')
+            if arrange=="pricelow":
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('price')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
+            elif arrange=="pricehigh":
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('-price')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
+            elif arrange=="new":
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('-date')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
+            elif arrange=="old":
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms)).order_by('date')
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
+            else:
+                zero=0
+                search = Property.objects.filter(Q(address__icontains=query) | Q(address__icontains=state), Q(sale_type__icontains=sale_type), Q(category__icontains=category),Q(price__range=(new_min,new_max)),Q(area__range=(new_min_area,new_max_area)),Q(bedrooms__lte=bedrooms),Q(bathrooms__lte=bathrooms))
+                paginator= Paginator(search,10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context={"search":search,"page_obj":page_obj}
         else:
             search = Property.objects.none()
             context={"search":search}

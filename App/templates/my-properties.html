@@ -13,6 +13,7 @@
 ================================================== -->
  <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
  <link href="{% static 'css/color.css' %}" rel="stylesheet"/>
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.jpg' %}">
 </head>
 <body>
  <!-- Wrapper -->
@@ -85,85 +86,67 @@
 ================================================== -->
   <header id="header-container">
    <!-- Topbar -->
-   <div id="top-bar">
-    <div class="container">
-     <!-- Left Side Content -->
-     <div class="left-side">
-      <!-- Top bar -->
-      <ul class="top-bar-menu">
-       <li>
-        <i class="fa fa-phone">
-        </i>
-        +(234) 805 882 775, +(234) 905 2213 706
-       </li>
-       <li>
-        <i class="fa fa-envelope">
-        </i>
-        <a href="#">
-         sales@afriproperty.com.ng
-        </a>
-       </li>
-       <li>
-        <a href="#">
-         About
-        </a>
-       </li>
-       <li>
-        <a href="{% url 'APP:contact'%}">
-         Contact
-        </a>
-       </li>
-       <li>
-         <div class="top-bar-dropdown">
-           <span>Useful Links</span>
-           <ul class="options">
-             <li><div class="arrow"></div></li>
-             <li><a href="{% url 'APP:agents' %}">Agents</a></li>
-             <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
-             <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
-             <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
-             <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
-           </ul>
-         </div>
-       </li>
-      </ul>
-     </div>
-     <!-- Left Side Content / End -->
-     <!-- Left Side Content -->
-     <div class="right-side">
-      <!-- Social Icons -->
-      <ul class="social-icons">
-       <li>
-        <a class="facebook" href="#">
-         <i class="icon-facebook">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="twitter" href="#">
-         <i class="icon-twitter">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="gplus" href="#">
-         <i class="icon-gplus">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="pinterest" href="#">
-         <i class="icon-pinterest">
-         </i>
-        </a>
-       </li>
-      </ul>
-     </div>
-     <!-- Left Side Content / End -->
-    </div>
-   </div>
-   <div class="clearfix">
-   </div>
+ <div id="top-bar">
+ <div class="container">
+  <!-- Left Side Content -->
+  <div class="left-side">
+   <!-- Top bar -->
+   <ul class="top-bar-menu">
+    <li>
+     <i class="fa fa-phone">
+     </i>
+     +(234) 805 882 775
+    </li>
+    <li>
+     <i class="fa fa-envelope">
+     </i>
+     <a href="#">
+      sales@afriproperty.com.ng
+     </a>
+    </li>
+    <li>
+      <div class="top-bar-dropdown">
+        <span>Useful Links</span>
+        <ul class="options">
+          <li><div class="arrow"></div></li>
+          <li><a href="{% url 'APP:agents' %}">Agents</a></li>
+          <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
+          <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
+          <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
+          <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
+        </ul>
+      </div>
+    </li>
+   </ul>
+  </div>
+  <!-- Left Side Content / End -->
+  <!-- Left Side Content -->
+  <div class="right-side">
+   <!-- Social Icons -->
+   <ul class="social-icons">
+    <li>
+     <a class="facebook" href="http://facebook.com/afripropertyconnect">
+      <i class="icon-facebook">
+      </i>
+     </a>
+    </li>
+    <li>
+     <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
+      <i class="icon-twitter">
+      </i>
+     </a>
+    </li>
+    <li>
+     <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
+      <i class="icon-instagram">
+      </i>
+     </a>
+    </li>
+   </ul>
+  </div>
+  <!-- Left Side Content / End -->
+ </div>
+</div>
    <!-- Topbar / End -->
    <!-- Header -->
    <div id="header">
@@ -736,7 +719,7 @@ function showsale10 () {
    <script>
    function payWithPaystack{{item.slug}}(){
      var handler = PaystackPop.setup({
-       key: 'pk_test_0839daaec39a1f1ddfd646abbf078516cd1a2ec4',
+       key: 'pk_test_2e6c36e35df589cd45c15eca59189df5e3fcc1af',
        email: "chukslord1@gmail.com",
        amount: 200000,
        ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
@@ -761,7 +744,7 @@ function showsale10 () {
    }
    function payWithPaystack2{{item.slug}}(){
      var handler = PaystackPop.setup({
-       key: 'pk_test_3d0588c562bbbab6b96b0ecdb80927f9fcc86825',
+       key: 'pk_test_2e6c36e35df589cd45c15eca59189df5e3fcc1af',
        email: "chukslord1@gmail.com",
        amount: 500000,
        ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
@@ -873,32 +856,26 @@ function showsale10 () {
       </span>
       <br/>
      </div>
-     <ul class="social-icons margin-top-20">
-      <li>
-       <a class="facebook" href="#">
-        <i class="icon-facebook">
-        </i>
-       </a>
-      </li>
-      <li>
-       <a class="twitter" href="#">
-        <i class="icon-twitter">
-        </i>
-       </a>
-      </li>
-      <li>
-       <a class="gplus" href="#">
-        <i class="icon-gplus">
-        </i>
-       </a>
-      </li>
-      <li>
-       <a class="vimeo" href="#">
-        <i class="icon-vimeo">
-        </i>
-       </a>
-      </li>
-     </ul>
+<ul class="social-icons margin-top-20">
+ <li>
+   <a class="facebook" href="http://facebook.com/afripropertyconnect">
+    <i class="icon-facebook">
+    </i>
+   </a>
+ </li>
+ <li>
+   <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
+     <i class="icon-twitter">
+     </i>
+   </a>
+ </li>
+ <li>
+   <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
+     <i class="icon-instagram">
+     </i>
+   </a>
+ </li>
+</ul>
     </div>
    </div>
   <!-- Copyright -->

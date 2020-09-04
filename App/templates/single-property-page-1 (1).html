@@ -463,41 +463,51 @@
   }
   </script>
 
+<style type="text/css">
+
+#share-buttons img {
+width: 35px;
+padding: 5px;
+border: 0;
+box-shadow: 0;
+display: inline;
+}
+
+</style>
   <div class="clearfix">
   </div>
   <!-- Header Container / End -->
   <!-- Titlebar
 ================================================== -->
-  <div id="titlebar">
+  <div class="property-titlebar margin-bottom-0" id="titlebar">
    <div class="container">
     <div class="row">
      <div class="col-md-12">
-      <h2>
-       Blog
-      </h2>
-      <span>
-       Keep up to date with the latest news
-      </span>
-      <!-- Breadcrumbs -->
-      <nav id="breadcrumbs">
-       <ul>
-       </ul>
-       <div class="dropdown">
-         <button onclick="myFunction()" class="dropbtn">Search Blog</button>
-           <input type="hidden" name="tenth_check" value="ten"/>
-         <div id="myDropdown" class="dropdown-content" size="3">
-          <div class="header-search-block">
-           <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()" name="search">
-          </div>
-
-           {% for blog in blogs %}
-           <a href="{{blog.get_absolute_url}}">{{blog.title}}</a>
-           {% endfor %}
-
-         </div>
-
+      <a class="back-to-listings" href="{% url 'APP:index' %}">
+      </a>
+      <div class="property-title">
+       <h2>
+        {{object.title}}
+        <span class="property-badge">
+         For {{object.sale_type}}
+        </span>
+       </h2>
+       <span>
+        <a class="listing-address" href="#location">
+         <i class="fa fa-map-marker">
+         </i>
+         {{object.address}}
+        </a>
+       </span>
+      </div>
+      <div class="property-pricing">
+       <div class="property-price">
+        ₦{{object.price}}
        </div>
-      </nav>
+       <div class="sub-price">
+        ₦{{object.price_per_unit}} / sq m
+       </div>
+      </div>
      </div>
     </div>
    </div>
@@ -505,42 +515,161 @@
   <!-- Content
 ================================================== -->
   <div class="container">
-   <!-- Blog Posts -->
-   <div class="blog-page">
-    <div class="row">
-     <!-- Post Content -->
-     <div class="col-md-8">
-      <!-- Blog Post -->
-      <div class="blog-post single-post">
-       <!-- Img -->
-       <img alt="" class="post-img" src="{{object.image.url}}"/>
-       <!-- Content -->
-       <div class="post-content">
-        <h3>
-         {{object.title}}
-        </h3>
-        <ul class="post-meta">
-         <li>
-          {{object.date}}
-         </li>
-         <li>
-          <a href="#">
-           {{object.comment}} Comments
-          </a>
-         </li>
-        </ul>
-        <div class="post-quote">
-         <span class="icon">
-         </span>
-         <blockquote>
-          {{object.summmary}}
-         </blockquote>
-        </div>
-        <p>
-        {{object.body}}
-        </p>
-        <!-- Share Buttons -->
-         Share:
+   <div class="row margin-bottom-50">
+    <div class="col-md-12">
+     <!-- Slider -->
+     <div class="property-slider default">
+       {% for item in object.image_1.all %}
+      <a class="item mfp-gallery" data-background-image="{% get_media_prefix %}{{item.image}}" href="{% get_media_prefix %}{{item.image}}">
+      </a>
+      {% endfor %}
+     </div>
+     <!-- Slider Thumbs -->
+     <div class="property-slider-nav">
+       {% for item in object.image_1.all %}
+      <div class="item">
+       <img alt="" src="{% get_media_prefix %}{{item.image}}"/>
+      </div>
+      {% endfor %}
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="container">
+   <div class="row">
+    <!-- Property Description -->
+    <div class="col-lg-8 col-md-7 sp-content">
+     <div class="property-description">
+      <!-- Main Features -->
+      <ul class="property-main-features">
+       <li>
+        Area
+        <span>
+         {{object.area}} sq m
+        </span>
+       </li>
+       <li>
+        Rooms
+        <span>
+         {{object.rooms}}
+        </span>
+       </li>
+       <li>
+        Bedrooms
+        <span>
+         {{object.bedrooms}}
+        </span>
+       </li>
+       <li>
+        Bathrooms
+        <span>
+         {{object.bathrooms}}
+        </span>
+       </li>
+      </ul>
+      <!-- Description -->
+      {% if object.description %}
+      <h3 class="desc-headline">
+       Description
+      </h3>
+      <div class="show-more">
+       <p>
+        {{object.description}}
+       </p>
+       <a class="show-more-button" href="#">
+        Show More
+        <i class="fa fa-angle-down">
+        </i>
+       </a>
+      </div>
+      {% else %}
+      {% endif %}
+      <!-- Details -->
+      <h3 class="desc-headline">
+       Details
+      </h3>
+      <ul class="property-features margin-top-0">
+       <li>
+        Building Age:
+        <span>
+         {{object.building_age}} Years
+        </span>
+       </li>
+       <li>
+        Parking:
+        <span>
+        {{object.parking}}
+        </span>
+       </li>
+       <li>
+        Cooling:
+        <span>
+         {{object.cooling}}
+        </span>
+       </li>
+       <li>
+        Heating:
+        <span>
+         F{{object.heating}}
+        </span>
+       </li>
+       <li>
+        Sewer:
+        <span>
+         {{object.sewer}}
+        </span>
+       </li>
+       <li>
+        Water:
+        <span>
+         {{object.water}}
+        </span>
+       </li>
+       <li>
+        Exercise Room:
+        <span>
+         {{object.exercise_room}}
+        </span>
+       </li>
+       <li>
+        Storage Room:
+        <span>
+         {{object.storage_room}}
+        </span>
+       </li>
+      </ul>
+      <!-- Features -->
+      <h3 class="desc-headline">
+       Features
+      </h3>
+      <ul class="property-features checkboxes margin-top-0">
+       <li>
+        {{object.features}}
+       </li>
+      </ul>
+      <!-- Floorplans -->
+
+      <!-- Video -->
+      {% if object.video %}
+      <h3 class="desc-headline no-border">
+       Video
+      </h3>
+      <div class="responsive-iframe">
+        {% if object.video %}
+       <iframe allowfullscreen="" frameborder="0" height="315" src="{{object.video.url}}" width="560">
+       </iframe>
+       {% else %}
+       <h5>No Video Associated<h5>
+       {% endif %}
+      </div>
+      {% else %}
+      {% endif %}
+      <!-- Location -->
+      <h3 class="desc-headline no-border" id="location">
+       Location: {{object.address}}
+      </h3>
+
+      Share:
 <div id="share-buttons">
 
     <!-- Email -->
@@ -561,367 +690,353 @@
 
 </div>
 
-        <div class="clearfix">
-        </div>
-       </div>
-      </div>
-      <!-- Blog Post / End -->
-      <!-- Post Navigation -->
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
 
-      <!-- About Author -->
-      <div class="about-author">
-        {% if author.image %}
-        <img alt="" src="{{object.author_image.url}}"/>
-        {% else %}
-       <img alt="" src="{% static 'images/agent-avatar.jpg' %}"/>
-       {% endif %}
-       <div class="about-description">
-        <h4>
-         {{object.author}}
-        </h4>
-        <a href="#">
-        {{object.email}}
-        </a>
-        <p>
-         {{object.author_description}}
-        </p>
-       </div>
-      </div>
-      <!-- Related Posts -->
-      <div class="clearfix">
-      </div>
-      <h4 class="headline margin-top-25">
-       Related Posts
-      </h4>
-      <div class="row">
-        {% for item in related %}
-       <div class="col-md-6">
-        <!-- Blog Post -->
-        <div class="blog-post">
-         <!-- Img -->
-         <a class="post-img" href="{{item.get_absolute_url}}">
-          <img alt="" src="{{item.image.url}}"/>
-         </a>
-         <!-- Content -->
-         <div class="post-content">
-          <h3>
-           <a href="#">
-            {{item.title}}
-           </a>
-          </h3>
-          <p>
-           {{item.summary}}
-          </p>
-          <a class="read-more" href="{{item.get_absolute_url}}">
-           Read More
-           <i class="fa fa-angle-right">
-           </i>
-          </a>
-         </div>
-        </div>
-        <!-- Blog Post / End -->
-       </div>
-
-       {% endfor %}
-      </div>
-      <!-- Related Posts / End -->
-      <div class="margin-top-50">
-      </div>
-      <!-- Reviews -->
-      <section class="comments">
-       <h4 class="headline margin-bottom-35">
-        Comments
-        <span class="comments-amount">
-         ({{object.commment_no}})
-        </span>
-       </h4>
-       <ul>
-         {% for comment in comments %}
-        <li>
-         <div class="avatar">
-          <img alt="" src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=70"/>
-         </div>
-         <div class="comment-content">
-          <div class="arrow-comment">
-          </div>
-          <div class="comment-by">
-           {{comment.name}}
-           <span class="date">
-            {{comment.date}}
-           </span>
-          </div>
-          <p>
-           {{comment.comment}}.
-          </p>
-         </div>
-        </li>
-        {% endfor %}
-       </ul>
-      </section>
-      <div class="clearfix">
-      </div>
-      <div class="margin-top-55">
-      </div>
-      <!-- Add Comment -->
-      <h4 class="headline">
-       Add Comment
-      </h4>
-      <div class="margin-top-15">
-      </div>
-      <!-- Add Comment Form -->
-      <form class="add-comment" id="add-comment" method="GET">
-       <fieldset>
-        <div>
-         <label>
-          Name:
-         </label>
-         <input type="hidden" name="comment_check" value="True"/>
-         <input type="text" name="name" value=""/>
-        </div>
-        <div>
-         <label>
-          Email:
-          <span>
-           *
-          </span>
-         </label>
-         <input type="text" name="email" value=""/>
-        </div>
-        <div>
-         <label>
-          Comment:
-          <span>
-           *
-          </span>
-         </label>
-         <textarea cols="40" rows="3" name="comment"></textarea>
-        </div>
-       </fieldset>
-       <button class="button" type="submit">
-        Add Comment
-      </button>
-       <div class="clearfix">
-       </div>
-       <div class="margin-bottom-20">
-       </div>
-      </form>
-     </div>
-     <!-- Content / End -->
-     <!-- Sidebar
-	================================================== -->
-     <!-- Widgets -->
-     <div class="col-md-4">
-      <div class="sidebar right">
-       <!-- Widget -->
-       <style>
-.dropbtn {
-  background-color: #274abb;
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
   color: white;
-  padding: 16px;
-  font-size: 16px;
+  padding: 16px 20px;
   border: none;
   cursor: pointer;
+  opacity: 0.8;
+  bottom: 23px;
+  left: 28px;
+  width: 280px;
 }
 
-.dropbtn:hover, .dropbtn:focus {
-  background-color: #274abb;
-}
-
-#myInput {
-  box-sizing: border-box;
-  background-image: url('searchicon.png');
-  background-position: 14px 12px;
-  background-repeat: no-repeat;
-  font-size: 16px;
-  padding: 14px 20px 12px 45px;
-  border: none;
-  border-bottom: 1px solid #ddd;
-}
-
-#myInput:focus {outline: 3px solid #ddd;}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
+/* The popup form - hidden by default */
+.form-popup {
   display: none;
-  position: absolute;
-  background-color: #f6f6f6;
-  min-width: 230px;
-  overflow: auto;
-  border: 1px solid #ddd;
-  z-index: 1;
+  bottom: 0;
+  left: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
 }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
 }
 
-.dropdown a:hover {background-color: #ddd;}
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
 
-.show {display: block;}
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
 </style>
 
-
-
 <script>
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function showOutput () {
-     var value=document.getElementById("myInput").value;
-     var paid="ten";
-     var queryString = "?tenth_check=" +paid  + "&search=" + value;
-     window.location.href="https://e.advancescholar.com/search-complete.html" + queryString;
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
 }
 
-
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
-}
-
-function filterFunction() {
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  div = document.getElementById("myDropdown");
-  a = div.getElementsByTagName("a");
-  for (i = 0; i < a.length; i++) {
-    txtValue = a[i].textContent || a[i].innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      a[i].style.display = "";
-    } else {
-      a[i].style.display = "none";
-    }
-  }
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
 }
 </script>
-       <div class="widget">
-        <div class="clearfix">
-        </div>
-       </div>
-       <!-- Widget / End -->
-       <!-- Widget -->
-       <div class="widget">
-        <h3>
-         Got any questions?
-        </h3>
-        <div class="info-box margin-bottom-10">
-         <p>
-          If you are having any questions, please feel free to ask.
-         </p>
-         <a class="button fullwidth margin-top-20" href="{% url 'APP:contact' %}">
-          <i class="fa fa-envelope-o">
-          </i>
-          Drop Us a Line
-         </a>
-        </div>
-       </div>
-       <!-- Widget / End -->
-       <!-- Widget -->
-       <div class="widget">
-        <h3>
-         Popular Posts
-        </h3>
-        <ul class="widget-tabs">
-         <!-- Post #1 -->
-           {% for item in popular %}
-           <li>
-          <div class="widget-content">
-           <div class="widget-thumb">
-            <a href="{{item.get_absolute_url}}">
-              {% if item.image %}
-              <img alt="" src="{{item.image.url}}"/>
-              {% else %}
-             <img alt="" src="{% static 'images/blog-widget-03.jpg' %}"/>
-             {% endif %}
-            </a>
-           </div>
-           <div class="widget-text">
-            <h5>
-             <a href="{{item.get_absolute_url}}">
-              {{item.title}}
-             </a>
-            </h5>
-            <span>
-             {{item.date}}
-            </span>
-           </div>
-           <div class="clearfix">
-           </div>
+
+<div id="share-buttons">
+  <button class="open-button" onclick="openForm()">Report Listing<i class="fa fa-bullhorn" aria-hidden="true"></i></button>
+  <form class="form-popup" id="myForm" method="GET">
+    <input type="hidden" name="report" value="True" />
+    Reason
+    <input type="text" name="reason" />
+    Title
+    <input type="text" name="title" />
+    Name
+    <input type="text" name="name" />
+    Email
+    <input type="text" name="email" />
+    Comments
+    <textarea type="text" name="comments"></textarea>
+    <button type="submit">Submit Report</button>
+    {{message}}
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+      <!-- Similar Listings Container -->
+      {% if houses %}
+      <h3 class="desc-headline no-border margin-bottom-35 margin-top-60">
+       Similar Properties
+      </h3>
+      <!-- Layout Switcher -->
+      <div class="layout-switcher hidden">
+       <a class="list" href="#">
+        <i class="fa fa-th-list">
+        </i>
+       </a>
+      </div>
+      <div class="listings-container list-layout">
+       <!-- Listing Item -->
+       {% for house in houses %}
+       <div class="listing-item">
+        <a class="listing-img-container" href="{{house.get_absolute_url}}">
+         <div class="listing-badges">
+          <span>
+           For {{house.sale_type}}
+          </span>
+         </div>
+         <div class="listing-img-content">
+          <span class="listing-price">
+           ₦{{house.price}}
+           <i>
+            monthly
+           </i>
+          </span>
+          <span class="like-icon">
+          </span>
+         </div>
+         <div class="listing-carousel">
+           {% for item in house.image_1.all %}
+          <div>
+           <img alt="" src="{% get_media_prefix %}{{item.image}}"/>
           </div>
-         </li>
-         {% endfor %}
-         {% for item in popular_2 %}
-         <li>
-        <div class="widget-content">
-         <div class="widget-thumb">
-          <a href="{{item.get_absolute_url}}">
-            {% if item.image %}
-            <img alt="" src="{{item.image.url}}"/>
-            {% else %}
-           <img alt="" src="{% static 'images/blog-widget-03.jpg' %}"/>
-           {% endif %}
+          {% endfor %}
+         </div>
+        </a>
+        <div class="listing-content">
+         <div class="listing-title">
+          <h4>
+           <a href="{{house.get_absolute_url}}">
+            {{house.title}}
+           </a>
+          </h4>
+          <a class="listing-address popup-gmaps" href="">
+           <i class="fa fa-map-marker">
+           </i>
+           {{house.address}}
+          </a>
+          <a class="details button border" href="{{house.get_absolute_url}}">
+           Details
           </a>
          </div>
-         <div class="widget-text">
-          <h5>
-           <a href="{{item.get_absolute_url}}">
-            {{item.title}}
-           </a>
-          </h5>
+         <ul class="listing-details">
+          <li>
+           {{house.area}} sq m
+          </li>
+          <li>
+           {{house.bedrooms}} Bedroom
+          </li>
+          <li>
+           {{house.rooms}} Rooms
+          </li>
+          <li>
+           {{house.bathrooms}} Bathrooms
+          </li>
+         </ul>
+         <div class="listing-footer">
+          <a href="#">
+           <i class="fa fa-user">
+           </i>
+           {{house.creator}}
+          </a>
           <span>
-           {{item.date}}
+           <i class="fa fa-calendar-o">
+           </i>
+           {{house.date}}
+          </span>
+         </div>
+        </div>
+        <!-- Listing Item / End -->
+       </div>
+       {% endfor %}
+   <!-- Listing Item / End -->
+      </div>
+      {% endif %}
+      <!-- Similar Listings Container / End -->
+     </div>
+    </div>
+    <!-- Property Description / End -->
+    <!-- Sidebar -->
+    <div class="col-lg-4 col-md-5 sp-sidebar">
+     <div class="sidebar sticky right">
+      <!-- Widget -->
+      <div class="widget margin-bottom-30">
+       <form method="GET">
+         <input name="third_check"  type="hidden" value="three" />
+         <input name="title"  type="hidden" value="{{house.title}}" />
+         <input name="address"  type="hidden" value="{{house.address}}" />
+         <input name="date"  type="hidden" value="{{house.date}}" />
+         <input name="category"  type="hidden" value="{{house.category}}" />
+         <input name="sale_type"  type="hidden" value="{{house.sale_type}}" />
+         <input name="price"  type="hidden" value="{{house.price}}" />
+         <input name="price_per_unit"  type="hidden" value="{{house.price_per_unit}}" />
+         {% for item in house.image_1.all %}
+         {% if forloop.first %}
+         <input name="image"  type="hidden" value="{% get_media_prefix %}{{item.image}}" />
+         {% endif %}
+         {% endfor %}
+         <input name="area"  type="hidden" value="{{house.area}}" />
+         <input name="rooms"  type="hidden" value="{{house.rooms}}" />
+         <input name="bedrooms"  type="hidden" value="{{house.bedrooms}}" />
+         <input name="bathrooms"  type="hidden" value="{{house.bathrooms}}" />
+         <input name="features"  type="hidden" value="{{house.features}}" />
+         <input name="building_age"  type="hidden" value="{{house.building_age}}" />
+         <input name="parking"  type="hidden" value="{{house.parking}}" />
+         <input name="cooling"  type="hidden" value="{{house.cooling}}" />
+         <input name="heating"  type="hidden" value="{{house.heating}}" />
+         <input name="sewer"  type="hidden" value="{{house.sewer}}" />
+         <input name="water"  type="hidden" value="{{house.water}}" />
+         <input name="exercise_room"  type="hidden" value="{{house.exercise_room}}" />
+         <input name="storage_room"  type="hidden" value="{{house.storage_room}}" />
+         <button class="fa fa-star ml-auto"  type="submit">
+         </button>
+     </form>
+       <form method="GET">
+         <input name="second_check"  type="hidden" value="two" />
+         <input name="title"  type="hidden" value="{{house.title}}" />
+         <input name="address"  type="hidden" value="{{house.address}}" />
+         <input name="date"  type="hidden" value="{{house.date}}" />
+         <input name="category"  type="hidden" value="{{house.category}}" />
+         <input name="sale_type"  type="hidden" value="{{house.sale_type}}" />
+         <input name="price"  type="hidden" value="{{house.price}}" />
+         <input name="price_per_unit"  type="hidden" value="{{house.price_per_unit}}" />
+         {% for item in house.image_1.all %}
+         {% if forloop.first %}
+         <input name="image"  type="hidden" value="{% get_media_prefix %}{{item.image}}" />
+         {% endif %}
+         {% endfor %}
+         <input name="area"  type="hidden" value="{{house.area}}" />
+         <input name="rooms"  type="hidden" value="{{house.rooms}}" />
+         <input name="bedrooms"  type="hidden" value="{{house.bedrooms}}" />
+         <input name="bathrooms"  type="hidden" value="{{house.bathrooms}}" />
+         <input name="features"  type="hidden" value="{{house.features}}" />
+         <input name="building_age"  type="hidden" value="{{house.building_age}}" />
+         <input name="parking"  type="hidden" value="{{house.parking}}" />
+         <input name="cooling"  type="hidden" value="{{house.cooling}}" />
+         <input name="heating"  type="hidden" value="{{house.heating}}" />
+         <input name="sewer"  type="hidden" value="{{house.sewer}}" />
+         <input name="water"  type="hidden" value="{{house.water}}" />
+         <input name="exercise_room"  type="hidden" value="{{house.exercise_room}}" />
+         <input name="storage_room"  type="hidden" value="{{house.storage_room}}" />
+       <button class="compare-button" type="submit">
+       </button>
+     </form>
+       <div class="clearfix">
+       </div>
+      </div>
+      <!-- Widget / End -->
+      <!-- Booking Widget -->
+      <form method="GET">
+      <div class="widget">
+       <div class="boxed-widget booking-widget margin-top-35" id="booking-widget-anchor">
+        <h3>
+         <i class="fa fa-calendar-check-o">
+         </i>
+         Request Inspection
+        </h3>
+        <div class="row with-forms margin-top-0">
+         <!-- Date Range Picker - docs: http://www.daterangepicker.com/ -->
+
+         <div class="col-lg-12">
+           <input  name="tour" type="hidden" value="True"/>
+          <input id="date-picker" placeholder="Date"  name="date" type="date"/>
+         </div>
+         <!-- Panel Dropdown -->
+         <div class="col-lg-12">
+           <input id="date-picker" placeholder="8am -9 am"  name="time" type="text"/>
+         </div>
+         <div class="col-lg-12">
+           <input id="date-picker" placeholder="+234 (xxx)"  name="phone" type="text"/>
+         </div>
+         <div class="col-lg-12">
+           <input id="date-picker" placeholder="your name"  name="name" type="text"/>
+         </div>
+         <!-- Panel Dropdown / End -->
+        </div>
+        <!-- Book Now -->
+        <button class="button book-now fullwidth margin-top-5" type="submit">
+         Send Request
+       </button>
+       {{message}}
+       </div>
+      </div>
+    </form>
+      <!-- Booking Widget / End -->
+      <!-- Widget -->
+      <div class="widget">
+       <!-- Agent Widget -->
+        <form method="GET">
+       <div class="agent-widget">
+        <div class="agent-title">
+         <div class="agent-photo">
+          <img alt="" src="{% static 'images/agent-avatar.jpg' %}"/>
+         </div>
+         <div class="agent-details">
+          <h4>
+           <a href="#">
+            {{object.name}}
+           </a>
+          </h4>
+          <span>
+           <i class="sl sl-icon-call-in">
+           </i>
+           {{object.phone}}
+           <input name="to" value="{{object.email}}" type="hidden" />
+           <input name="send" value="True" type="hidden" />
           </span>
          </div>
          <div class="clearfix">
          </div>
         </div>
-       </li>
-       {% endfor %}
-       {% for item in popular_3 %}
-       <li>
-      <div class="widget-content">
-       <div class="widget-thumb">
-        <a href="{{item.get_absolute_url}}">
-          {% if item.image %}
-          <img alt="" src="{{item.image.url}}"/>
-          {% else %}
-         <img alt="" src="{% static 'images/blog-widget-03.jpg' %}"/>
-         {% endif %}
-        </a>
+        <input pattern="^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$" name="email" placeholder="Your Email" type="text"/>
+        <input name="phone" placeholder="Your Phone" type="text"/>
+        <textarea name="message" value="I'm interested in the {{object.title}} and I'd like to know more details.">I'm interested in the {{object.title}} and I'd like to know more details.</textarea>
+        <button class="button fullwidth margin-top-5" type="submit">
+         Send Message
+        </button>
+        {{message}}
        </div>
-       <div class="widget-text">
-        <h5>
-         <a href="{{item.get_absolute_url}}">
-          {{item.title}}
-         </a>
-        </h5>
-        <span>
-         {{item.date}}
-        </span>
-       </div>
-       <div class="clearfix">
-       </div>
+     </form>
+       <!-- Agent Widget / End -->
+       {% if user.is_authenticated %}
+       <button class"button full width" href="{% url APP:login_register %}">Advertise Property</button>
+       {% else %}
+       <button class"button full width" href="{% url APP:login_register %}">Login or Register now to Advertise Your Property</button>
+       {% endif %}
       </div>
-     </li>
-     {% endfor %}
-         <!-- Post #2 -->
-        </ul>
-       </div>
-       <!-- Widget / End-->
-       <!-- Widget -->
+      <!-- Widget / End -->
+      <!-- Widget -->
+      <!-- Widget / End -->
+      <!-- Widget -->
 
-       <!-- Widget / End-->
-       <div class="clearfix">
-       </div>
-       <div class="margin-bottom-40">
-       </div>
-      </div>
+      <!-- Widget / End -->
      </div>
     </div>
     <!-- Sidebar / End -->

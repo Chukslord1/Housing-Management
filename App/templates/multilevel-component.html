@@ -13,6 +13,7 @@
 ================================================== -->
  <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
  <link href="{% static 'css/color.css' %}" rel="stylesheet"/>
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.jpg' %}">
 </head>
 <body>
  <!-- Wrapper -->
@@ -85,85 +86,67 @@
 ================================================== -->
   <header id="header-container">
    <!-- Topbar -->
-   <div id="top-bar">
-    <div class="container">
-     <!-- Left Side Content -->
-     <div class="left-side">
-      <!-- Top bar -->
-      <ul class="top-bar-menu">
-       <li>
-        <i class="fa fa-phone">
-        </i>
-        +(234) 805 882 775, +(234) 905 2213 706
-       </li>
-       <li>
-        <i class="fa fa-envelope">
-        </i>
-        <a href="#">
-         sales@afriproperty.com.ng
-        </a>
-       </li>
-       <li>
-        <a href="#">
-         About
-        </a>
-       </li>
-       <li>
-        <a href="{% url 'APP:contact'%}">
-         Contact
-        </a>
-       </li>
-       <li>
-         <div class="top-bar-dropdown">
-           <span>Useful Links</span>
-           <ul class="options">
-             <li><div class="arrow"></div></li>
-             <li><a href="{% url 'APP:agents' %}">Agents</a></li>
-             <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
-             <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
-             <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
-             <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
-           </ul>
-         </div>
-       </li>
-      </ul>
-     </div>
-     <!-- Left Side Content / End -->
-     <!-- Left Side Content -->
-     <div class="right-side">
-      <!-- Social Icons -->
-      <ul class="social-icons">
-       <li>
-        <a class="facebook" href="#">
-         <i class="icon-facebook">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="twitter" href="#">
-         <i class="icon-twitter">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="gplus" href="#">
-         <i class="icon-gplus">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="pinterest" href="#">
-         <i class="icon-pinterest">
-         </i>
-        </a>
-       </li>
-      </ul>
-     </div>
-     <!-- Left Side Content / End -->
-    </div>
-   </div>
-   <div class="clearfix">
-   </div>
+ <div id="top-bar">
+ <div class="container">
+  <!-- Left Side Content -->
+  <div class="left-side">
+   <!-- Top bar -->
+   <ul class="top-bar-menu">
+    <li>
+     <i class="fa fa-phone">
+     </i>
+     +(234) 805 882 775
+    </li>
+    <li>
+     <i class="fa fa-envelope">
+     </i>
+     <a href="#">
+      sales@afriproperty.com.ng
+     </a>
+    </li>
+    <li>
+      <div class="top-bar-dropdown">
+        <span>Useful Links</span>
+        <ul class="options">
+          <li><div class="arrow"></div></li>
+          <li><a href="{% url 'APP:agents' %}">Agents</a></li>
+          <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
+          <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
+          <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
+          <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
+        </ul>
+      </div>
+    </li>
+   </ul>
+  </div>
+  <!-- Left Side Content / End -->
+  <!-- Left Side Content -->
+  <div class="right-side">
+   <!-- Social Icons -->
+   <ul class="social-icons">
+    <li>
+     <a class="facebook" href="http://facebook.com/afripropertyconnect">
+      <i class="icon-facebook">
+      </i>
+     </a>
+    </li>
+    <li>
+     <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
+      <i class="icon-twitter">
+      </i>
+     </a>
+    </li>
+    <li>
+     <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
+      <i class="icon-instagram">
+      </i>
+     </a>
+    </li>
+   </ul>
+  </div>
+  <!-- Left Side Content / End -->
+ </div>
+</div>
    <!-- Topbar / End -->
    <!-- Header -->
    <div id="header">
@@ -478,6 +461,17 @@ function showsale10 () {
   var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
   window.location.href="category" + queryString;
 }
+function pricelow () {
+  var value=document.getElementById("pricelow").value;
+  var value2=document.URL;
+  var value3=value2.replace("&arrange=pricelow","");
+  var value4=value3.replace("&arrange=pricehigh","");
+  var value5=value4.replace("&arrange=new","");
+  var value6=value5.replace("&arrange=old","");
+  var queryString = "&arrange=" +value;
+  window.location.href= value6 + queryString;
+}
+
 </script>
   <div class="clearfix">
   </div>
@@ -518,9 +512,7 @@ function showsale10 () {
     <div class="col-md-8">
       <div class="card">
   <div class="card-body">
-    The Information displayed about this property comprises of property advertisement. Nigeria Property Centre makes no waranty as to the accuracy or completeness of the advertisement
-    or any linked or associated information, and Nigeria Property Center has no control over the content. This property listing does not constitute property particulars. The Information
-     is provided and maintained by <b>Hausworks Limited</b>.Nigeria Property Centre shall not in any way be held liable for the actions of any agent and/or property owner/landlord on or off this website.
+    The Information displayed about this property comprises of property advertisement. Afriproperty Connect makes no warranty as to the accuracy or completeness of the advertisement or any linked or associated information, and Afriproperty Connect has no control over the content. This property listing does not constitute property particulars. The Information is provided and maintained by Property Connect Nigeria Limited. Afriproperty Connect shall not in any way be held liable for the actions of any agent and/or property owner/landlord on or off this website.
   </div>
 </div>
 <div class="main-search-input margin-bottom-35">
@@ -540,29 +532,28 @@ function showsale10 () {
       <div class="col-md-6">
        <!-- Sort by -->
        <div class="sort-by">
-        <label>
-         Sort by:
-        </label>
-        <div class="sort-by-select">
-         <select class="chosen-select-no-single" data-placeholder="Default order">
-          <option>
-           Default Order
-          </option>
-          <option>
-           Price Low to High
-          </option>
-          <option>
-           Price High to Low
-          </option>
-          <option>
-           Newest Properties
-          </option>
-          <option>
-           Oldest Properties
-          </option>
-         </select>
-        </div>
-       </div>
+ <label>
+  Sort by:
+ </label>
+ <div class="sort-by-select">
+  <select id="pricelow" onchange="this.options[this.selectedIndex].value && (pricelow());" class="chosen-select-no-single" data-placeholder="Default order">
+   <option value="">
+    Default Order
+   </option>
+   <option  value="pricelow">
+   Price Low to High
+   <option value="pricehigh">
+    Price High to Low
+   </option>
+   <option value="new">
+    Newest to Oldest
+   </option>
+   <option value="old">
+    Oldest to Newest
+   </option>
+  </select>
+ </div>
+</div>
       </div>
       <div class="col-md-6">
        <!-- Layout Switcher -->
@@ -1380,31 +1371,25 @@ function showsale10 () {
       <br/>
      </div>
      <ul class="social-icons margin-top-20">
-      <li>
-       <a class="facebook" href="#">
-        <i class="icon-facebook">
-        </i>
-       </a>
-      </li>
-      <li>
-       <a class="twitter" href="#">
-        <i class="icon-twitter">
-        </i>
-       </a>
-      </li>
-      <li>
-       <a class="gplus" href="#">
-        <i class="icon-gplus">
-        </i>
-       </a>
-      </li>
-      <li>
-       <a class="vimeo" href="#">
-        <i class="icon-vimeo">
-        </i>
-       </a>
-      </li>
-     </ul>
+ <li>
+   <a class="facebook" href="http://facebook.com/afripropertyconnect">
+    <i class="icon-facebook">
+    </i>
+   </a>
+ </li>
+ <li>
+   <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
+     <i class="icon-twitter">
+     </i>
+   </a>
+ </li>
+ <li>
+   <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
+     <i class="icon-instagram">
+     </i>
+   </a>
+ </li>
+</ul>
     </div>
    </div>
   <!-- Copyright -->

@@ -86,67 +86,8 @@
 ================================================== -->
   <header id="header-container">
    <!-- Topbar -->
-   <div id="top-bar">
- <div class="container">
-  <!-- Left Side Content -->
-  <div class="left-side">
-   <!-- Top bar -->
-   <ul class="top-bar-menu">
-    <li>
-     <i class="fa fa-phone">
-     </i>
-     +(234) 805 882 775
-    </li>
-    <li>
-     <i class="fa fa-envelope">
-     </i>
-     <a href="#">
-      sales@afriproperty.com.ng
-     </a>
-    </li>
-    <li>
-      <div class="top-bar-dropdown">
-        <span>Useful Links</span>
-        <ul class="options">
-          <li><div class="arrow"></div></li>
-          <li><a href="{% url 'APP:agents' %}">Agents</a></li>
-          <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
-          <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
-          <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
-          <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
-        </ul>
-      </div>
-    </li>
-   </ul>
-  </div>
-  <!-- Left Side Content / End -->
-  <!-- Left Side Content -->
-  <div class="right-side">
-   <!-- Social Icons -->
-   <ul class="social-icons">
-    <li>
-     <a class="facebook" href="http://facebook.com/afripropertyconnect">
-      <i class="icon-facebook">
-      </i>
-     </a>
-    </li>
-    <li>
-     <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
-      <i class="icon-twitter">
-      </i>
-     </a>
-    </li>
-    <li>
-     <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
-      <i class="icon-instagram">
-      </i>
-     </a>
-    </li>
-   </ul>
-  </div>
-  <!-- Left Side Content / End -->
- </div>
 </div>
+
    <!-- Topbar / End -->
    <!-- Header -->
    <div id="header">
@@ -305,6 +246,7 @@
        <!-- User Menu -->
 
 
+
        {% if user.is_authenticated %}
        <a class="button border" href="{% url 'APP:submit_property' %}">
         Submit Property
@@ -321,7 +263,70 @@
    </div>
    <!-- Header / End -->
   </header>
+  <form id="theForm" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="paid" value="True"/>
+    <input type="hidden" name="amount" value="3000"/>
+    <button type="submit" style="visibility:hidden;"></button>
+  </form>
+  <form id="theForm2" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="paid" value="True"/>
+    <input type="hidden" name="amount" value="10000"/>
+    <button type="submit" style="visibility:hidden;"></button>
+  </form>
 <script>
+function payWithPaystack(){
+  var handler = PaystackPop.setup({
+    key: 'pk_test_2e6c36e35df589cd45c15eca59189df5e3fcc1af',
+    email: "chukslord1@gmail.com",
+    amount: 300000,
+    ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+    metadata: {
+       custom_fields: [
+          {
+              display_name: "chukslord1",
+              variable_name: "Afriproperty Basic Subscription Package",
+              value: "+2348012345678"
+          }
+       ]
+    },
+    callback: function(response){
+        alert('success. transaction ref is ' + response.reference);
+        document.getElementById('theForm').submit();
+      },
+    onClose: function(){
+        alert('window closed');
+    }
+  });
+  handler.openIframe();
+}
+
+function payWithPaystack2(){
+  var handler = PaystackPop.setup({
+    key: 'pk_test_2e6c36e35df589cd45c15eca59189df5e3fcc1af',
+    email: "chukslord1@gmail.com",
+    amount: 1000000,
+    ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+    metadata: {
+       custom_fields: [
+          {
+              display_name: "chukslord1",
+              variable_name: "Afriproperty Basic Subscription Package",
+              value: "+2348012345678"
+          }
+       ]
+    },
+    callback: function(response){
+        alert('success. transaction ref is ' + response.reference);
+        document.getElementById('theForm2').submit();
+      },
+    onClose: function(){
+        alert('window closed');
+    }
+  });
+  handler.openIframe();
+}
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
 function showOutput () {
@@ -460,17 +465,6 @@ function showsale10 () {
   var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
   window.location.href="category" + queryString;
 }
-function pricelow () {
-  var value=document.getElementById("pricelow").value;
-  var value2=document.URL;
-  var value3=value2.replace("&arrange=pricelow","");
-  var value4=value3.replace("&arrange=pricehigh","");
-  var value5=value4.replace("&arrange=new","");
-  var value6=value5.replace("&arrange=old","");
-  var queryString = "&arrange=" +value;
-  window.location.href= value6 + queryString;
-}
-
 </script>
   <div class="clearfix">
   </div>
@@ -482,11 +476,8 @@ function pricelow () {
     <div class="row">
      <div class="col-md-12">
       <h2>
-       Agencies
+       Pricing Tables
       </h2>
-      <span>
-       An award winning agencies
-      </span>
       <!-- Breadcrumbs -->
       <nav id="breadcrumbs">
        <ul>
@@ -496,7 +487,7 @@ function pricelow () {
          </a>
         </li>
         <li>
-         Agencies
+         Pricing Tables
         </li>
        </ul>
       </nav>
@@ -504,107 +495,237 @@ function pricelow () {
     </div>
    </div>
   </div>
-  <!-- Content
+  <!-- Pricing Tables
 ================================================== -->
+
+
+  <!-- Container / Start -->
   <div class="container">
+   <!-- Row / Start -->
+    <center><h1>LISTING PACKAGES<h1></center>
    <div class="row">
     <div class="col-md-12">
-     <!-- Agency -->
-     {% for item in object_list %}
-     <div class="agent agent-page agency">
-      <a class="agent-avatar" href="{{item.get_absolute_url}}">
-       <img alt="" src="{{item.image.url}}"/>
-      </a>
-      <div class="agent-content">
-       <div class="agent-name">
-        <h4>
-         <a href="{{item.get_absolute_url}}">
-          {{item.title}}
-         </a>
-        </h4>
-        <span>
-         <i class="fa fa-map-marker">
-         </i>
-        {{item.address}}
+     <div class="pricing-container margin-top-30">
+      <!-- Plan #1 -->
+      <div class="plan">
+       <div class="plan-price">
+        <h3>
+         Basic
+        </h3>
+        <span class="value">
+         Free
+        </span>
+        <span class="period">
+         Free of charge three standard listings submissions
         </span>
        </div>
-       <p>
-        {{item.description}}
-       </p>
-       <ul class="agent-contact-details">
-        <li>
-         <i class="sl sl-icon-call-in">
-         </i>
-         {{item.phone}}
-        </li>
-        <li>
-         <i class="fa fa-envelope-o">
-         </i>
-         <a href="#">
-          {{item.email}}
-         </a>
-        </li>
-       </ul>
-       <div class="clearfix">
+       <div class="plan-features">
+        <ul>
+         <li>
+        Three Listings
+         </li>
+         <li>
+          Standard Listing
+         </li>
+         <li>
+          Limited Support
+         </li>
+        </ul>
+        <a class="button border" href="index.html">
+         You are currently on this plan
+        </a>
+       </div>
+      </div>
+      <!-- Plan #3 -->
+      <div class="plan featured">
+       <div class="listing-badges">
+        <span class="featured">
+         Featured
+        </span>
+       </div>
+       <div class="plan-price">
+        <h3>
+         Basic
+        </h3>
+        <span class="value">
+         ₦ 3000
+        </span>
+        <span class="period">
+           One time fee for Twenty listings
+        </span>
+       </div>
+       <div class="plan-features">
+        <ul>
+          <li>
+         Twenty Listings
+          </li>
+          <li>
+           Standard Listing
+          </li>
+          <li>
+           Limited Support
+          </li>
+        </ul>
+        <script src="https://js.paystack.co/v1/inline.js"></script>
+        <a class="button" onclick="payWithPaystack()">
+         Get Started
+        </a>
+       </div>
+      </div>
+      <!-- Plan #3 -->
+      <div class="plan">
+       <div class="plan-price">
+        <h3>
+         Intermediate
+        </h3>
+        <span class="value">
+          ₦ 10000
+        </span>
+        <span class="period">
+         Subscription for 100 listings
+        </span>
+       </div>
+       <div class="plan-features">
+        <ul>
+         <li>
+          100 listings
+         </li>
+         <li>
+          Unlimited Availability
+         </li>
+         <li>
+          24/7 Support
+         </li>
+        </ul>
+        {% if user.is_authenticated %}
+        <script src="https://js.paystack.co/v1/inline.js"></script>
+        <a class="button" onclick="payWithPaystack2()">
+         Get Started
+        </a>
+        {% else %}
+        <a class="button" href="login-register.html">
+         Login To Subscribe
+        </a>
+        {% endif %}
+       </div>
+      </div>
+
+      <div class="plan">
+       <div class="plan-price">
+        <h3>
+         Subscribe as An Agency
+        </h3>
+        <span class="value">
+        </span>
+        <span class="period">
+         Subscription for unlimited listings and availability
+        </span>
+       </div>
+       <div class="plan-features">
+        <ul>
+         <li>
+          Unlimited Listings
+         </li>
+         <li>
+          Unlimited Availability
+         </li>
+         <li>
+          Featured In Search Results
+         </li>
+         <li>
+          24/7 Support
+         </li>
+        </ul>
+        <a class="button border" href="contact.html">
+         Contact Us To Get Started
+        </a>
        </div>
       </div>
      </div>
-     {% endfor %}
-     <!-- Agency -->
     </div>
-    <div class="col-md-12">
-     <div class="clearfix">
-     </div>
-     <!-- Pagination -->
-     <div class="pagination-container">
-      <nav class="pagination">
+   </div>
+   <center><h1>BOOSTING PACKAGES<h1></center>
+  <div class="row">
+   <div class="col-md-12">
+    <div class="pricing-container margin-top-30">
+     <!-- Plan #1 -->
+     <!-- Plan #3 -->
+     <div class="plan featured">
+      <div class="listing-badges">
+       <span class="featured">
+        Featured
+       </span>
+      </div>
+      <div class="plan-price">
+       <h3>
+        Basic
+       </h3>
+       <span class="value">
+        ₦ 2000
+       </span>
+       <span class="period">
+          One time fee for 1 week Boosting of One Property
+       </span>
+      </div>
+      <div class="plan-features">
        <ul>
          <li>
-          <a class="current-page" href=""?page=1"">
-           {{ page_obj.number }}
-          </a>
+        Property Will Appear at the Top of All Listing Pages
          </li>
-         of
-        <li>
-         <a  href=""?page=1"">
-          1
-         </a>
-        </li>
-        {% if page_obj.has_next %}
-        <li>
-         <a href="?page={{ page_obj.next_page_number }}">
-          2
-         </a>
-        </li>
-        <li>
-         <a href="?page={{ page_obj.paginator.num_pages }}">
-          last
-         </a>
-        </li>
-        {% endif %}
+         <li>
+          Up to 10000 Views
+         </li>
        </ul>
-      </nav>
-      {% if page_obj.has_next %}
-      <nav class="pagination-next-prev">
+       {% if user.is_authenticated %}
+       <a class="button" href="my-properties.html">
+        Get Started
+       </a>
+       {% else %}
+       <a class="button" href="login-register.html">
+        Login To Subscribe
+       </a>
+       {% endif %}
+      </div>
+     </div>
+     <!-- Plan #3 -->
+     <div class="plan">
+      <div class="plan-price">
+       <h3>
+        Standard
+       </h3>
+       <span class="value">
+         ₦ 5000
+       </span>
+       <span class="period">
+        One time fee for 2 week Boosting of One Property
+       </span>
+      </div>
+      <div class="plan-features">
        <ul>
         <li>
-         <a class="prev" href="?page={{ page_obj.previous_page_number }}">
-          Previous
-         </a>
+         Property Will Appear at the Top of All Listing Pages
         </li>
         <li>
-         <a class="next" href="?page={{ page_obj.next_page_number }}">
-          Next
-         </a>
+         24/7 Support
         </li>
        </ul>
-      </nav>
-      {% endif %}
+       {% if user.is_authenticated %}
+       <a class="button" href="my-properties.html">
+        Get Started
+       </a>
+       {% else %}
+       <a class="button" href="login-register.html">
+        Login To Subscribe
+       </a>
+       {% endif %}
+      </div>
      </div>
-     <!-- Pagination / End -->
     </div>
    </div>
   </div>
+   <!-- Row / End -->
+  </div>
+  <!-- Container / End -->
   <!-- Footer
 ================================================== -->
 <div class="sticky-footer" id="footer">

@@ -13,6 +13,7 @@
 ================================================== -->
  <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
  <link href="{% static 'css/color.css' %}" rel="stylesheet"/>
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.jpg' %}">
 </head>
 <body>
  <!-- Wrapper -->
@@ -86,84 +87,66 @@
   <header id="header-container">
    <!-- Topbar -->
    <div id="top-bar">
-    <div class="container">
-     <!-- Left Side Content -->
-     <div class="left-side">
-      <!-- Top bar -->
-      <ul class="top-bar-menu">
-       <li>
-        <i class="fa fa-phone">
-        </i>
-        +(234) 805 882 775, +(234) 905 2213 706
-       </li>
-       <li>
-        <i class="fa fa-envelope">
-        </i>
-        <a href="#">
-         sales@afriproperty.com.ng
-        </a>
-       </li>
-       <li>
-        <a href="#">
-         About
-        </a>
-       </li>
-       <li>
-        <a href="{% url 'APP:contact'%}">
-         Contact
-        </a>
-       </li>
-       <li>
-         <div class="top-bar-dropdown">
-           <span>Useful Links</span>
-           <ul class="options">
-             <li><div class="arrow"></div></li>
-             <li><a href="{% url 'APP:agents' %}">Agents</a></li>
-             <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
-             <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
-             <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
-             <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
-           </ul>
-         </div>
-       </li>
-      </ul>
-     </div>
-     <!-- Left Side Content / End -->
-     <!-- Left Side Content -->
-     <div class="right-side">
-      <!-- Social Icons -->
-      <ul class="social-icons">
-       <li>
-        <a class="facebook" href="#">
-         <i class="icon-facebook">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="twitter" href="#">
-         <i class="icon-twitter">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="gplus" href="#">
-         <i class="icon-gplus">
-         </i>
-        </a>
-       </li>
-       <li>
-        <a class="pinterest" href="#">
-         <i class="icon-pinterest">
-         </i>
-        </a>
-       </li>
-      </ul>
-     </div>
-     <!-- Left Side Content / End -->
-    </div>
-   </div>
-   <div class="clearfix">
-   </div>
+ <div class="container">
+  <!-- Left Side Content -->
+  <div class="left-side">
+   <!-- Top bar -->
+   <ul class="top-bar-menu">
+    <li>
+     <i class="fa fa-phone">
+     </i>
+     +(234) 805 882 775
+    </li>
+    <li>
+     <i class="fa fa-envelope">
+     </i>
+     <a href="#">
+      sales@afriproperty.com.ng
+     </a>
+    </li>
+    <li>
+      <div class="top-bar-dropdown">
+        <span>Useful Links</span>
+        <ul class="options">
+          <li><div class="arrow"></div></li>
+          <li><a href="{% url 'APP:agents' %}">Agents</a></li>
+          <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
+          <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
+          <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
+          <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
+        </ul>
+      </div>
+    </li>
+   </ul>
+  </div>
+  <!-- Left Side Content / End -->
+  <!-- Left Side Content -->
+  <div class="right-side">
+   <!-- Social Icons -->
+   <ul class="social-icons">
+    <li>
+     <a class="facebook" href="http://facebook.com/afripropertyconnect">
+      <i class="icon-facebook">
+      </i>
+     </a>
+    </li>
+    <li>
+     <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
+      <i class="icon-twitter">
+      </i>
+     </a>
+    </li>
+    <li>
+     <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
+      <i class="icon-instagram">
+      </i>
+     </a>
+    </li>
+   </ul>
+  </div>
+  <!-- Left Side Content / End -->
+ </div>
+</div>
    <!-- Topbar / End -->
    <!-- Header -->
    <div id="header">
@@ -735,31 +718,25 @@ function showsale10 () {
       <br/>
      </div>
      <ul class="social-icons margin-top-20">
-      <li>
-       <a class="facebook" href="#">
-        <i class="icon-facebook">
-        </i>
-       </a>
-      </li>
-      <li>
-       <a class="twitter" href="#">
-        <i class="icon-twitter">
-        </i>
-       </a>
-      </li>
-      <li>
-       <a class="gplus" href="#">
-        <i class="icon-gplus">
-        </i>
-       </a>
-      </li>
-      <li>
-       <a class="vimeo" href="#">
-        <i class="icon-vimeo">
-        </i>
-       </a>
-      </li>
-     </ul>
+ <li>
+   <a class="facebook" href="http://facebook.com/afripropertyconnect">
+    <i class="icon-facebook">
+    </i>
+   </a>
+ </li>
+ <li>
+   <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
+     <i class="icon-twitter">
+     </i>
+   </a>
+ </li>
+ <li>
+   <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
+     <i class="icon-instagram">
+     </i>
+   </a>
+ </li>
+</ul>
     </div>
    </div>
   <!-- Copyright -->

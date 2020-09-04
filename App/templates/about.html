@@ -1,0 +1,724 @@
+{% load static %}
+
+<!DOCTYPE html>
+<head>
+ <!-- Basic Page Needs
+================================================== -->
+ <title>
+  Afriproperty Connect
+ </title>
+ <meta charset="utf-8"/>
+ <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+ <!-- CSS
+================================================== -->
+ <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+ <link href="{% static 'css/color.css' %}" rel="stylesheet"/>
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.jpg' %}">
+</head>
+<body>
+ <!-- Wrapper -->
+ <div id="wrapper">
+  <!-- Compare Properties Widget
+================================================== -->
+  <div class="compare-slide-menu">
+   <div class="csm-trigger">
+   </div>
+   <div class="csm-content">
+    <h4>
+     Compare Properties
+     <div class="csm-mobile-trigger">
+     </div>
+    </h4>
+    <div class="csm-properties">
+     <!-- Property -->
+     {% for item in compare %}
+     <div class="listing-item compact">
+      <a class="listing-img-container" href="{{item.get_absolute_url}}">
+       <div class="remove-from-compare">
+        <i class="fa fa-close">
+        </i>
+       </div>
+       <div class="listing-badges">
+        <span>
+         {{item.sale_type}}
+        </span>
+       </div>
+       <div class="listing-img-content">
+        <span class="listing-compact-title">
+         {{item.title}}
+         <i>
+          ₦{{item.price}}
+         </i>
+        </span>
+       </div>
+       <img alt="" src="{{item.image_1.url}}"/>
+      </a>
+     </div>
+     {% endfor %}
+     {% if user.is_authenticated %}
+     {% else %}
+     <a class="sign-in" href="{% url 'APP:login_register' %}">
+      <i class="fa fa-user">
+      </i>
+      Log In / Register To Compare
+     </a>
+     {% endif %}
+     <!-- Property -->
+     <!-- Property -->
+    </div>
+    {% if user.is_authenticated %}
+    <div class="csm-buttons">
+     <a class="button" href="{% url 'APP:compare' %}">
+      Compare
+     </a>
+     <form method="GET">
+      <input name="clear" value="True" type="hidden">
+     <button class="button reset" type="submit">
+      Reset
+    </button>
+   </form>
+    </div>
+    {% endif %}
+   </div>
+  </div>
+  <!-- Compare Properties Widget / End -->
+  <!-- Header Container
+================================================== -->
+  <header id="header-container">
+   <!-- Topbar -->
+ <div id="top-bar">
+ <div class="container">
+  <!-- Left Side Content -->
+  <div class="left-side">
+   <!-- Top bar -->
+   <ul class="top-bar-menu">
+    <li>
+     <i class="fa fa-phone">
+     </i>
+     +(234) 805 882 775
+    </li>
+    <li>
+     <i class="fa fa-envelope">
+     </i>
+     <a href="#">
+      sales@afriproperty.com.ng
+     </a>
+    </li>
+    <li>
+      <div class="top-bar-dropdown">
+        <span>Useful Links</span>
+        <ul class="options">
+          <li><div class="arrow"></div></li>
+          <li><a href="{% url 'APP:agents' %}">Agents</a></li>
+          <li><a href="{% url 'APP:agencies-list' %}">Agencies</a></li>
+          <li><a href="{% url 'APP:developer-list' %}">Developers</a></li>
+          <li><a href="{% url 'APP:partner-list' %}">Partners</a></li>
+          <li><a href="{% url 'APP:blog-list' %}">Property Blog</a></li>
+        </ul>
+      </div>
+    </li>
+   </ul>
+  </div>
+  <!-- Left Side Content / End -->
+  <!-- Left Side Content -->
+  <div class="right-side">
+   <!-- Social Icons -->
+   <ul class="social-icons">
+    <li>
+     <a class="facebook" href="http://facebook.com/afripropertyconnect">
+      <i class="icon-facebook">
+      </i>
+     </a>
+    </li>
+    <li>
+     <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
+      <i class="icon-twitter">
+      </i>
+     </a>
+    </li>
+    <li>
+     <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
+      <i class="icon-instagram">
+      </i>
+     </a>
+    </li>
+   </ul>
+  </div>
+  <!-- Left Side Content / End -->
+ </div>
+</div>
+   <!-- Topbar / End -->
+   <!-- Header -->
+   <div id="header">
+    <div class="container">
+     <!-- Left Side Content -->
+     <div class="left-side">
+      <!-- Logo -->
+      <div id="logo">
+       <a href="{% url 'APP:index' %}">
+        <img alt="" src="{% static 'images/logo.png' %}"/>
+       </a>
+      </div>
+      <!-- Mobile Navigation -->
+      <div class="mmenu-trigger">
+       <button class="hamburger hamburger--collapse" type="button">
+        <span class="hamburger-box">
+         <span class="hamburger-inner">
+         </span>
+        </span>
+       </button>
+      </div>
+      <!-- Main Navigation -->
+      <nav class="style-1" id="navigation">
+       <ul id="responsive">
+        <li>
+         <a href="{% url 'APP:index' %}">
+          Home
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale" value="sale">
+         <a onclick="showsale()">
+          For Sale
+         </a>
+        </li>
+        <li>
+          <input type="hidden" id="sale2" value="rent">
+         <a onclick="showsale2()">
+          For Rent
+         </a>
+        </li>
+        <li><a href="#">More</a>
+          <ul>
+            <li>
+              <input type="hidden" id="sale3" value="shortlet">
+             <a onclick="showsale3()">
+              Shortlet
+             </a>
+            </li>
+            <li>
+              <input type="hidden" id="sale4" value="hotel">
+             <a onclick="showsale4()">
+              Hotels
+             </a>
+            </li>
+            <li>
+              <input type="hidden" id="sale11" value="park">
+             <a onclick="showsale11()">
+              Park and Recreation
+             </a>
+            </li>
+            <li>
+              <input type="hidden" id="sale10" value="travels">
+             <a onclick="showsale10()">
+              Travels and Tours Listing
+             </a>
+            </li>
+            <li>
+             <a href="{% url 'APP:pricing' %}">
+              Products and Services
+             </a>
+            </li>
+            <li>
+             <a href="{% url 'APP:property_video' %}">
+              Property Videos
+             </a>
+            </li>
+            <li>
+             <a href="{% url 'APP:multi_component' %}">
+            Multilevel Component
+             </a>
+            </li>
+            <li>
+             <a href="{% url 'APP:valuation' %}">
+              Property Valuation
+             </a>
+            </li>
+          </ul>
+        </li>
+       </ul>
+      </nav>
+      <div class="clearfix">
+      </div>
+      <!-- Main Navigation / End -->
+     </div>
+     <!-- Left Side Content / End -->
+     <!-- Right Side Content / End -->
+     <div class="right-side">
+       {% if user.is_authenticated %}
+       <a class="sign-in" onclick="window.location.href='{% url 'APP:logout' %}'">
+        <i class="fa fa-user">
+        </i>
+        Logout
+       </a>
+       <div class="user-menu">
+        <div class="user-name">
+         <span>
+           {% if profile.image %}
+           <img alt="" src="{{profile.image.url}}"/>
+           {% else %}
+          <img alt="" src="{% static 'images/agent-03.jpg' %}"/>
+          {% endif %}
+         </span>
+         Hi, {{user}}!
+        </div>
+        <ul>
+         <li>
+          <a href="{% url 'APP:profile' %}">
+           <i class="sl sl-icon-user">
+           </i>
+           My Profile
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:bookmarks' %}">
+           <i class="sl sl-icon-star">
+           </i>
+           Bookmarks
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:properties' %}">
+           <i class="sl sl-icon-docs">
+           </i>
+           My Properties
+          </a>
+         </li>
+         <li>
+          <a href="{% url 'APP:logout' %}">
+           <i class="sl sl-icon-power">
+           </i>
+           Log Out
+          </a>
+         </li>
+        </ul>
+       </div>
+       {% else %}
+      <a class="sign-in" href="{% url 'APP:login_register' %}">
+       <i class="fa fa-user">
+       </i>
+       Log In / Register
+      </a>
+      {% endif %}
+      <!-- Header Widget -->
+      <div class="header-widget">
+       <!-- User Menu -->
+
+
+
+       {% if user.is_authenticated %}
+       <a class="button border" href="{% url 'APP:submit_property' %}">
+        Submit Property
+       </a>
+       {% else %}
+       {% endif %}
+
+      </div>
+
+      <!-- Header Widget / End -->
+     </div>
+     <!-- Right Side Content / End -->
+    </div>
+   </div>
+   <!-- Header / End -->
+  </header>
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function showOutput () {
+  var value=document.getElementById("myInput").value;
+  var value_2=document.getElementById("myInput2").value;
+  var value_3=document.getElementById("myInput3").value;
+  if (document.getElementById("myInput7").checked == true){
+    var value_4=document.getElementById("myInput7").value;
+  } else if (document.getElementById("myInput5").checked == true){
+    var value_4=document.getElementById("myInput5").value;
+  } else if (document.getElementById("myInput6").checked == true){
+    var value_4=document.getElementById("myInput6").value;
+  }else if (document.getElementById("myInput4").checked == true){
+    var value_4=document.getElementById("myInput4").value;
+  }
+   else {
+    var value_4="e";
+  }
+
+  var paid="one";
+  var queryString = "?first_check=" +paid  + "&search=" + value + "&category=" + value_2 + "&max_price=" + value_3 + "&tab=" + value_4;
+  window.location.href="listing.html" + queryString;
+}
+
+function showcat () {
+  var value=document.getElementById("myCat").value;
+
+  var paid="True";
+  var queryString = "?check_cat=" +paid  + "&cat=" + value;
+  window.location.href="category" + queryString;
+}
+function showcat2 () {
+  var value=document.getElementById("myCat2").value;
+
+
+  var paid="True";
+  var queryString = "?check_cat=" +paid  + "&cat=" + value;
+  window.location.href="category" + queryString;
+}
+
+function showcat3 () {
+  var value=document.getElementById("myCat3").value;
+
+
+  var paid="True";
+  var queryString = "?check_cat=" +paid  + "&cat=" + value;
+  window.location.href="category" + queryString;
+}
+
+function showcat4 () {
+  var value=document.getElementById("myCat4").value;
+
+
+  var paid="True";
+  var queryString = "?check_cat=" +paid  + "&cat=" + value;
+  window.location.href="category" + queryString;
+}
+function showpopular () {
+  var value=document.getElementById("mypop").value;
+
+
+  var paid="True";
+  var queryString = "?check_pop=" +paid  + "&pop=" + value;
+  window.location.href="popular" + queryString;
+}
+function showpopular2 () {
+  var value=document.getElementById("mypop2").value;
+
+
+  var paid="True";
+  var queryString = "?check_pop=" +paid  + "&pop=" + value;
+  window.location.href="popular" + queryString;
+}
+function showpopular3 () {
+  var value=document.getElementById("mypop3").value;
+
+
+  var paid="True";
+  var queryString = "?check_pop=" +paid  + "&pop=" + value;
+  window.location.href="popular" + queryString;
+}
+
+function showpopular4 () {
+  var value=document.getElementById("mypop4").value;
+
+
+  var paid="True";
+  var queryString = "?check_pop=" +paid  + "&pop=" + value;
+  window.location.href="popular" + queryString;
+}
+function showsale () {
+  var value=document.getElementById("sale").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale2 () {
+  var value=document.getElementById("sale2").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale3 () {
+  var value=document.getElementById("sale3").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale4 () {
+  var value=document.getElementById("sale4").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale11 () {
+  var value=document.getElementById("sale11").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+function showsale10 () {
+  var value=document.getElementById("sale10").value;
+
+
+  var paid="True";
+  var queryString = "?check_sale=" +paid  + "&sale_type=" + value;
+  window.location.href="category" + queryString;
+}
+</script>
+  <div class="clearfix">
+  </div>
+  <!-- Header Container / End -->
+  <!-- Content
+================================================== -->
+  <!-- Map Container -->
+  <div class="contact-map margin-bottom-55">
+   <!-- Google Maps -->
+   <div class="google-map-container">
+     <img width="10000" src="{% static 'images/new_logo.png' %}" />
+   </div>
+   <!-- Google Maps / End -->
+   <!-- Office -->
+   <div class="address-box-container">
+    <div class="address-container" data-background-image="{% static 'images/our-office.jpg' %}">
+     <div class="office-address">
+      <h3>
+       Our Office
+      </h3>
+      <ul>
+       <li>
+        Monrovia Street Wuse 2
+       </li>
+       <li>
+        Abuja, Nigeria
+       </li>
+       <li>
+        Phone +(234) 805 882 775, +(234) 905 2213 706
+       </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+   <!-- Office / End -->
+  </div>
+  <div class="clearfix">
+  </div>
+  <!-- Map Container / End -->
+  <!-- Container / Start -->
+  <div class="container">
+   <div class="row">
+    <!-- Contact Details -->
+    <div class="col-md-4">
+     <h4 class="headline margin-bottom-30">
+      About Afriproperty
+     </h4>
+     <!-- Contact Details -->
+     <div class="sidebar-textbox">
+      <p>
+      Afriproperty is a leading property and development company in the Nigerian real estate sector, with property listings for sale, rent and lease. We offer Nigerian property seekers an easy way to find details of property in Nigeria like homes, houses, lands, shops, office spaces and other commercial property.
+      </p>
+      <ul class="contact-details">
+       <li>
+        <i class="im im-icon-Phone-2">
+        </i>
+        <strong>
+         Phone:
+        </strong>
+        <span>
+         +(234) 805 882 775, +(234) 905 2213 706
+        </span>
+       </li>
+       <li>
+        <i class="im im-icon-Globe">
+        </i>
+        <strong>
+         Web:
+        </strong>
+        <span>
+         <a href="#">
+          www.afriproperty.com.ng
+         </a>
+        </span>
+       </li>
+       <li>
+        <i class="im im-icon-Envelope">
+        </i>
+        <strong>
+         E-Mail:
+        </strong>
+        <span>
+         <a href="#">
+          sales@afriproperty.com
+         </a>
+        </span>
+       </li>
+      </ul>
+     </div>
+    </div>
+    <!-- Contact Form -->
+    <div class="col-md-8">
+     <section id="contact">
+      <img src="{% static 'images/about.jfif' %}" />
+     </section>
+    </div>
+    <!-- Contact Form / End -->
+   </div>
+  </div>
+  <!-- Container / End -->
+  <!-- Footer
+  ================================================== -->
+  <div class="sticky-footer" id="footer">
+   <!-- Main -->
+   <div class="container">
+     <div class="row">
+      <div class="col-md-5 col-sm-6">
+       <img alt="" class="footer-logo" src="{% static 'images/logo.png' %}"/>
+       <br/>
+       <br/>
+       <p>
+        "The house you looked at today and wanted to think about until tomorrow may be the same house someone looked at yesterday and will buy today" -Koko Adasi
+       </p>
+      </div>
+      <div class="col-md-4 col-sm-6">
+       <h4>
+        Helpful Links
+       </h4>
+       <ul class="footer-links">
+        <li>
+         <a href="{% url 'APP:login_register' %}">
+          Login
+         </a>
+        </li>
+        <li>
+         <a href="{% url 'APP:login_register' %}">
+          Sign Up
+         </a>
+        </li>
+        <li>
+         <a href="{% url 'APP:submit_property' %}">
+          Add Property
+         </a>
+        </li>
+       </ul>
+       <ul class="footer-links">
+        <li>
+         <a href="{% url 'APP:blog-list' %}">
+          Blog
+         </a>
+        </li>
+        <li>
+         <a href="{% url 'APP:agencies-list' %}">
+          Our Agencies
+         </a>
+        </li>
+        <li>
+         <a href="{% url 'APP:contact' %}">
+          Contact
+         </a>
+        </li>
+       </ul>
+       <div class="clearfix">
+       </div>
+      </div>
+      <div class="col-md-3 col-sm-12">
+       <h4>
+        Contact Us
+       </h4>
+       <div class="text-widget">
+        <span>
+         Monrovia Street Wuse 2, Abuja Nigeria
+        </span>
+        <br/>
+        Phone:
+        <span>
+         +(234) 805 882 775, +(234) 905 2213 706
+        </span>
+        <br/>
+        E-Mail:
+        <span>
+         <a href="#">
+          sales@afriproperty.com.ng
+         </a>
+        </span>
+        <br/>
+       </div>
+<ul class="social-icons margin-top-20">
+ <li>
+   <a class="facebook" href="http://facebook.com/afripropertyconnect">
+    <i class="icon-facebook">
+    </i>
+   </a>
+ </li>
+ <li>
+   <a class="twitter" href="https://www.twitter.com/afriproperty_connect/">
+     <i class="icon-twitter">
+     </i>
+   </a>
+ </li>
+ <li>
+   <a class="instagram" href="https://www.instagram.com/afriproperty_connect/">
+     <i class="icon-instagram">
+     </i>
+   </a>
+ </li>
+</ul>
+      </div>
+     </div>
+    <!-- Copyright -->
+    <div class="row">
+     <div class="col-md-12">
+      <div class="copyrights">
+       <a href=" https://24hubs.com">powered by 24 Hubs©</a> 2020 Afriproperty. All Rights Reserved.
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <!-- Footer / End -->
+  <!-- Back To Top Button -->
+  <div id="backtotop">
+   <a href="#">
+   </a>
+  </div>
+  <!-- Scripts
+================================================== -->
+  <script src="{% static 'scripts/jquery-3.4.1.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/jquery-migrate-3.1.0.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/chosen.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/magnific-popup.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/owl.carousel.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/rangeSlider.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/sticky-kit.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/slick.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/masonry.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/mmenu.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/tooltips.min.js' %}" type="text/javascript">
+  </script>
+  <script src="{% static 'scripts/custom.js' %}" type="text/javascript">
+  </script>
+  <!-- Google Autocomplete -->
+  <script>
+   function initAutocomplete() {
+    var input = document.getElementById('autocomplete-input');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+    autocomplete.addListener('place_changed', function() {
+      var place = autocomplete.getPlace();
+      if (!place.geometry) {
+        window.alert("No details available for input: '" + place.name + "'");
+        return;
+      }
+    });
+}
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;callback=initAutocomplete">
+  </script>
+ </div>
+ <!-- Wrapper / End -->
+</body>

@@ -581,6 +581,7 @@ function pricelow () {
         <!-- Main Search Input -->
         <form method="GET">
         <div class="main-search-input margin-bottom-35">
+          <input type="hidden" name="first_check" value="True"/>
          <input class="ico-01" placeholder="Enter address e.g. street, city and state or zip" name="search" type="text" value=""/>
          <button class="button" type="submit">
           Search
@@ -634,6 +635,139 @@ function pricelow () {
          <!-- Listing Item -->
          {% if search %}
          {% for item in search %}
+         <div class="listing-item">
+          <a class="listing-img-container" href="{{item.get_absolute_url}}">
+           <div class="listing-badges">
+            <span class="featured">
+             Featured
+            </span>
+            <span>
+             for {{item.sale_type}}
+            </span>
+           </div>
+           <div class="listing-img-content">
+            <span class="listing-price">
+             ₦{{item.price}}
+             <i>
+              ₦{{item.price_per_unit}}/sq m
+             </i>
+            </span>
+            <form method="GET">
+              <input name="third_check"  type="hidden" value="three" />
+              <input name="title"  type="hidden" value="{{item.title}}" />
+              <input name="address"  type="hidden" value="{{item.address}}" />
+              <input name="date"  type="hidden" value="{{item.date}}" />
+              <input name="category"  type="hidden" value="{{item.category}}" />
+              <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
+              <input name="price"  type="hidden" value="{{item.price}}" />
+              <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
+              {% for i in item.image_1.all %}
+              {% if forloop.first %}
+              <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
+              {% endif %}
+              {% endfor %}
+              <input name="area"  type="hidden" value="{{item.area}}" />
+              <input name="rooms"  type="hidden" value="{{item.rooms}}" />
+              <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
+              <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
+              <input name="features"  type="hidden" value="{{item.features}}" />
+              <input name="building_age"  type="hidden" value="{{item.building_age}}" />
+              <input name="parking"  type="hidden" value="{{item.parking}}" />
+              <input name="cooling"  type="hidden" value="{{item.cooling}}" />
+              <input name="heating"  type="hidden" value="{{item.heating}}" />
+              <input name="sewer"  type="hidden" value="{{item.sewer}}" />
+              <input name="water"  type="hidden" value="{{item.water}}" />
+              <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
+              <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
+              <button class="fa fa-star ml-auto"  type="submit">
+              </button>
+          </form>
+            <form method="GET">
+              <input name="second_check"  type="hidden" value="two" />
+              <input name="title"  type="hidden" value="{{item.title}}" />
+              <input name="address"  type="hidden" value="{{item.address}}" />
+              <input name="date"  type="hidden" value="{{item.date}}" />
+              <input name="category"  type="hidden" value="{{item.category}}" />
+              <input name="sale_type"  type="hidden" value="{{item.sale_type}}" />
+              <input name="price"  type="hidden" value="{{item.price}}" />
+              <input name="price_per_unit"  type="hidden" value="{{item.price_per_unit}}" />
+              {% for i in item.image_1.all %}
+              {% if forloop.first %}
+              <input name="image"  type="hidden" value="{% get_media_prefix %}{{i.image}}" />
+              {% endif %}
+              {% endfor %}
+              <input name="area"  type="hidden" value="{{item.area}}" />
+              <input name="rooms"  type="hidden" value="{{item.rooms}}" />
+              <input name="bedrooms"  type="hidden" value="{{item.bedrooms}}" />
+              <input name="bathrooms"  type="hidden" value="{{item.bathrooms}}" />
+              <input name="features"  type="hidden" value="{{item.features}}" />
+              <input name="building_age"  type="hidden" value="{{item.building_age}}" />
+              <input name="parking"  type="hidden" value="{{item.parking}}" />
+              <input name="cooling"  type="hidden" value="{{item.cooling}}" />
+              <input name="heating"  type="hidden" value="{{item.heating}}" />
+              <input name="sewer"  type="hidden" value="{{item.sewer}}" />
+              <input name="water"  type="hidden" value="{{item.water}}" />
+              <input name="exercise_room"  type="hidden" value="{{item.exercise_room}}" />
+              <input name="storage_room"  type="hidden" value="{{item.storage_room}}" />
+            <button class="compare-button" type="submit">
+            </button>
+          </form>
+           </div>
+           <div class="listing-carousel">
+             {% for i in item.image_1.all %}
+            <div>
+             <img alt="" src="{% get_media_prefix %}{{i.image}}"/>
+            </div>
+            {% endfor %}
+           </div>
+          </a>
+          <div class="listing-content">
+           <div class="listing-title">
+            <h4>
+             <a href="{{item.get_absolute_url}}">
+             {{item.title}}
+             </a>
+            </h4>
+            <a class="listing-address popup-gmaps" href="https://maps.google.com/maps?q=221B+Baker+Street,+London,+United+Kingdom&amp;hl=en&amp;t=v&amp;hnear=221B+Baker+St,+London+NW1+6XE,+United+Kingdom">
+             <i class="fa fa-map-marker">
+             </i>
+             {{item.address}}
+            </a>
+            <a class="details button border" href="{{item.get_absolute_url}}">
+             Details
+            </a>
+           </div>
+           <ul class="listing-details">
+            <li>
+             {{item.area}}/sq m
+            </li>
+            <li>
+             {{item.bedrooms}} Bedroom
+            </li>
+            <li>
+             {{item.rooms}} Rooms
+            </li>
+            <li>
+             {{item.bathrooms}} Bathroom
+            </li>
+           </ul>
+           <div class="listing-footer">
+            <a href="#">
+             <i class="fa fa-user">
+             </i>
+             {{item.creator}}
+            </a>
+            <span>
+             <i class="fa fa-calendar-o">
+             </i>
+             {{item.date}}
+            </span>
+           </div>
+          </div>
+         </div>
+         {% endfor %}
+         {% elif agencyprops %}
+         {% for item in agencyprops %}
          <div class="listing-item">
           <a class="listing-img-container" href="{{item.get_absolute_url}}">
            <div class="listing-badges">

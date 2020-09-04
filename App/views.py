@@ -1494,6 +1494,10 @@ class AgencyDetailView(DetailView):
                 else:
                     search = Property.objects.filter(Q(address__icontains=query),Q(agency=obj.title))
                     context['search'] = search
+                paginator= Paginator(search,10)
+                page_number = self.request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                context['page_obj'] = page_obj
             else:
                 search = Property.objects.none()
                 context['search'] = search
@@ -1597,34 +1601,37 @@ class AgencyDetailView(DetailView):
                     area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
                     water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
                     book.save()
-
+        else:
+            arrange=self.request.GET.get("arrange")
+            if arrange=="pricelow":
+                search=Property.objects.filter(agency=obj.title).order_by('price')
+                context['agencyprops'] = search
+            elif arrange=="pricelow":
+                search=Property.objects.filter(agency=obj.title).order_by('-price')
+                context['agencyprops'] = search
+            elif arrange=="new":
+                search=Property.objects.filter(agency=obj.title).order_by('-date')
+                context['agencyprops'] = search
+            elif arrange=="old":
+                search=Property.objects.filter(agency=obj.title).order_by('date')
+                context['agencyprops'] = search
+            else:
+                print("hello world")
+                search=Property.objects.filter(agency=obj.title)
+                context['agencyprops'] = search
+            paginator= Paginator(search,10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
             context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
 
-        arrange=self.request.GET.get("arrange")
-        if arrange=="pricelow":
-            search=Property.objects.filter(agency=obj.title).order_by('price')
-            context['agencyprops'] = search
-        elif arrange=="pricelow":
-            search=Property.objects.filter(agency=obj.title).order_by('-price')
-            context['agencyprops'] = search
-        elif arrange=="new":
-            search=Property.objects.filter(agency=obj.title).order_by('-date')
-            context['agencyprops'] = search
-        elif arrange=="old":
-            search=Property.objects.filter(agency=obj.title).order_by('date')
-            context['agencyprops'] = search
-        else:
-            search=Property.objects.filter(agency=obj.title)
-            context['agencyprops'] = search
+
         context['agents'] = Agent.objects.filter(agency=obj.title)
-        paginator= Paginator(Agency.objects.all(),10)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['page_obj'] = page_obj
+
         return context
 
 class DeveloperDetailView(DetailView):
@@ -1660,6 +1667,10 @@ class DeveloperDetailView(DetailView):
                 search = Property.objects.none()
                 context['search'] = search
                 context['message']="Not Found"
+            paginator= Paginator(search,10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
         elif self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -1760,33 +1771,39 @@ class DeveloperDetailView(DetailView):
                     area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
                     water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
                     book.save()
-
+            paginator= Paginator(search,10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
+        else:
+            arrange=self.request.GET.get("arrange")
+            if arrange=="pricelow":
+                search=Property.objects.filter(developer=obj.title).order_by('price')
+                context['devprops'] = search
+            elif arrange=="pricelow":
+                search=Property.objects.filter(developer=obj.title).order_by('-price')
+                context['devprops'] = search
+            elif arrange=="new":
+                search=Property.objects.filter(developer=obj.title).order_by('-date')
+                context['devprops'] = search
+            elif arrange=="old":
+                search=Property.objects.filter(developer=obj.title).order_by('date')
+                context['devprops'] = search
+            else:
+                search=Property.objects.filter(developer=obj.title)
+                context['devprops'] = search
+            paginator= Paginator(search,10)
+            page_number = self.request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            context['page_obj'] = page_obj
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
             context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
-        arrange=self.request.GET.get("arrange")
-        if arrange=="pricelow":
-            search=Property.objects.filter(developer=obj.title).order_by('price')
-            context['devprops'] = search
-        elif arrange=="pricelow":
-            search=Property.objects.filter(developer=obj.title).order_by('-price')
-            context['devprops'] = search
-        elif arrange=="new":
-            search=Property.objects.filter(developer=obj.title).order_by('-date')
-            context['devprops'] = search
-        elif arrange=="old":
-            search=Property.objects.filter(developer=obj.title).order_by('date')
-            context['devprops'] = search
-        else:
-            search=Property.objects.filter(developer=obj.title)
-            context['devprops'] = search
+
         context['agents'] = Agent.objects.filter(agency=obj.title)
-        paginator= Paginator(search,10)
-        page_number = self.request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context['page_obj'] = page_obj
+
         return context
 
 class AgentDetailView(DetailView):
@@ -2641,3 +2658,7 @@ def multi_component(request):
             page_obj = paginator.get_page(page_number)
             context={'popular':Property.objects.filter(Q(address__icontains=query)),"page_obj":page_obj}
     return render(request,"multilevel-component.html",context)
+
+
+def about(request):
+    return render(request,"about.html")

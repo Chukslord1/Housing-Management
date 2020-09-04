@@ -11,6 +11,7 @@ urlpatterns = [
     path("login-register.html", views.login_register, name="login_register"),
     path("accounts/login/", views.login_register, name="login"),
     path("logout.html", views.logout, name="logout"),
+    path("about.html", views.about, name="about"),
     path("submit-property.html", views.submit_property, name="submit_property"),
     path("listing.html", views.SearchListView.as_view(), name="advanced_search"),
     path("category", views.CategoryListView.as_view(), name="category"),
@@ -35,5 +36,6 @@ urlpatterns = [
     path("developer-list.html", views.DeveloperListView.as_view(), name="developer-list"),
     path("partners.html", views.PartnerListView.as_view(), name="partner-list"),
     path("developer-page.html/<slug>", views.DeveloperDetailView.as_view(), name="developers"),
+
 
 ]

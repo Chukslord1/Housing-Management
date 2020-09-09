@@ -28,7 +28,7 @@ class ActivateAccount(View):
 
     def get(self, request, uidb64, token, *args, **kwargs):
         try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
+            uid = uidb64
             user = User.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
@@ -228,7 +228,7 @@ def login_register(request):
                 return redirect("APP:index")
             else:
                 context={"message": "invalid login details"}
-                return render(request, 'login-register.html')
+                return render(request, 'login-register.html',context)
 
         elif request.POST.get("check")=="True":
             username = request.POST['username']
@@ -239,12 +239,13 @@ def login_register(request):
             if password1 == password2:
                 if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
 
-                    context = {"messages": "email already exists"}
+                    context = {"message": "user with email already exists"}
                 else:
                     user = User.objects.create(
                         username=username, password=password1, email=email)
                     user.set_password(user.password)
                     user.is_active = False
+                    request.session['user'] = str(user.username)
                     user.save()
                     profile = UserProfile.objects.create(user=user, username=username,email=email,trials=3)
                     profile.save()
@@ -253,7 +254,7 @@ def login_register(request):
                     message = render_to_string('account_activation_email.html', {
                         'user': user,
                         'domain': current_site.domain,
-                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'uid': user.pk,
                         'token': account_activation_token.make_token(user),
                         })
                     fromaddr = "housing-send@advancescholar.com"
@@ -274,10 +275,43 @@ def login_register(request):
                     server.login("housing-send@advancescholar.com", "housing@24hubs.com")
                     text = msg.as_string()
                     server.sendmail(fromaddr, toaddr, text)
-                    context = {'profile':profile,"messages": "Please Confirm your email to complete registration."}
+                    context = {'profile':profile,"message_confirm": "Please Confirm your email to complete registration."}
+                    print(request.session['user'])
                     return render(request,'login-register.html',context)
+
         else:
             return render(request,'login-register.html')
+    elif request.GET.get("resend")=="True":
+        subject = 'Activate Your AfriProperty Account'
+        current_site = get_current_site(request)
+        subject = 'Activate Your AfriProperty Account'
+        message = render_to_string('account_activation_email.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': user.pk,
+            'token': account_activation_token.make_token(user),
+            })
+        fromaddr = "housing-send@advancescholar.com"
+        toaddr = email
+        msg = MIMEMultipart()
+        msg['From'] = fromaddr
+        msg['To'] = toaddr
+        msg['Subject'] = subject
+
+
+        body = message
+        msg.attach(MIMEText(body, 'plain'))
+
+        server = smtplib.SMTP('mail.advancescholar.com',  26)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+        text = msg.as_string()
+        server.sendmail(fromaddr, toaddr, text)
+        context = {'profile':profile,"message_confirm": "verification email sent."}
+        return render(request,'login-register.html',context)
+
     return render(request, "login-register.html")
 
 

@@ -514,6 +514,12 @@ function showsale10 () {
       <div class="tabs-container alt">
        <!-- Login -->
        <div class="tab-content" id="tab1" style="display: none;">
+         {% if message_confirm %}
+         <form method="GET">
+           <input name="resend" type="hidden" value="True" />
+           <button type="submit">Resend Mail</button>
+         </form>
+         {% endif %}
         <form class="login" method="POST">
           {% csrf_token %}
           <input class="mb-0 form-control" id="name" name="check" placeholder="Enter your full name" value="False" type="hidden"/>
@@ -534,6 +540,7 @@ function showsale10 () {
           </label>
          </p>
          <p>{{message}}</p>
+         <p>{{message_confirm}}</p>
          <p class="form-row">
           <input class="button border margin-top-10" name="login" type="submit" value="Login"/>
           <label class="rememberme" for="rememberme">
@@ -589,13 +596,10 @@ function showsale10 () {
           <input class="button border fw margin-top-10" name="register" type="submit" value="Register"/>
          </p>
         </form>
-        {{message}}
        </div>
       </div>
      </div>
-     {{message}}
     </div>
-    {{message}}
    </div>
   </div>
   <!-- Container / End -->

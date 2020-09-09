@@ -1,0 +1,10 @@
+{% load static %}
+
+<center>{% if message %}
+<img width="250" height="250"src="{% static 'images/new_logo.png' %}">
+  <h2>{{message}}</h2>
+  {% if user.is_authenticated %}
+  <h2><a href="{% url 'APP:profile' %}">Click here to return to Site</a></h2>
+  {% endif %}
+{% endif %}
+</center>

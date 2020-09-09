@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User, auth
+from django.contrib.auth import  login
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.views.generic import ListView, DetailView, View
@@ -13,6 +14,37 @@ from django.db.models import Q
 from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation,Developer,Partner,Boost
 import random
 import datetime
+from django.utils.encoding import force_text
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode
+from . tokens import account_activation_token
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib import messages
+from django.template.loader import render_to_string
+
+
+class ActivateAccount(View):
+
+    def get(self, request, uidb64, token, *args, **kwargs):
+        try:
+            uid = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.profile.email_confirmed = True
+            user.save()
+            login(request, user)
+            context={"message":'Your account has been confirmed.'}
+            return render(request,'confirmation.html',context)
+        else:
+            context={"message":'The confirmation link was invalid, possibly because it has already been used.'}
+            return render(request,'confirmation.html',context)
+
+
 
 class IndexListView(ListView):
     model = Property
@@ -197,6 +229,7 @@ def login_register(request):
             else:
                 context={"message": "invalid login details"}
                 return render(request, 'login-register.html')
+
         elif request.POST.get("check")=="True":
             username = request.POST['username']
             email = request.POST['email']
@@ -211,10 +244,37 @@ def login_register(request):
                     user = User.objects.create(
                         username=username, password=password1, email=email)
                     user.set_password(user.password)
+                    user.is_active = False
                     user.save()
                     profile = UserProfile.objects.create(user=user, username=username,email=email,trials=3)
                     profile.save()
-                    context = {'profile':profile,"messages": "User Added"}
+                    current_site = get_current_site(request)
+                    subject = 'Activate Your AfriProperty Account'
+                    message = render_to_string('account_activation_email.html', {
+                        'user': user,
+                        'domain': current_site.domain,
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token': account_activation_token.make_token(user),
+                        })
+                    fromaddr = "housing-send@advancescholar.com"
+                    toaddr = email
+                    msg = MIMEMultipart()
+                    msg['From'] = fromaddr
+                    msg['To'] = toaddr
+                    msg['Subject'] = subject
+
+
+                    body = message
+                    msg.attach(MIMEText(body, 'plain'))
+
+                    server = smtplib.SMTP('mail.advancescholar.com',  26)
+                    server.ehlo()
+                    server.starttls()
+                    server.ehlo()
+                    server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+                    text = msg.as_string()
+                    server.sendmail(fromaddr, toaddr, text)
+                    context = {'profile':profile,"messages": "Please Confirm your email to complete registration."}
                     return render(request,'login-register.html',context)
         else:
             return render(request,'login-register.html')

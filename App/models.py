@@ -131,6 +131,7 @@ class UserProfile(models.Model):
     google=models.TextField(blank=True, null=True)
     linkedin=models.TextField(blank=True, null=True)
     trials=models.IntegerField()
+    email_confirmed = models.BooleanField(default=False)
 
 
 

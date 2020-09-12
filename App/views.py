@@ -11,7 +11,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.db.models import Q
-from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation,Developer,Partner,Boost
+from . models import Property,Article,Comparison,UserProfile,Tour,Comment,Agency,Agent,Bookmark,Images,Valuation,Developer,Partner,Boost,Newsletter
 import random
 import datetime
 from django.utils.encoding import force_text
@@ -79,6 +79,37 @@ class IndexListView(ListView):
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+        elif self.request.GET.get('sub')=="true":
+            email=self.request.GET.get('email')
+            name=self.request.GET.get('name')
+            phone=self.request.GET.get('phone')
+            check_email=Newsletter.objects.filter(email=email)
+            if check_email.exists():
+                context['message']=' This Email is Subscribed Already'
+            else:
+                news=Newsletter.objects.create(email=email,phone=phone,name=name)
+                news.save()
+                context['message']='Subscribed Successfully'
+                fromaddr = "housing-send@advancescholar.com"
+                toaddr = email
+                subject="Newsletter Subscription"
+                msg = MIMEMultipart()
+                msg['From'] = fromaddr
+                msg['To'] = toaddr
+                msg['Subject'] = subject
+
+
+                body = "You have successfully subscribed to our Newsletter..Look Up our website @ www.afriproperty.com.ng and look through our properties"
+                msg.attach(MIMEText(body, 'plain'))
+
+                server = smtplib.SMTP('mail.advancescholar.com',  26)
+                server.ehlo()
+                server.starttls()
+                server.ehlo()
+                server.login("housing-send@advancescholar.com", "housing@24hubs.com")
+                text = msg.as_string()
+                server.sendmail(fromaddr, toaddr, text)
+
         elif self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')

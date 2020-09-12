@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse
 # Create your models here.
 
+class Newsletter(models.Model):
+    name=models.TextField(blank=True, null=True)
+    email=models.TextField(blank=True, null=True)
+    phone=models.TextField(blank=True, null=True)
 
 class Images(models.Model):
     title =models.TextField()

@@ -8,7 +8,7 @@ A Property mannagement system built with django web frameworl
 [https://afriproperty.com.ng/]
 
 ## dependencies
-### Python, Django==2.1 
+#### Python, Django==2.1 
 
 ## run 
 

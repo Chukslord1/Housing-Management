@@ -1,6 +1,6 @@
 # Housing-Management
 
-A Property mannagement system built with django web frameworl
+A Property mannagement system built with django web framework
 
 
 

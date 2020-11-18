@@ -1,3 +1,4 @@
+#imported all modules and models required
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import  login
@@ -23,7 +24,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from django.template.loader import render_to_string
 
-
+#activate account  function
 class ActivateAccount(View):
 
     def get(self, request, uidb64, token, *args, **kwargs):
@@ -32,7 +33,7 @@ class ActivateAccount(View):
             user = User.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
-
+        #check if user exists with id and activate
         if user is not None and account_activation_token.check_token(user, token):
             user.is_active = True
             user.profile.email_confirmed = True
@@ -44,15 +45,16 @@ class ActivateAccount(View):
             context={"message":'The confirmation link was invalid, possibly because it has already been used.'}
             return render(request,'confirmation.html',context)
 
-
-
+#index page function
 class IndexListView(ListView):
     model = Property
     template_name = "index.html"
     def get_context_data(self, **kwargs):
+        #delete expired fetured items
         context = super(IndexListView, self).get_context_data(**kwargs)
         boost_delete=Boost.objects.filter(expire=datetime.datetime.now().date())
         boost_delete.delete()
+        #filter search
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
             sale= self.request.GET.get('sale')
@@ -76,9 +78,11 @@ class IndexListView(ListView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+         #compare clear
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+         #newsletter subscription
         elif self.request.GET.get('sub')=="true":
             email=self.request.GET.get('email')
             name=self.request.GET.get('name')
@@ -109,7 +113,7 @@ class IndexListView(ListView):
                 server.login("housing-send@advancescholar.com", "housing@24hubs.com")
                 text = msg.as_string()
                 server.sendmail(fromaddr, toaddr, text)
-
+        #create comparison
         elif self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -146,11 +150,13 @@ class IndexListView(ListView):
                     water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
                     compare.save()
                 compare_count=Comparison.objects.filter(creator=self.request.user).count()
+                #check if compare objects greater than 4 if true delete last object
                 if compare_count>4:
                     compare_delete=Comparison.objects.filter(creator=self.request.user).latest('date')
                     compare_delete.delete()
                 else:
                     pass
+         #create bookmark
         elif self.request.GET.get('third_check')=="three":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -188,6 +194,7 @@ class IndexListView(ListView):
                     book.save()
 
         check_login=self.request.user
+        #all contexts required by templates
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
         context['lagos'] = Property.objects.filter(Q(address__icontains="lagos")).count()
@@ -205,12 +212,14 @@ class IndexListView(ListView):
             pass
 
         return context
-
+    
+#blog list page function
 class ArticleListView(ListView):
     model = Article
     template_name = "blog.html"
     def get_context_data(self, **kwargs):
         context = super(ArticleListView, self).get_context_data(**kwargs)
+        #create comment
         if self.request.GET.get('comment_check')=="True":
             name=self.request.GET.get("name")
             email=self.request.GET.get("email")
@@ -222,8 +231,10 @@ class ArticleListView(ListView):
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
         else:
             pass
-
+        
         context['blogs'] = Article.objects.all()
+        
+        #create popular items by comment size
         popular=[]
         blog=Article.objects.all()
         check=1
@@ -238,7 +249,8 @@ class ArticleListView(ListView):
         if len(popular)>2:
             context['popular_2'] = popular[1]
             context['popular_3'] = popular[2]
-
+        
+        #pagination context
         paginator= Paginator(Article.objects.all(),10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -248,7 +260,9 @@ class ArticleListView(ListView):
 
         return context
 
+ #login and register page function
 def login_register(request):
+    #login 
     if request.method == 'POST':
         if request.POST.get("check")=="False":
             username = request.POST['username']
@@ -260,7 +274,7 @@ def login_register(request):
             else:
                 context={"message": "invalid login details"}
                 return render(request, 'login-register.html',context)
-
+        #register
         elif request.POST.get("check")=="True":
             username = request.POST['username']
             email = request.POST['email']
@@ -275,6 +289,7 @@ def login_register(request):
                     user = User.objects.create(
                         username=username, password=password1, email=email)
                     user.set_password(user.password)
+                    #set user to false on registration to allow email confirmation
                     user.is_active = False
                     request.session['user'] = str(user.username)
                     user.save()
@@ -312,6 +327,7 @@ def login_register(request):
 
         else:
             return render(request,'login-register.html')
+        #resend confirmatioln email upon request
     elif request.GET.get("resend")=="True":
         subject = 'Activate Your AfriProperty Account'
         current_site = get_current_site(request)
@@ -345,13 +361,15 @@ def login_register(request):
 
     return render(request, "login-register.html")
 
-
+#logout function
 def logout(request):
     auth.logout(request)
     return redirect("index.html")
 
+#submit property page function
 def submit_property(request):
     profile=''
+    #check if user is logged in
     if request.user.is_authenticated:
         profile=UserProfile.objects.get(user=request.user)
     context={'profile':profile,"agencies":Agency.objects.all(),"compare":Comparison.objects.all(),"developers":Developer.objects.all()}
@@ -421,9 +439,11 @@ def submit_property(request):
             creator=request.user.username
         else:
             creator=""
+        #check if property already exist
         if property_check:
             context={'profile':profile,'message':"Property Already Exists","agencies":Agency.objects.all(),"agencies":Agency.objects.all(),"developers":Developer.objects.all(),"compare":Comparison.objects.all()}
         else:
+            #create property
             if trial_check.trials>0 or request.user.is_superuser or Agent.objects.get(name=request.user.username):
                 property=Property.objects.create(title=title,sale_type=status,category=category,price=price,price_per_unit=price_per_unit,agency=agency,
                 area=area,rooms=rooms,developer=developer,address=address,
@@ -467,19 +487,21 @@ def submit_property(request):
             else:
                 context={'profile':profile,"message":"You have exceeded Your Trial of 3 properties submission, please subscribe for a package to continue submitting properties"}
                 return redirect("pricing-tables.html")
+     #clear comparison
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)
             clear.delete()
     return render(request,"submit-property.html",context)
 
-
+#search page function
 class SearchListView(ListView):
     model = Property
     template_name = "listings-list-full-width.html"
     def get_context_data(self, **kwargs):
         context = super(SearchListView, self).get_context_data(**kwargs)
         search=''
+        #filter search
         if self.request.GET.get('first_check')=="one":
             first_check="one"
             query = self.request.GET.get('search')
@@ -518,6 +540,7 @@ class SearchListView(ListView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+         #order search
         elif self.request.GET.get('realcheck')=="True":
             query = self.request.GET.get('search')
             sale_type=self.request.GET.get('sale_type')
@@ -602,6 +625,7 @@ class SearchListView(ListView):
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+          #create comparison
         elif self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -643,6 +667,7 @@ class SearchListView(ListView):
                     compare_delete.delete()
                 else:
                     pass
+         #create bookmark
         elif self.request.GET.get('third_check')=="three":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -678,7 +703,8 @@ class SearchListView(ListView):
                     area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
                     water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
                     book.save()
-
+         
+        #create ontext to render data on templates
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
@@ -692,13 +718,14 @@ class SearchListView(ListView):
         else:
             pass
         if search:
+            #pagination
             paginator= Paginator(search,10)
             page_number = self.request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             context['page_obj'] = page_obj
         return context
 
-
+#category or sale type listing page function
 class CategoryListView(ListView):
     model = Property
     template_name = "listings-grid-standard-with-sidebar.html"
@@ -707,6 +734,7 @@ class CategoryListView(ListView):
         search=''
         query=''
         context = super(CategoryListView, self).get_context_data(**kwargs)
+        #search base query and order
         if self.request.GET.get('first_check')=="one":
             context['value'] = "Search"
             query = self.request.GET.get('search')
@@ -740,6 +768,7 @@ class CategoryListView(ListView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+         #search and order search
         elif self.request.GET.get('check_cat')=="True":
             query = self.request.GET.get('cat')
             arrange= self.request.GET.get('arrange')
@@ -777,6 +806,7 @@ class CategoryListView(ListView):
             else:
                 cat = self.model.objects.none()
                 context['search'] = cat
+        #check for a sale type category
         elif self.request.GET.get('check_sale')=="True":
             query = self.request.GET.get('sale_type')
             arrange=self.request.GET.get('arrange')
@@ -814,13 +844,16 @@ class CategoryListView(ListView):
             else:
                 cat = self.model.objects.none()
                 context['search'] = cat
+         #check for boost field to redirect to details page
         elif self.request.GET.get('check_boost')=="True":
             title = self.request.GET.get('title')
             price = self.request.GET.get('price')
             check = Property.objects.get(Q(title__icontains=title),Q(price__icontains=price))
+         #clear comparsions
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+         #create comparison
         elif self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -856,12 +889,14 @@ class CategoryListView(ListView):
                     area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
                     water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
                     compare.save()
-                compare_count=Comparison.objects.filter(creator=self.request.user    ).count()
+                compare_count=Comparison.objects.filter(creator=self.request.user).count()
+                #check if comparsion size is 4 then delete last one
                 if compare_count>3:
-                    compare_delete=Comparsion.objects.filter(creator=self.request    .user)[4:]
+                    compare_delete=Comparsion.objects.filter(creator=self.request.user)[4:]
                     compare_delete.delete()
                 else:
                     pass
+         #search with filter
         elif self.request.GET.get("filter")=="True":
             filter="True"
             query = self.request.GET.get('search')
@@ -955,6 +990,7 @@ class CategoryListView(ListView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+          #create bookmark
         elif self.request.GET.get('third_check')=="three":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -990,7 +1026,7 @@ class CategoryListView(ListView):
                     area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
                     water=water,exercise_room=exercise_room,storage_room=storage_room,creator=self.request.user)
                     book.save()
-
+        #context required for template
         check_login=self.request.user
         context['houses'] = Property.objects.all()[:6]
         context['articles'] = Article.objects.all()[:3]
@@ -1013,7 +1049,7 @@ class CategoryListView(ListView):
             context['page_obj'] = page_obj
         return context
 
-
+#popular listing function
 class PopularListView(ListView):
     model = Property
     template_name = "listings-list-with-sidebar.html"
@@ -1022,11 +1058,13 @@ class PopularListView(ListView):
         search=''
         query=''
         context = super(PopularListView, self).get_context_data(**kwargs)
+        #search and filter
         if self.request.GET.get('first_check')=="one":
             context['value'] = "Search"
             query = self.request.GET.get('search')
             arrange=self.request.GET.get('arrange')
             if query:
+                #check for order request and order
                 if arrange=="pricelow":
                     search = self.model.objects.filter(Q(address__icontains=query)).order_by('price')
                     boost=Boost.objects.filter(Q(address__icontains=query)).order_by('price')
@@ -1055,6 +1093,7 @@ class PopularListView(ListView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+         #plain search without filter and order on request
         elif self.request.GET.get('check_pop')=="True":
             query = self.request.GET.get('pop')
             arrange = self.request.GET.get("arrange")
@@ -1088,6 +1127,7 @@ class PopularListView(ListView):
             else:
                 cat = self.model.objects.none()
                 context['search'] = pop
+         #delete comparison
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
@@ -1131,6 +1171,7 @@ class PopularListView(ListView):
                     compare_delete.delete()
                 else:
                     pass
+        #filter search
         elif self.request.GET.get("filter")=="True":
             filter="True"
             query = self.request.GET.get('search')
@@ -1224,6 +1265,7 @@ class PopularListView(ListView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+         #create bookmark
         elif self.request.GET.get('third_check')=="three":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -1281,7 +1323,7 @@ class PopularListView(ListView):
             context['page_obj'] = page_obj
         return context
 
-
+#compare function for compare page
 def compare(request):
     profile=''
     if request.user.is_authenticated:
@@ -1294,11 +1336,13 @@ def compare(request):
         return redirect("compare-properties.html")
     return render(request,"compare-properties.html",context)
 
+#contact page function
 def contact(request):
     profile=''
     if request.user.is_authenticated:
         profile=UserProfile.objects.get(user=request.user)
     context={"compare":Comparison.objects.all,'profile':profile}
+    #send message to support
     if request.method=="POST":
         name=request.POST['name']
         email=request.POST['email']
@@ -1330,6 +1374,7 @@ def contact(request):
             clear.delete()
     return render(request,"contact.html",context)
 
+#detail view for properties
 class PropertyDetailView(DetailView):
     model = Property
     template_name = "single-property-page-1.html"
@@ -1341,6 +1386,7 @@ class PropertyDetailView(DetailView):
         return obj
     def get_context_data(self, **kwargs):
         context = super(PropertyDetailView, self).get_context_data(**kwargs)
+        #create comparison
         if self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -1381,9 +1427,11 @@ class PropertyDetailView(DetailView):
                     compare_delete.delete()
                 else:
                     pass
+         #clear comparsion
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+         #request a tourmfor car and create a tour object 
         elif self.request.GET.get('tour')=="True":
             date=self.request.GET.get('date')
             time=self.request.GET.get('time')
@@ -1438,6 +1486,7 @@ class PropertyDetailView(DetailView):
                 text = msg.as_string()
                 server.sendmail(fromaddr, toaddr, text)
                 context['message']="Inspection Request Saved Successfully"
+         #send dealer message
         elif self.request.GET.get("send")=="True":
             email=self.request.GET.get('email')
             message=self.request.GET.get('message')
@@ -1494,6 +1543,7 @@ class PropertyDetailView(DetailView):
         context['houses'] = Property.objects.filter(sale_type=obj.sale_type,category=obj.category).exclude(title=obj.title)
         return context
 
+#blog details (the body,images and others)
 class ArticleDetailView(DetailView):
     model = Article
     template_name = "blog-post.html"
@@ -1521,6 +1571,7 @@ class ArticleDetailView(DetailView):
         context['blogs'] = Article.objects.all()
         context['commment_no'] = Comment.objects.filter(blog=obj.title).count()
         context['comments'] = Comment.objects.filter(blog=obj.title)
+        #create popular bligs
         popular=[]
         blog=Article.objects.all()
         check=1
@@ -1530,6 +1581,7 @@ class ArticleDetailView(DetailView):
                     check=Comment.objects.filter(blog=i.title).count()
                     x = Article.objects.filter(title=i.title)
                     popular.append(x)
+         #render popular contexts to template
         if len(popular)>0:
             context['popular'] = popular[0]
         if len(popular)>2:
@@ -1537,6 +1589,7 @@ class ArticleDetailView(DetailView):
             context['popular_3'] = popular[2]
         return context
 
+#function for agency page listing
 class AgencyListView(ListView):
     model = Agency
     template_name = "agencies-list.html"
@@ -1548,20 +1601,23 @@ class AgencyListView(ListView):
         if self.request.user.is_authenticated:
             context["compare"] = Comparison.objects.all()
             context['profile']=UserProfile.objects.get(user=self.request.user)
+         #render context to template and paginations
         paginator= Paginator(Agency.objects.all(),10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         return context
 
+#developer listing page function 
 class DeveloperListView(ListView):
     model = Developer
     template_name = "developer-list.html"
     def get_context_data(self, **kwargs):
         context = super(DeveloperListView, self).get_context_data(**kwargs)
         if self.request.GET.get('clear')=="True":
-            clear=Comparison.objects.filter(creator=self.request.user)
+            clear=Comparison.objects.filter(creator=self.request.user)#clear comparison
             clear.delete()
+        #render context for comparsion and pagination
         if self.request.user.is_authenticated:
             context["compare"] = Comparison.objects.all()
             context['profile']=UserProfile.objects.get(user=self.request.user)
@@ -1571,15 +1627,17 @@ class DeveloperListView(ListView):
         context['page_obj'] = page_obj
         return context
 
-
+#function for partner listing page
 class PartnerListView(ListView):
     model = Partner
     template_name = "partners.html"
     def get_context_data(self, **kwargs):
         context = super(PartnerListView, self).get_context_data(**kwargs)
+        #clear comparison
         if self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+         #render context and pagination to templates
         if self.request.user.is_authenticated:
             context["compare"] = Comparison.objects.all()
             context['profile']=UserProfile.objects.get(user=self.request.user)
@@ -1589,7 +1647,7 @@ class PartnerListView(ListView):
         context['page_obj'] = page_obj
         return context
 
-
+#function for agency detail page
 class AgencyDetailView(DetailView):
     model = Agency
     template_name = "agency-page.html"
@@ -1600,6 +1658,7 @@ class AgencyDetailView(DetailView):
         return obj
     def get_context_data(self, **kwargs):
         context = super(AgencyDetailView, self).get_context_data(**kwargs)
+        #search for agencies
         if self.request.GET.get('first_check')=="True":
             query = self.request.GET.get('search')
             arrange=self.request.GET.get('arrange')
@@ -1626,6 +1685,7 @@ class AgencyDetailView(DetailView):
             else:
                 search = Property.objects.none()
                 context['search'] = search
+         #create comparison
         elif self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -1666,9 +1726,11 @@ class AgencyDetailView(DetailView):
                     compare_delete.delete()
                 else:
                     pass
+         #clear comparison
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+         #send message to agent
         elif self.request.GET.get("send")=="True":
             email=self.request.GET.get('email')
             message=self.request.GET.get('message')
@@ -1691,6 +1753,7 @@ class AgencyDetailView(DetailView):
             text = msg.as_string()
             server.sendmail(fromaddr, toaddr, text)
             context['message']="Sent Enquiry Successfully"
+         #create bookmarks
         elif self.request.GET.get('third_check')=="three":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -1744,6 +1807,7 @@ class AgencyDetailView(DetailView):
                 print("hello world")
                 search=Property.objects.filter(agency=obj.title)
                 context['agencyprops'] = search
+            #context to render to template and pagination
             paginator= Paginator(search,10)
             page_number = self.request.GET.get('page')
             page_obj = paginator.get_page(page_number)
@@ -1759,6 +1823,7 @@ class AgencyDetailView(DetailView):
 
         return context
 
+ #function for developer detail page
 class DeveloperDetailView(DetailView):
     model = Developer
     template_name = "developer-page.html"
@@ -1769,6 +1834,7 @@ class DeveloperDetailView(DetailView):
         return obj
     def get_context_data(self, **kwargs):
         context = super(DeveloperDetailView, self).get_context_data(**kwargs)
+        #search for property
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
             arrange=self.request.GET.get('arrange')
@@ -1796,6 +1862,7 @@ class DeveloperDetailView(DetailView):
             page_number = self.request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             context['page_obj'] = page_obj
+            #create comparison
         elif self.request.GET.get('second_check')=="two":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -1836,9 +1903,11 @@ class DeveloperDetailView(DetailView):
                     compare_delete.delete()
                 else:
                     pass
+          #clear comparison
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+         #send mesage to developer
         elif self.request.GET.get("send")=="True":
             email=self.request.GET.get('email')
             message=self.request.GET.get('message')
@@ -1861,6 +1930,7 @@ class DeveloperDetailView(DetailView):
             text = msg.as_string()
             server.sendmail(fromaddr, toaddr, text)
             context['message']="Sent Enquiry Successfully"
+            #create bookmark
         elif self.request.GET.get('third_check')=="three":
             if self.request.user.is_authenticated:
                 title=self.request.GET.get('title')
@@ -1901,6 +1971,7 @@ class DeveloperDetailView(DetailView):
             page_obj = paginator.get_page(page_number)
             context['page_obj'] = page_obj
         else:
+            # order query on request
             arrange=self.request.GET.get("arrange")
             if arrange=="pricelow":
                 search=Property.objects.filter(developer=obj.title).order_by('price')
@@ -1931,6 +2002,7 @@ class DeveloperDetailView(DetailView):
 
         return context
 
+#function for agent detail page
 class AgentDetailView(DetailView):
     model = Agent
     template_name = "agent-page.html"
@@ -1941,6 +2013,7 @@ class AgentDetailView(DetailView):
         return obj
     def get_context_data(self, **kwargs):
         context = super(AgentDetailView, self).get_context_data(**kwargs)
+        #search 
         if self.request.GET.get('first_check')=="one":
             query = self.request.GET.get('search')
             if query:
@@ -1949,21 +2022,25 @@ class AgentDetailView(DetailView):
             else:
                 search = self.model.objects.none()
                 context['search'] = search
+         #clear comparison
         elif self.request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=self.request.user)
             clear.delete()
+        # render context to templates
         if self.request.user.is_authenticated:
             context['compare'] = Comparison.objects.filter(creator=self.request.user)
             context['profile']=UserProfile.objects.get(user=self.request.user)
         else:
             pass
         return context
-
+# function for user profile details page
 def profile(request):
     profile=''
+    #check if user is logged in
     if request.user.is_authenticated:
         profile=UserProfile.objects.get(user=request.user)
     context={"profile":profile}
+    #edit profile data
     if request.method=="POST":
         name=request.POST.get("name")
         title=request.POST.get("title")
@@ -1999,12 +2076,14 @@ def profile(request):
         data.save()
     return render(request,"my-profile.html",context)
 
+#function for my properties page
 def properties(request):
     profile=''
     if request.user.is_authenticated:
         profile=UserProfile.objects.get(user=request.user)
     context={"compare":Comparison.objects.all(),"properties":Property.objects.filter(creator=request.user),"profile":profile}
     if request.method=="POST":
+     #create boost for property
         if request.POST.get("delete")=="True":
             title=request.POST.get("title")
             data=Property.objects.filter(title=title)
@@ -2042,12 +2121,14 @@ def properties(request):
                     expire=date+date2
                     data=Boost.objects.create(title=title,image=image_url,price=price,price_per_unit=price_per_unit,sale_type=sale_type,category=category,address=address,creator=creator,slug=slug,time=time,expire=expire)
                     data.save
+     #delete comparison
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)
             clear.delete()
     return render(request,"my-properties.html",context)
 
+#reset password functon 
 def password(request):
     context={"compare":Comparison.objects.filter(creator=request.user),"profile":UserProfile.objects.get(user=request.user)}
     if request.method=="POST":
@@ -2055,6 +2136,7 @@ def password(request):
         password=request.POST.get("password")
         confirm=request.POST.get('confirm')
         print(current)
+        #if user exist
         if auth.authenticate(username=request.user, password=current):
             if password==confirm:
                 data=User.objects.get(username=request.user)
@@ -2062,25 +2144,27 @@ def password(request):
                 data.set_password(password)
                 data.save()
                 return redirect("index.html")
+    #delete comparison
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)
             clear.delete()
     return render(request,"change-password.html",context)
 
+#fucntion for bookmark page
 def bookmark(request):
     context={"compare":Comparison.objects.filter(creator=request.user),"books":Bookmark.objects.filter(creator=request.user),"profile":UserProfile.objects.get(user=request.user)}
-    if request.method=="POST":
+    if request.method=="POST":#delete bookmark
         if request.POST.get("delete")=="True":
             title=request.POST.get("title")
             data=Bookmark.objects.filter(title=title)
             data.delete()
-    elif request.method=="GET":
+    elif request.method=="GET":#clear comparison
         if request.GET.get('clear')=="True":
             clear=Comparison.objects.filter(creator=request.user)
             clear.delete()
     return render(request,"my-bookmarks.html",context)
-
+# function for agent page lisiting
 def agents(request):
     context={}
     profile=''
@@ -2091,8 +2175,9 @@ def agents(request):
         context={"compare":Comparison.objects.filter(creator=request.user),"profile":profile,"agents":Agent.objects.all(),"page_obj":page_obj}
     if request.method=="GET":
         if request.GET.get('clear')=="True":
-            clear=Comparison.objects.filter(creator=request.user)
+            clear=Comparison.objects.filter(creator=request.user)#clear comparison
             clear.delete()
+         #search for agent
         elif request.GET.get("check")=="True":
             query = request.GET.get('search')
             if query:
@@ -2104,7 +2189,7 @@ def agents(request):
                 context['search'] = search
 
     return render(request,"agents-list.html",context)
-
+# function for pricing listing page
 def pricing(request):
     if request.method=="POST":
         if request.POST.get("paid")=="True" and request.POST.get("amount")=="3000":
@@ -2113,6 +2198,7 @@ def pricing(request):
             new_trial_value=trial_no+20
             trial_check.trials=new_trial_value
             trial_check.save()
+            #record payment
         elif request.POST.get("paid")=="True" and request.POST.get("amount")=="10000":
             trial_check=UserProfile.objects.get(user=request.user)
             trial_no=trial_check.trials
@@ -2123,12 +2209,13 @@ def pricing(request):
             pass
     return render(request,"pricing-tables.html")
 
-
+# property video page
 def property_video(request):
     pop=''
     search=''
     query=''
     context = {}
+    # SEARCH PROPERTY VIDEO AND ORDER ON REQUEST
     if request.GET.get('first_check')=="one":
         query = request.GET.get('search')
         arrange=request.GET.get('arrange')
@@ -2166,6 +2253,7 @@ def property_video(request):
         else:
             search = Property.objects.none()
             context= {"search":search}
+     #ORDER CURRENT QUERYSET ON REUQEST
     elif request.GET.get('check_pop')=="True":
         query = request.GET.get('pop')
         arrange=request.GET.get('arrange')
@@ -2204,9 +2292,11 @@ def property_video(request):
         else:
             cat = Property.objects.none()
             context= {"search":cat}
+     #clear comparison
     elif request.GET.get('clear')=="True":
         clear=Comparison.objects.filter(creator=request.user)
         clear.delete()
+     #create comparison
     elif request.GET.get('second_check')=="two":
         if request.user.is_authenticated:
             title=request.GET.get('title')
@@ -2247,6 +2337,8 @@ def property_video(request):
                 compare_delete.delete()
             else:
                 pass
+            
+     #filtered search 
     elif request.GET.get("filter")=="True":
         filter="True"
         query = request.GET.get('search')
@@ -2453,12 +2545,13 @@ def property_video(request):
     return render(request,"property-video.html",context)
 
 
-
+#property valuation page function
 def property_valuation(request):
     profile=''
     if request.user.is_authenticated:
         profile=UserProfile.objects.get(user=request.user)
     context={'profile':profile,"agencies":Agency.objects.all(),"compare":Comparison.objects.all()}
+    request property valuation
     if request.method=="POST":
         status=request.POST.get("status")
         category=request.POST.get("category")
@@ -2503,16 +2596,17 @@ def property_valuation(request):
         context={'profile':profile,"message":"Successfully Submitted  Request"}
     elif request.method=="GET":
         if request.GET.get('clear')=="True":
-            clear=Comparison.objects.filter(creator=request.user)
+            clear=Comparison.objects.filter(creator=request.user)#clear comparison
             clear.delete()
     return render(request,"property-valuation.html",context)
 
-
+#multicomponent page function
 def multi_component(request):
     pop=''
     search=''
     query=''
     context = {}
+    # search with sort on request
     if request.GET.get('first_check')=="one":
         query = request.GET.get('search')
         arrange=request.GET.get('arrange')
@@ -2550,6 +2644,7 @@ def multi_component(request):
         else:
             search = Property.objects.none()
             context= {"search":search}
+    #order on request queryset
     elif request.GET.get('check_pop')=="True":
         query = request.GET.get('pop')
         arrange=request.GET.get('arrange')
@@ -2589,8 +2684,9 @@ def multi_component(request):
             cat = Property.objects.none()
             context= {"search":cat}
     elif request.GET.get('clear')=="True":
-        clear=Comparison.objects.filter(creator=request.user)
+        clear=Comparison.objects.filter(creator=request.user)#clear comparison
         clear.delete()
+      #create comparison
     elif request.GET.get('second_check')=="two":
         if request.user.is_authenticated:
             title=request.GET.get('title')
@@ -2631,6 +2727,7 @@ def multi_component(request):
                 compare_delete.delete()
             else:
                 pass
+      #filter search query
     elif request.GET.get("filter")=="True":
         filter="True"
         query = request.GET.get('search')
@@ -2734,6 +2831,7 @@ def multi_component(request):
         else:
             search = Property.objects.none()
             context={"search":search}
+     #create bookmark
     elif request.GET.get('third_check')=="three":
         if request.user.is_authenticated:
             title=request.GET.get('title')
@@ -2768,7 +2866,7 @@ def multi_component(request):
                 area=area,rooms=rooms,bedrooms=bedrooms,bathrooms=bathrooms,features=features,building_age=building_age,parking=parking,cooling=cooling,heating=heating,sewer=sewer,
                 water=water,exercise_room=exercise_room,storage_room=storage_room,creator=request.user)
                 book.save()
-
+    #render pagination to template
     else:
         if request.user.is_authenticated:
             pop=Property.objects.filter(Q(address__icontains=query))
@@ -2784,6 +2882,6 @@ def multi_component(request):
             context={'popular':Property.objects.filter(Q(address__icontains=query)),"page_obj":page_obj}
     return render(request,"multilevel-component.html",context)
 
-
+#about page function
 def about(request):
     return render(request,"about.html")

@@ -23,6 +23,7 @@ from . tokens import account_activation_token
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
 
 #activate account  function
 class ActivateAccount(View):
@@ -367,6 +368,7 @@ def logout(request):
     return redirect("index.html")
 
 #submit property page function
+@login_required
 def submit_property(request):
     profile=''
     #check if user is logged in
@@ -1324,6 +1326,7 @@ class PopularListView(ListView):
         return context
 
 #compare function for compare page
+@login_required
 def compare(request):
     profile=''
     if request.user.is_authenticated:
@@ -2034,6 +2037,7 @@ class AgentDetailView(DetailView):
             pass
         return context
 # function for user profile details page
+@login_required
 def profile(request):
     profile=''
     #check if user is logged in
@@ -2077,6 +2081,7 @@ def profile(request):
     return render(request,"my-profile.html",context)
 
 #function for my properties page
+@login_required
 def properties(request):
     profile=''
     if request.user.is_authenticated:
@@ -2152,6 +2157,7 @@ def password(request):
     return render(request,"change-password.html",context)
 
 #fucntion for bookmark page
+@login_required
 def bookmark(request):
     context={"compare":Comparison.objects.filter(creator=request.user),"books":Bookmark.objects.filter(creator=request.user),"profile":UserProfile.objects.get(user=request.user)}
     if request.method=="POST":#delete bookmark
@@ -2164,6 +2170,7 @@ def bookmark(request):
             clear=Comparison.objects.filter(creator=request.user)
             clear.delete()
     return render(request,"my-bookmarks.html",context)
+
 # function for agent page lisiting
 def agents(request):
     context={}
@@ -2189,6 +2196,7 @@ def agents(request):
                 context['search'] = search
 
     return render(request,"agents-list.html",context)
+
 # function for pricing listing page
 def pricing(request):
     if request.method=="POST":
